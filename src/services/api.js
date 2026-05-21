@@ -7,7 +7,7 @@
     baseURL,
   });
 
-  api.interceptors.request.use,
+  api.interceptors.request.use(
     (config) => {
       const token = getToken();
 
