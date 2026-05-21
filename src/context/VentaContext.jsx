@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { createVentaRequest, getVentasRequest, getVentaByIdRequest } from "../services/ventaService";
+import { createVentaRequest, getVentasRequest, getVentaByIdRequest } from "../services/ventasService";
 
 const VentaContext = createContext();
 

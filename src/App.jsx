@@ -4,7 +4,7 @@ import { AuthProvider } from "./context/AuthContext";
 // 1. Importas el nuevo Provider
 import { ProductProvider } from "./context/ProductContext";
 import { ProveedorProvider } from "./context/ProveedorContext";
-import { VentaProvider } from "./context/ProveedorContext";
+import { VentaProvider } from "./context/VentaContext";
 
 
 function App() {
