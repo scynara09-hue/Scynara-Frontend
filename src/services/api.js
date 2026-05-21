@@ -2,7 +2,7 @@
   import { getToken } from "../utils/token";
 
   const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000" || "https://scynara-backend-production.up.railway.app",
   });
 
   api.interceptors.request.use(
