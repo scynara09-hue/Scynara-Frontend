@@ -1,11 +1,13 @@
   import axios from "axios";
   import { getToken } from "../utils/token";
 
+  const baseURL = import.meta.env.VITE_API_URL || "https://scynara-backend-production.up.railway.app";
+
   const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000" || "https://scynara-backend-production.up.railway.app",
+    baseURL,
   });
 
-  api.interceptors.request.use(
+  api.interceptors.request.use,
     (config) => {
       const token = getToken();
 
