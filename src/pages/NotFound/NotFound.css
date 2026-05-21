@@ -1,0 +1,129 @@
+/* ─── WRAPPER ───────────────────────── */
+.nf-wrapper {
+  position: relative;
+  height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ─── FONDO DECORATIVO ───────────────────────── */
+.nf-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.nf-orb {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.2;
+}
+
+.orb-1 {
+  background: var(--accent);
+  top: 10%;
+  left: 20%;
+}
+
+.orb-2 {
+  background: #6366f1;
+  bottom: 10%;
+  right: 20%;
+}
+
+/* ─── CONTENEDOR ───────────────────────── */
+.nf-container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 500px;
+  padding: 40px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* ─── 404 GRANDE ───────────────────────── */
+.nf-illustration {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.nf-illustration span {
+  font-size: 100px;
+  font-weight: 900;
+  letter-spacing: -4px;
+  color: var(--text-h);
+  position: relative;
+  animation: float 3s ease-in-out infinite;
+}
+
+.nf-0 {
+  color: var(--accent);
+  text-shadow: 0 0 20px var(--accent);
+}
+
+.nf-4:nth-child(1) { animation-delay: 0s; }
+.nf-0              { animation-delay: 0.2s; }
+.nf-4:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ─── TEXTO ───────────────────────── */
+.nf-content h1 {
+  font-size: 24px;
+  color: var(--text-h);
+  margin-bottom: 10px;
+}
+
+.nf-content p {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* ─── BOTONES ───────────────────────── */
+.nf-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Mejora botones */
+.nf-actions .btn-primary {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+}
+
+.nf-actions .btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.nf-actions .btn-outline:hover {
+  transform: translateY(-2px);
+}
+
+/* ─── RESPONSIVE ───────────────────────── */
+@media (max-width: 480px) {
+  .nf-illustration span {
+    font-size: 70px;
+  }
+
+  .nf-container {
+    padding: 24px;
+  }
+}

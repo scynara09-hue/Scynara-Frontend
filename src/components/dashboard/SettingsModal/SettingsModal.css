@@ -1,0 +1,518 @@
+/* =========================
+   OVERLAY & MODAL
+========================= */
+
+.sm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+  backdrop-filter: blur(4px);
+}
+
+.sm-modal {
+  display: flex;
+  width: 680px;
+  max-width: 100%;
+  height: 520px;
+  background: var(--login-card-bg);
+  border: 1px solid var(--login-card-border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sm-sidebar {
+  width: 180px;
+  flex-shrink: 0;
+  background: var(--dash-sidebar-bg);
+  border-right: 1px solid var(--dash-divider);
+  display: flex;
+  flex-direction: column;
+  padding: 18px 10px;
+  gap: 2px;
+}
+
+.sm-sidebar-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--dash-text-xfaint);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 4px 10px 12px;
+}
+
+.sm-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  font-size: 13px;
+  color: var(--dash-sb-item);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+}
+
+.sm-nav-btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.sm-nav-btn:hover {
+  background: var(--dash-surface);
+  color: var(--dash-text-soft);
+}
+
+.sm-nav-btn.active {
+  background: var(--dash-accent-bg);
+  color: var(--dash-accent);
+}
+
+.sm-nav-btn.active svg {
+  opacity: 1;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.sm-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.sm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--dash-divider);
+  flex-shrink: 0;
+}
+
+.sm-header-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dash-text);
+  margin-bottom: 2px;
+}
+
+.sm-header-sub {
+  font-size: 12px;
+  color: var(--dash-text-muted);
+}
+
+.sm-close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--dash-card-border);
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dash-text-muted);
+  transition: background 0.15s;
+}
+
+.sm-close-btn:hover {
+  background: var(--dash-surface);
+  color: var(--dash-text);
+}
+
+/* =========================
+   BODY
+========================= */
+
+.sm-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+.sm-section {
+  margin-bottom: 24px;
+}
+
+.sm-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--dash-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 4px;
+}
+
+.sm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--dash-divider-row);
+  gap: 16px;
+}
+
+.sm-row:last-child {
+  border-bottom: none;
+}
+
+.sm-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sm-row-label {
+  font-size: 13px;
+  color: var(--dash-text-strong);
+}
+
+.sm-row-desc {
+  font-size: 11px;
+  color: var(--dash-text-muted);
+}
+
+.sm-row-control {
+  flex-shrink: 0;
+}
+
+/* =========================
+   TOGGLE
+========================= */
+
+.sm-toggle {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  display: inline-block;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.sm-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.sm-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: var(--dash-card-border);
+  transition: background 0.2s;
+}
+
+.sm-toggle input:checked ~ .sm-track {
+  background: var(--dash-accent-strong, #7c3aed);
+}
+
+.sm-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+  pointer-events: none;
+}
+
+.sm-toggle input:checked ~ .sm-thumb {
+  transform: translateX(16px);
+}
+
+/* =========================
+   PILLS
+========================= */
+
+.sm-pills {
+  display: flex;
+  gap: 5px;
+}
+
+.sm-pill {
+  padding: 5px 11px;
+  border-radius: 7px;
+  border: 1px solid var(--dash-card-border);
+  background: none;
+  font-size: 12px;
+  color: var(--dash-text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.sm-pill:hover {
+  border-color: var(--dash-accent);
+  color: var(--dash-accent);
+}
+
+.sm-pill.active {
+  border-color: var(--dash-accent);
+  background: var(--dash-accent-bg);
+  color: var(--dash-accent);
+}
+
+/* =========================
+   INPUTS & SELECT
+========================= */
+
+.sm-select {
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--dash-card-border);
+  background: var(--dash-surface);
+  color: var(--dash-text-strong);
+  cursor: pointer;
+  outline: none;
+}
+
+.sm-input {
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--dash-card-border);
+  background: var(--dash-surface);
+  color: var(--dash-text-strong);
+  width: 180px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.sm-input:focus {
+  border-color: var(--dash-accent);
+}
+
+/* =========================
+   AVATAR
+========================= */
+
+.sm-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--dash-divider-row);
+  margin-bottom: 4px;
+}
+
+.sm-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--dash-sb-avatar-bg);
+  border: 2px solid var(--dash-sb-avatar-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dash-sb-avatar-color);
+  flex-shrink: 0;
+}
+
+.sm-avatar-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sm-avatar-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dash-text-strong);
+}
+
+.sm-avatar-email {
+  font-size: 11px;
+  color: var(--dash-text-muted);
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.sm-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: var(--dash-badge-bg);
+  color: var(--dash-badge-color);
+  font-weight: 600;
+}
+
+.sm-badge--green {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--dash-trend-up-color);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.sm-ghost-btn {
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 7px;
+  border: 1px solid var(--dash-card-border);
+  background: none;
+  color: var(--dash-text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.sm-ghost-btn:hover {
+  background: var(--dash-surface);
+  color: var(--dash-text-strong);
+}
+
+/* =========================
+   DANGER ZONE
+========================= */
+
+.sm-danger-zone {
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: rgba(239, 68, 68, 0.03);
+}
+
+.sm-danger-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.sm-danger-label {
+  font-size: 13px;
+  color: var(--dash-text-strong);
+  margin-bottom: 2px;
+}
+
+.sm-danger-desc {
+  font-size: 11px;
+  color: var(--dash-text-muted);
+}
+
+.sm-danger-btn {
+  padding: 6px 14px;
+  border-radius: 7px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: none;
+  font-size: 12px;
+  color: #f87171;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.sm-danger-btn:hover {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.sm-footer {
+  padding: 14px 24px;
+  border-top: 1px solid var(--dash-divider);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.sm-btn-cancel {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--dash-card-border);
+  background: none;
+  font-size: 13px;
+  color: var(--dash-text-muted);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sm-btn-cancel:hover {
+  background: var(--dash-surface);
+}
+
+.sm-btn-save {
+  padding: 7px 18px;
+  border-radius: 8px;
+  border: none;
+  background: var(--dash-accent-strong, #7c3aed);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.sm-btn-save:hover {
+  filter: brightness(1.1);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+  .sm-modal {
+    flex-direction: column;
+    height: 90vh;
+  }
+
+  .sm-sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 10px;
+    gap: 4px;
+    border-right: none;
+    border-bottom: 1px solid var(--dash-divider);
+  }
+
+  .sm-sidebar-title {
+    display: none;
+  }
+
+  .sm-nav-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .sm-nav-btn svg {
+    display: none;
+  }
+}

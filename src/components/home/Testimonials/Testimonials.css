@@ -1,0 +1,356 @@
+/* =========================
+   VARIABLES (DEFAULT = 🌙 OSCURO)
+========================= */
+
+:root {
+  --t-bg: #0a0c18;
+  --t-text: #f8fafc;
+  --t-text-soft: #64748b;
+  --t-text-strong: #f1f5f9;
+
+  --t-accent: #a78bfa;
+  --t-accent-soft: #c4b5fd;
+
+  --t-badge-bg: rgba(139,92,246,0.12);
+  --t-badge-border: rgba(139,92,246,0.28);
+
+  --t-card-bg: rgba(22, 24, 38, 0.75);
+  --t-card-border: rgba(255,255,255,0.06);
+  --t-card-hover: rgba(139,92,246,0.3);
+  --t-card-featured-bg: rgba(109,40,217,0.1);
+  --t-card-featured-border: rgba(139,92,246,0.28);
+
+  --t-divider: rgba(255,255,255,0.06);
+  --t-border-soft: rgba(255,255,255,0.05);
+
+  --t-grid-dot: rgba(255,255,255,0.04);
+}
+
+/* =========================
+   🌞 MODO CLARO
+========================= */
+
+[data-theme="light"] {
+  --t-bg: #ffffff;
+  --t-text: #0f172a;
+  --t-text-soft: #64748b;
+  --t-text-strong: #0f172a;
+
+  --t-accent: #7c3aed;
+  --t-accent-soft: #a78bfa;
+
+  --t-badge-bg: rgba(124,58,237,0.12);
+  --t-badge-border: rgba(124,58,237,0.25);
+
+  --t-card-bg: rgba(255,255,255,0.8);
+  --t-card-border: rgba(0,0,0,0.06);
+  --t-card-hover: rgba(124,58,237,0.3);
+  --t-card-featured-bg: rgba(124,58,237,0.08);
+  --t-card-featured-border: rgba(124,58,237,0.25);
+
+  --t-divider: rgba(0,0,0,0.06);
+  --t-border-soft: rgba(0,0,0,0.05);
+
+  --t-grid-dot: rgba(0,0,0,0.04);
+}
+
+
+/* =========================
+   BASE
+========================= */
+
+.testimonials {
+  padding: 80px 48px;
+  background: var(--t-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.t-bg {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--t-grid-dot) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.t-blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.t-blob--1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%);
+  top: -150px;
+  left: -100px;
+}
+
+.t-blob--2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+  bottom: -100px;
+  right: -80px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.t-header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.t-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--t-badge-bg);
+  border: 1px solid var(--t-badge-border);
+  border-radius: 99px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: var(--t-accent-soft);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+
+.t-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--t-accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.t-header h2 {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--t-text);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+
+.t-header h2 span {
+  color: var(--t-accent);
+}
+
+.t-header p {
+  font-size: 16px;
+  color: var(--t-text-soft);
+  max-width: 460px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.t-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1060px;
+  margin: 0 auto 48px;
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
+.t-card {
+  background: var(--t-card-bg);
+  border: 1px solid var(--t-card-border);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.t-card:hover {
+  border-color: var(--t-card-hover);
+  transform: translateY(-3px);
+}
+
+.t-card--featured {
+  background: var(--t-card-featured-bg);
+  border-color: var(--t-card-featured-border);
+}
+
+
+/* =========================
+   STARS
+========================= */
+
+.t-stars {
+  display: flex;
+  gap: 3px;
+}
+
+.t-star {
+  width: 14px;
+  height: 14px;
+  fill: var(--t-accent);
+}
+
+
+/* =========================
+   QUOTE
+========================= */
+
+.t-quote {
+  font-size: 13.5px;
+  color: var(--t-text-soft);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.t-quote strong {
+  color: var(--t-text-strong);
+  font-weight: 500;
+}
+
+.t-divider {
+  height: 1px;
+  background: var(--t-divider);
+}
+
+
+/* =========================
+   AUTHOR
+========================= */
+
+.t-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.t-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.av-purple { background: rgba(139,92,246,0.2); color: #a78bfa; }
+.av-blue   { background: rgba(96,165,250,0.2);  color: #60a5fa; }
+.av-green  { background: rgba(52,211,153,0.2);  color: #34d399; }
+.av-amber  { background: rgba(251,191,36,0.2);  color: #fbbf24; }
+.av-pink   { background: rgba(244,114,182,0.2); color: #f472b6; }
+.av-teal   { background: rgba(45,212,191,0.2);  color: #2dd4bf; }
+
+.t-author-info p {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--t-text-strong);
+  margin-bottom: 2px;
+}
+
+.t-author-info span {
+  font-size: 11px;
+  color: var(--t-text-soft);
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+.t-stats {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--t-border-soft);
+}
+
+.t-stat {
+  text-align: center;
+}
+
+.t-stat__num {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--t-text-strong);
+  line-height: 1;
+}
+
+.t-stat__label {
+  font-size: 12px;
+  color: var(--t-text-soft);
+  margin-top: 4px;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .t-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .t-header h2 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 580px) {
+  .testimonials {
+    padding: 60px 20px;
+  }
+
+  .t-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .t-header h2 {
+    font-size: 26px;
+  }
+
+  .t-stats {
+    gap: 28px;
+  }
+}

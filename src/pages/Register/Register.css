@@ -1,0 +1,420 @@
+/* =========================
+   VARIABLES (DEFAULT = 🌙 OSCURO)
+========================= */
+
+:root {
+  --reg-bg: #0a0c18;
+
+  --reg-card-bg: rgba(18, 20, 32, 0.9);
+  --reg-card-border: rgba(255, 255, 255, 0.07);
+
+  --reg-text: #f8fafc;
+  --reg-text-soft: #64748b;
+  --reg-text-muted: #475569;
+  --reg-text-strong: #f1f5f9;
+
+  --reg-accent: #a78bfa;
+  --reg-accent-strong: #7c3aed;
+
+  --reg-input-bg: rgba(255, 255, 255, 0.04);
+  --reg-input-border: rgba(255, 255, 255, 0.08);
+  --reg-input-focus: rgba(139, 92, 246, 0.5);
+
+  --reg-divider: rgba(255, 255, 255, 0.06);
+  --reg-grid-dot: rgba(255, 255, 255, 0.04);
+}
+
+/* =========================
+   🌞 MODO CLARO
+========================= */
+
+[data-theme="light"] {
+  --reg-bg: #ffffff;
+
+  --reg-card-bg: rgba(255, 255, 255, 0.9);
+  --reg-card-border: rgba(0, 0, 0, 0.08);
+
+  --reg-text: #0f172a;
+  --reg-text-soft: #64748b;
+  --reg-text-muted: #475569;
+  --reg-text-strong: #0f172a;
+
+  --reg-accent: #7c3aed;
+  --reg-accent-strong: #6d28d9;
+
+  --reg-input-bg: rgba(0, 0, 0, 0.03);
+  --reg-input-border: rgba(0, 0, 0, 0.08);
+  --reg-input-focus: rgba(124, 58, 237, 0.5);
+
+  --reg-divider: rgba(0, 0, 0, 0.06);
+  --reg-grid-dot: rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.register-page {
+  min-height: 100vh;
+  background: var(--reg-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: var(--reg-card-bg);
+  border: 1px solid var(--reg-card-border);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  transform: scale(1.05);
+}
+
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.reg-bg {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--reg-grid-dot) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.reg-blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.reg-blob--1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
+  top: -200px;
+  left: -200px;
+}
+
+.reg-blob--2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+  bottom: -150px;
+  right: -150px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.register-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 460px;
+  background: var(--reg-card-bg);
+  border: 1px solid var(--reg-card-border);
+  border-radius: 24px;
+  padding: 40px;
+  backdrop-filter: blur(12px);
+}
+
+.reg-logo {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  background: linear-gradient(90deg, #a855f7, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 28px;
+}
+
+.reg-header {
+  margin-bottom: 28px;
+}
+
+.reg-header h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--reg-text);
+  margin-bottom: 6px;
+}
+
+.reg-header p {
+  font-size: 14px;
+  color: var(--reg-text-soft);
+}
+
+.reg-header p a {
+  color: var(--reg-accent);
+  text-decoration: none;
+}
+
+.reg-header p a:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================
+   ALERT
+========================= */
+
+.reg-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+.reg-alert--error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.reg-alert--success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+
+/* =========================
+   LAYOUT
+========================= */
+
+.reg-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.reg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.reg-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--reg-text-soft);
+}
+
+
+/* =========================
+   INPUTS
+========================= */
+
+.reg-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.reg-input,
+.reg-select {
+  width: 100%;
+  background: var(--reg-input-bg);
+  border: 1px solid var(--reg-input-border);
+  border-radius: 10px;
+  padding: 11px 14px 11px 40px;
+  font-size: 14px;
+  color: var(--reg-text-strong);
+  outline: none;
+}
+
+.reg-input::placeholder {
+  color: var(--reg-text-muted);
+}
+
+.reg-input:focus,
+.reg-select:focus {
+  border-color: var(--reg-input-focus);
+  background: rgba(139, 92, 246, 0.05);
+}
+
+.reg-input.error,
+.reg-select.error {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.reg-select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.reg-select option {
+  background: var(--reg-card-bg);
+  color: var(--reg-text);
+}
+
+.reg-input-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--reg-text-muted);
+}
+
+.reg-input-wrap:focus-within .reg-input-icon {
+  color: var(--reg-accent);
+}
+
+.reg-eye {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--reg-text-muted);
+}
+
+.reg-eye:hover {
+  color: var(--reg-accent);
+}
+
+.reg-error {
+  font-size: 11px;
+  color: #f87171;
+}
+
+
+/* =========================
+   DIVIDER
+========================= */
+
+.reg-divider {
+  height: 1px;
+  background: var(--reg-divider);
+  margin: 4px 0 20px;
+}
+
+
+/* =========================
+   STRENGTH
+========================= */
+
+.reg-strength-bar {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.reg-strength-seg {
+  height: 3px;
+  flex: 1;
+  border-radius: 2px;
+  background: var(--reg-input-border);
+}
+
+.reg-strength-seg.weak {
+  background: #ef4444;
+}
+
+.reg-strength-seg.fair {
+  background: #f59e0b;
+}
+
+.reg-strength-seg.good {
+  background: #10b981;
+}
+
+.reg-strength-seg.strong {
+  background: var(--reg-accent);
+}
+
+.reg-strength-label {
+  font-size: 11px;
+  color: var(--reg-text-soft);
+}
+
+
+/* =========================
+   SUBMIT
+========================= */
+
+.reg-submit {
+  width: 100%;
+  background: var(--reg-accent-strong);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.reg-submit:hover:not(:disabled) {
+  filter: brightness(0.9);
+  transform: translateY(-1px);
+}
+
+.reg-submit:disabled {
+  opacity: 0.6;
+}
+
+
+/* =========================
+   TERMS
+========================= */
+
+.reg-terms {
+  font-size: 11px;
+  color: var(--reg-text-muted);
+  text-align: center;
+  margin-top: 14px;
+}
+
+.reg-terms a {
+  color: var(--reg-accent);
+  text-decoration: none;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 480px) {
+  .register-card {
+    padding: 28px 22px;
+  }
+
+  .reg-row {
+    grid-template-columns: 1fr;
+  }
+
+  .back-button {
+    top: 12px;
+    left: 12px;
+    width: 38px;
+    height: 38px;
+    position: fixed;
+    z-index: 9999;
+  }
+}
