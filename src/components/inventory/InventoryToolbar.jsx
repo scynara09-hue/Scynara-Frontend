@@ -1,8 +1,3 @@
-const CATEGORIES = [
-  "Todas", "Comestibles", "Perecederos", "Bebidas",
-  "Limpieza", "Higiene personal", "Botanas", "Mascotas",
-];
-
 const IconSearch = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="1.8" strokeLinecap="round" width="15" height="15">
@@ -11,7 +6,18 @@ const IconSearch = () => (
   </svg>
 );
 
-export default function InventoryToolbar({ search, onSearch, activeCategory, onCategory }) {
+export default function InventoryToolbar({ search, onSearch, activeCategory, onCategory, categorias = [] }) {
+  
+
+  // Aseguramos que siempre sea un arreglo (por si llega undefined o null)
+  const listaSegura = Array.isArray(categorias) ? categorias : [];
+
+  // Filtramos datos corruptos y extraemos el string
+  const categoryNames = [
+    "Todas", 
+    ...listaSegura.filter(c => c && c.categoria).map(c => c.categoria)
+  ];
+
   return (
     <div className="inv-toolbar">
       <div className="inv-search">
@@ -23,8 +29,9 @@ export default function InventoryToolbar({ search, onSearch, activeCategory, onC
           onChange={(e) => onSearch(e.target.value)}
         />
       </div>
+      
       <div className="cat-chips">
-        {CATEGORIES.map((cat) => (
+        {categoryNames.map((cat) => (
           <button
             key={cat}
             className={`cat-chip ${activeCategory === cat ? "active" : ""}`}

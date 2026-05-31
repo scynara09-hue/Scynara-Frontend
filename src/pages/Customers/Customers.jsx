@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
 import ClientsTopbar from "../../components/customers/ClientsTopbar";
 import ClientsStats from "../../components/customers/ClientsStats";
@@ -7,172 +7,30 @@ import ClientsGrid from "../../components/customers/ClientsGrid";
 import ClientDetailPanel from "../../components/customers/ClientDetailPanel";
 import ClientModal from "../../components/customers/ClientModal";
 import Toast from "../../components/inventory/Toast";
+
+// ─── Importamos el Hook del Contexto ───
+import { useCustomers } from "../../context/CustomersContext"; 
+
 import "./Customers.css";
 
-// Datos de ejemplo — reemplaza con tu API
-const INITIAL_CLIENTS = [
-  {
-    id_C: 1,
-    nombre: "María",
-    apellidos: "Ramírez López",
-    correo: "maria@ejemplo.com",
-    telefono: "55 1234 5678",
-    RFC: "RAMM850101ABC",
-    direccion: "Calle Roble 45, Col. Jardines, CDMX",
-    compras: [
-      {
-        id_venta: "V-001",
-        fecha: "2026-04-20",
-        total: 342,
-        estado: "completada",
-        productos: "Leche, Coca-Cola, Doritos",
-      },
-      {
-        id_venta: "V-004",
-        fecha: "2026-03-15",
-        total: 210,
-        estado: "completada",
-        productos: "Arroz, Frijol",
-      },
-      {
-        id_venta: "V-010",
-        fecha: "2026-02-28",
-        total: 95,
-        estado: "cancelada",
-        productos: "Agua, Doritos",
-      },
-    ],
-  },
-  {
-    id_C: 2,
-    nombre: "Jorge",
-    apellidos: "López Martínez",
-    correo: "jorge@gmail.com",
-    telefono: "55 8765 4321",
-    RFC: "",
-    direccion: "Av. Principal 12, Col. Centro, Monterrey",
-    compras: [
-      {
-        id_venta: "V-002",
-        fecha: "2026-04-20",
-        total: 89,
-        estado: "completada",
-        productos: "Arroz, Detergente",
-      },
-      {
-        id_venta: "V-007",
-        fecha: "2026-03-01",
-        total: 450,
-        estado: "completada",
-        productos: "Refresco, Botanas",
-      },
-    ],
-  },
-  {
-    id_C: 3,
-    nombre: "Ana",
-    apellidos: "Gutiérrez Pérez",
-    correo: "ana@hotmail.com",
-    telefono: "33 9876 5432",
-    RFC: "GUPA920310XYZ",
-    direccion: "Calle Pino 88, Col. Bosques, Guadalajara",
-    compras: [
-      {
-        id_venta: "V-004",
-        fecha: "2026-04-20",
-        total: 670,
-        estado: "completada",
-        productos: "Pedigree, Shampoo",
-      },
-      {
-        id_venta: "V-011",
-        fecha: "2026-04-01",
-        total: 130,
-        estado: "completada",
-        productos: "Leche, Pan",
-      },
-    ],
-  },
-  {
-    id_C: 4,
-    nombre: "Roberto",
-    apellidos: "Mendoza Soto",
-    correo: "roberto@empresa.com",
-    telefono: "222 345 6789",
-    RFC: "MESR780820DEF",
-    direccion: "Blvd. Hermanos 34, Puebla",
-    compras: [
-      {
-        id_venta: "V-006",
-        fecha: "2026-04-19",
-        total: 55,
-        estado: "completada",
-        productos: "Detergente Ariel",
-      },
-    ],
-  },
-  {
-    id_C: 5,
-    nombre: "Laura",
-    apellidos: "Vázquez Ríos",
-    correo: "laura@gmail.com",
-    telefono: "477 234 5678",
-    RFC: "",
-    direccion: "Col. La Paloma, León",
-    compras: [
-      {
-        id_venta: "V-008",
-        fecha: "2026-04-18",
-        total: 320,
-        estado: "completada",
-        productos: "Varios",
-      },
-      {
-        id_venta: "V-012",
-        fecha: "2026-03-05",
-        total: 180,
-        estado: "completada",
-        productos: "Bebidas y snacks",
-      },
-    ],
-  },
-  {
-    id_C: 6,
-    nombre: "Carlos",
-    apellidos: "Flores Herrera",
-    correo: "carlos@correo.com",
-    telefono: "442 567 8901",
-    RFC: "FLHC890415GHI",
-    direccion: "Fracc. El Roble, Querétaro",
-    compras: [
-      {
-        id_venta: "V-009",
-        fecha: "2026-04-17",
-        total: 420,
-        estado: "completada",
-        productos: "Alimento mascota",
-      },
-      {
-        id_venta: "V-013",
-        fecha: "2026-02-14",
-        total: 95,
-        estado: "cancelada",
-        productos: "Botanas",
-      },
-    ],
-  },
-];
-
-let counter = 7;
-
+// ─── Función auxiliar segura ───
 function totalCompras(client) {
-  return client.compras
+  const compras = client.compras || [];
+  return compras
     .filter((c) => c.estado === "completada")
     .reduce((a, c) => a + c.total, 0);
 }
 
 export default function Customers() {
-  const [clients, setClients] = useState(INITIAL_CLIENTS);
+  // ─── Extraemos el estado y las funciones del Contexto ───
+  const { 
+    customers, 
+    getCustomers, 
+    createCustomer, 
+    updateCustomer, 
+    deleteCustomer 
+  } = useCustomers();
+  
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("nombre");
   const [selectedId, setSelectedId] = useState(null);
@@ -181,55 +39,94 @@ export default function Customers() {
   const [toast, setToast] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Filtrado + ordenado
+  // ─── CARGAR CLIENTES ───
+  useEffect(() => {
+    // getCustomers ya maneja el loading y los errores internamente en el contexto
+    getCustomers().catch(() => setToast("Error al cargar la lista de clientes"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ─── FILTRADO Y ORDENADO DINÁMICO ───
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    let list = clients.filter(
+    let list = customers.filter(
       (c) =>
         !q ||
-        `${c.nombre} ${c.apellidos}`.toLowerCase().includes(q) ||
-        c.correo.toLowerCase().includes(q) ||
-        (c.RFC || "").toLowerCase().includes(q),
+        `${c.nombre} ${c.apellidos || ''}`.toLowerCase().includes(q) ||
+        (c.correo || "").toLowerCase().includes(q) ||
+        (c.RFC || "").toLowerCase().includes(q)
     );
-    if (sort === "nombre")
+    
+    if (sort === "nombre") {
       list = [...list].sort((a, b) =>
-        `${a.nombre}${a.apellidos}`.localeCompare(`${b.nombre}${b.apellidos}`),
+        `${a.nombre}${a.apellidos || ''}`.localeCompare(`${b.nombre}${b.apellidos || ''}`)
       );
-    if (sort === "compras")
-      list = [...list].sort((a, b) => b.compras.length - a.compras.length);
-    if (sort === "total")
+    }
+    if (sort === "compras") {
+      list = [...list].sort((a, b) => (b.compras?.length || 0) - (a.compras?.length || 0));
+    }
+    if (sort === "total") {
       list = [...list].sort((a, b) => totalCompras(b) - totalCompras(a));
+    }
+    
     return list;
-  }, [clients, search, sort]);
+  }, [customers, search, sort]);
 
-  const selectedClient = clients.find((c) => c.id_C === selectedId) || null;
-  const selectedIndex = selectedClient ? clients.indexOf(selectedClient) : 0;
+  const selectedClient = customers.find((c) => c.id_cliente === selectedId) || null;
+  const selectedIndex = selectedClient ? customers.indexOf(selectedClient) : 0;
 
+  // ─── MANEJADORES DE EVENTOS (CRUD) ───
   const handleEdit = (id) => {
-    setEditing(clients.find((c) => c.id_C === id));
+    setEditing(customers.find((c) => c.id_cliente === id));
     setModalOpen(true);
   };
 
-  const handleSave = (data) => {
-    if (data.id_C) {
-      setClients((prev) =>
-        prev.map((c) => (c.id_C === data.id_C ? { ...c, ...data } : c)),
-      );
-      setToast("Cliente actualizado");
-      if (selectedId === data.id_C) setSelectedId(data.id_C);
-    } else {
-      const newClient = { ...data, id_C: counter++, compras: [] };
-      setClients((prev) => [...prev, newClient]);
-      setToast("Cliente agregado correctamente");
+  const handleSave = async (data) => {
+    try {
+      let res;
+      
+      if (data.id_cliente) {
+        res = await updateCustomer(data.id_cliente, data);
+      } else {
+        res = await createCustomer(data);
+      }
+
+      // Interceptor por si tu backend responde 200 con { errors: {...} } en lugar de 400
+      const possibleErrors = res?.errors || res?.data?.errors;
+      if (possibleErrors) {
+        const msg = res?.message || res?.data?.message || "Revisa los campos marcados en rojo";
+        setToast(msg);
+        return { success: false, errors: possibleErrors };
+      }
+
+      setToast(data.id_cliente ? "Cliente actualizado" : "Cliente agregado correctamente");
+      
+      // Refrescamos la lista global
+      getCustomers();
+      
+      if (data.id_cliente && selectedId === data.id_cliente) {
+        setSelectedId(data.id_cliente);
+      }
+      
+      return { success: true }; 
+
+    } catch (error) {
+      // El contexto lanza el error de Axios (ej. 400), lo atrapamos aquí
+      const backendErrors = error.response?.data?.errors || { general: "Error al guardar" };
+      setToast(error.response?.data?.message || "Revisa los campos marcados en rojo");
+      return { success: false, errors: backendErrors }; 
     }
-    setModalOpen(false);
-    setEditing(null);
   };
 
-  const handleDelete = (id) => {
-    setClients((prev) => prev.filter((c) => c.id_C !== id));
-    if (selectedId === id) setSelectedId(null);
-    setToast("Cliente eliminado");
+  const handleDelete = async (id) => {
+    try {
+      await deleteCustomer(id);
+      if (selectedId === id) setSelectedId(null);
+      setToast("Cliente eliminado exitosamente");
+      getCustomers();
+    } catch (error) {
+      setToast(error.response?.data?.message || "Error al eliminar el cliente");
+    }
   };
 
   return (
@@ -249,7 +146,7 @@ export default function Customers() {
                 setModalOpen(true);
               }}
             />
-            <ClientsStats clients={clients} />
+            <ClientsStats clients={customers} />
             <ClientsToolbar
               search={search}
               onSearch={(v) => setSearch(v)}

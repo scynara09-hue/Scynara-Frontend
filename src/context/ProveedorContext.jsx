@@ -5,6 +5,7 @@ import {
   createProveedorRequest,
   updateProveedorRequest,
   deleteProveedorRequest,
+  getCategoriasRequest, 
 } from "../services/proveedorService";
 
 const ProveedorContext = createContext();
@@ -17,7 +18,18 @@ export const useProveedores = () => {
 
 export function ProveedorProvider({ children }) {
   const [proveedores, setProveedores] = useState([]);
+  const [categorias, setCategorias] = useState([]); 
   const [errors, setErrors] = useState([]);
+
+  // ─── NUEVO: OBTENER CATEGORÍAS ───
+  const getCategorias = async () => {
+    try {
+      const res = await getCategoriasRequest();
+      setCategorias(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getProveedores = async () => {
     try {
@@ -28,12 +40,13 @@ export function ProveedorProvider({ children }) {
     }
   };
 
-  const createProveedor = async (proveedor) => {
+ const createProveedor = async (proveedor) => {
     try {
-      const res = await createProveedorRequest(proveedor);
-      setProveedores([...proveedores, res.data]);
+      await createProveedorRequest(proveedor);
+      await getProveedores(); 
     } catch (error) {
-      setErrors([error.response.data.message]);
+      setErrors([error.response?.data?.mensaje || "Error al crear proveedor"]);
+      throw error.response?.data || error; 
     }
   };
 
@@ -58,12 +71,12 @@ export function ProveedorProvider({ children }) {
   const updateProveedor = async (id, proveedor) => {
     try {
       await updateProveedorRequest(id, proveedor);
-      // Actualizamos el estado local después de una edición exitosa
       setProveedores(
         proveedores.map((p) => (p.id_proveedor === id ? { ...p, ...proveedor } : p))
       );
     } catch (error) {
-      setErrors([error.response.data.message]);
+      setErrors([error.response?.data?.mensaje || "Error al actualizar proveedor"]);
+      throw error.response?.data || error; 
     }
   };
 
@@ -71,7 +84,9 @@ export function ProveedorProvider({ children }) {
     <ProveedorContext.Provider
       value={{
         proveedores,
+        categorias, 
         getProveedores,
+        getCategorias, 
         createProveedor,
         deleteProveedor,
         getProveedor,

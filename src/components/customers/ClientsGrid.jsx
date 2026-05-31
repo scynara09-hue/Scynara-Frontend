@@ -22,10 +22,10 @@ export default function ClientsGrid({ clients, selectedId, onSelect, onEdit }) {
     <div className="clients-grid">
       {clients.map((client, i) => (
         <ClientCard
-          key={client.id_C}
+          key={client.id_cliente} // 🔴 Cambiado a id_cliente
           client={client}
           index={i}
-          selected={client.id_C === selectedId}
+          selected={client.id_cliente === selectedId} // 🔴 Cambiado a id_cliente
           onSelect={onSelect}
           onEdit={onEdit}
         />

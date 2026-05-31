@@ -1,6 +1,5 @@
 import React from "react";
 
-/* ───────────── Iconos ───────────── */
 const IconDollar = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="1.8">
     <line x1="12" y1="1" x2="12" y2="23"/>
@@ -28,61 +27,71 @@ const IconAlert = () => (
   </svg>
 );
 
-/* ───────────── DATA ───────────── */
-const stats = [
-  {
-    label: "Ventas hoy",
-    value: "$18,420",
-    trend: "+12%",
-    up: true,
-    bgClass: "si-green",
-    icon: IconDollar,
-  },
-  {
-    label: "Productos en stock",
-    value: "243",
-    trend: "-3",
-    up: false,
-    bgClass: "si-purple",
-    icon: IconBox,
-  },
-  {
-    label: "Clientes registrados",
-    value: "87",
-    trend: "+5",
-    up: true,
-    bgClass: "si-blue",
-    icon: IconUsers,
-  },
-  {
-    label: "Por caducar",
-    value: "5",
-    trend: "5",
-    up: false,
-    bgClass: "si-amber",
-    icon: IconAlert,
-  },
-];
+export default function StatCards({ ventas = [], customers = [], products = [] }) {
+  
+  const today = new Date().toLocaleDateString('en-CA');
+  const ventasHoy = ventas.filter(v => {
+    const ventaDate = v.fecha_hora ? v.fecha_hora.slice(0, 10) : "";
+    return ventaDate === today && v.estado !== "CANCELADA";
+  });
+  
+  const totalVentas = ventasHoy.reduce((acc, v) => acc + Number(v.total), 0);
 
-/* ───────────── COMPONENTE ───────────── */
-export default function StatCards() {
+  const stockTotal = products.reduce((acc, p) => acc + Number(p.cantidad), 0);
+
+  const totalClientes = customers.length;
+
+  const hoy = new Date();
+  const limite = new Date();
+  limite.setDate(hoy.getDate() + 30); 
+
+  const porCaducar = products.filter(p => {
+    if (!p.fecha_caducidad) return false;
+    
+    const [year, month, day] = p.fecha_caducidad.split('T')[0].split('-');
+    const caducidad = new Date(year, month - 1, day);
+    
+    return caducidad >= hoy && caducidad <= limite;
+  }).length;
+
+  const stats = [
+    {
+      label: "Ventas de hoy",
+      value: `$${totalVentas.toLocaleString("es-MX", { minimumFractionDigits: 2 })}`,
+      bgClass: "si-green",
+      icon: IconDollar,
+    },
+    {
+      label: "Unidades en stock",
+      value: stockTotal.toLocaleString("es-MX"),
+      bgClass: "si-purple",
+      icon: IconBox,
+    },
+    {
+      label: "Clientes registrados",
+      value: totalClientes,
+      bgClass: "si-blue",
+      icon: IconUsers,
+    },
+    {
+      label: "Por caducar (30 días)",
+      value: porCaducar,
+      bgClass: "si-amber",
+      icon: IconAlert,
+    },
+  ];
+
   return (
     <div className="dash-stats">
       {stats.map((s, i) => {
         const Icon = s.icon;
-
         return (
           <div key={i} className="stat-card">
             <div className="stat-card-top">
               <div className={`stat-icon ${s.bgClass}`}>
                 <Icon />
               </div>
-
-              <span className={`stat-trend ${s.up ? "trend-up" : "trend-down"}`}>
-                {s.up ? "↑" : "↓"} {s.trend}
-              </span>
             </div>
-
             <div className="stat-num">{s.value}</div>
             <div className="stat-label">{s.label}</div>
           </div>

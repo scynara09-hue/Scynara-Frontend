@@ -1,56 +1,59 @@
-/* =========================
-   VARIABLES DE TEMA
-========================= */
-
-/* 🌞 MODO CLARO (default) */
 :root {
   --text-h: #1e293b;
   --border: #e5e7eb;
-
   --accent: #2563eb;
   --accent-bg: #eff6ff;
   --accent-border: #3b82f6;
-
   --social-bg: #f1f5f9;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f8fafc;
+  --color-background-tertiary: #f1f5f9;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #94a3b8;
+
+  --color-border-secondary: #e2e8f0;
+  --color-border-tertiary: #cbd5e1;
+  --color-border-info: #3b82f6;
+  
+  --color-background-info: #eff6ff;
+  --color-text-info: #2563eb;
+  --color-background-danger: #fef2f2;
+  --color-text-danger: #ef4444;
+  --color-background-success: #f0fdf4;
+  --color-text-success: #16a34a;
 }
 
-/* 🌙 MODO OSCURO */
 [data-theme="dark"] {
   --text-h: #f1f5f9;
   --border: #334155;
-
   --accent: #60a5fa;
   --accent-bg: #1e3a8a;
   --accent-border: #93c5fd;
-
   --social-bg: #1e293b;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
 
+  --color-background-primary: #0f172a;
+  --color-background-secondary: #1e293b;
+  --color-background-tertiary: #334155;
 
-/* =========================
-   COMPONENTES
-========================= */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-tertiary: #64748b;
 
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-}
+  --color-border-secondary: #475569;
+  --color-border-tertiary: #334155;
+  --color-border-info: #60a5fa;
 
-.counter:hover {
-  border-color: var(--accent-border);
-}
-
-.counter:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  --color-background-info: rgba(59, 130, 246, 0.15);
+  --color-text-info: #60a5fa;
+  --color-background-danger: rgba(239, 68, 68, 0.15);
+  --color-text-danger: #f87171;
+  --color-background-success: rgba(34, 197, 94, 0.15);
+  --color-text-success: #4ade80;
 }
 
 

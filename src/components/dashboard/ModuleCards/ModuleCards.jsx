@@ -50,57 +50,57 @@ const IconChart = () => (
 /* ───────────── MÓDULOS ───────────── */
 const MODULES = [
   {
-    label: "Nueva venta",
-    path: "/ventas/nueva",
-    desc: "Registra una transacción y actualiza el inventario automáticamente.",
+    label: "Ventas",
+    path: "/sales",
+    desc: "Registra una transacción y revisa el historial de tu sucursal.",
     tag: "Ventas",
     bgClass: "si-green",
-    roles: ["empleado", "admin"],
+    roles: ["EMPLEADO", "ADMINISTRADOR"], // 💡 Coincide con el ENUM de la BD
     icon: IconDollar
   },
   {
-    label: "Ver inventario",
-    path: "/inventario",
+    label: "Inventario",
+    path: "/inventory",
     desc: "Consulta stock actual, precios y productos próximos a caducar.",
     tag: "Inventario",
     bgClass: "si-purple",
-    roles: ["empleado", "admin"],
+    roles: ["EMPLEADO", "ADMINISTRADOR"],
     icon: IconHome
   },
   {
     label: "Clientes",
-    path: "/clientes",
+    path: "/customers",
     desc: "Busca clientes e historial de compras.",
     tag: "Clientes",
     bgClass: "si-blue",
-    roles: ["empleado", "admin"],
+    roles: ["EMPLEADO", "ADMINISTRADOR"],
     icon: IconUsers
   },
   {
     label: "Proveedores",
-    path: "/proveedores",
-    desc: "Consulta proveedores.",
+    path: "/suppliers",
+    desc: "Consulta y gestiona los proveedores de la sucursal.",
     tag: "Proveedores",
     bgClass: "si-amber",
-    roles: ["empleado", "admin"],
+    roles: ["EMPLEADO", "ADMINISTRADOR"],
     icon: IconTruck
   },
   {
     label: "Empleados",
-    path: "/empleados",
-    desc: "Gestión de empleados.",
+    path: "/employees",
+    desc: "Gestión de empleados y cuentas de acceso.",
     tag: "Solo admin",
     bgClass: "si-gray",
-    roles: ["admin"],
+    roles: ["ADMINISTRADOR"], // 💡 Bloqueado para empleados
     icon: IconUser
   },
   {
     label: "Reportes",
-    path: "/reportes",
-    desc: "Análisis de ventas.",
+    path: "/reports",
+    desc: "Análisis de ingresos y desempeño de la tienda.",
     tag: "Solo admin",
     bgClass: "si-gray",
-    roles: ["admin"],
+    roles: ["ADMINISTRADOR"], // 💡 Bloqueado para empleados
     icon: IconChart
   }
 ];
@@ -116,7 +116,9 @@ export default function ModuleCards() {
 
       <div className="dash-modules">
         {MODULES.map((mod) => {
-          const allowed = mod.roles.includes(user?.rol);
+          // 💡 Validamos convirtiendo a mayúsculas por si el token viene diferente
+          const userRole = user?.rol?.toUpperCase();
+          const allowed = mod.roles.includes(userRole);
           const Icon = mod.icon;
 
           return (
@@ -124,6 +126,7 @@ export default function ModuleCards() {
               key={mod.label}
               className={`mod-card ${!allowed ? "locked" : ""}`}
               onClick={() => allowed && navigate(mod.path)}
+              style={{ cursor: allowed ? "pointer" : "not-allowed" }}
             >
               <div className="mod-card-top">
                 <div
@@ -142,7 +145,9 @@ export default function ModuleCards() {
 
               <h3>{mod.label}</h3>
               <p>{mod.desc}</p>
-              <span className="mod-tag">{mod.tag}</span>
+              <span className="mod-tag" style={!allowed ? { backgroundColor: "#f1f5f9", color: "#94a3b8" } : {}}>
+                {mod.tag}
+              </span>
             </div>
           );
         })}

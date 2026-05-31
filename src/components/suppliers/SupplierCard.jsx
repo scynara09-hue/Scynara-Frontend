@@ -11,9 +11,13 @@ const COLORS = [
 function initials(nombre) {
   return nombre?.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase() || "?";
 }
-
 export default function SupplierCard({ supplier, selected, onSelect, onEdit }) {
-  const col = COLORS[supplier.id_S % COLORS.length];
+  // 1. Aseguramos que el ID sea un número válido (si no existe, usamos 0)
+  const safeId = Number(supplier.id_S) || 0;
+  
+  // 2. Calculamos el índice y siempre tenemos un color de respaldo
+  const col = COLORS[safeId % COLORS.length] || COLORS[0];
+  
   const estadoClass = supplier.estado === "activo" ? "activo" : supplier.estado === "pausado" ? "pausado" : "inactivo";
 
   return (
@@ -27,13 +31,12 @@ export default function SupplierCard({ supplier, selected, onSelect, onEdit }) {
         </div>
         <div className="sc-info">
           <p>{supplier.nombre}</p>
-          <span>{supplier.contacto}</span>
           <div>
-            <span className="sc-categoria">{supplier.categoria}</span>
+            <span className="sc-categoria">{supplier.nombre_categoria}</span>
           </div>
           <div>
             <span className={`sc-status ${estadoClass}`}>
-              {supplier.estado.charAt(0).toUpperCase() + supplier.estado.slice(1)}
+              {supplier.estado?.charAt(0).toUpperCase() + supplier.estado?.slice(1)}
             </span>
           </div>
         </div>
@@ -55,7 +58,7 @@ export default function SupplierCard({ supplier, selected, onSelect, onEdit }) {
 
       <div className="sc-footer">
         <div className="sc-productos">
-          <span>{supplier.productos?.length || 0}</span> productos
+          <span>{supplier.total_productos || 0}</span> productos
         </div>
         <button
           className="sc-edit-btn"

@@ -2,29 +2,54 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import LoginAlert from "../../components/login/LoginAlert";
+import PolicyModal from "../../components/shared/PolicyModal";
 // import RolSelector from "../../components/login/RolSelector";
 import "./Login.css";
 
 // ── Iconos ──────────────────────────────────────────
 const IconMail = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-    strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width="16"
+    height="16"
+  >
     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
     <polyline points="22,6 12,13 2,6" />
   </svg>
 );
 
 const IconLock = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-    strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width="16"
+    height="16"
+  >
     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
   </svg>
 );
 
 const IconEye = ({ open }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-    strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width="16"
+    height="16"
+  >
     {open ? (
       <>
         <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
@@ -41,8 +66,16 @@ const IconEye = ({ open }) => (
 );
 
 const IconBack = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width="18"
+    height="18"
+  >
     <path d="M15 18l-6-6 6-6" />
   </svg>
 );
@@ -52,8 +85,7 @@ function validate({ email, password }) {
   const formErrors = {};
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     formErrors.email = "Ingresa un correo válido";
-  if (!password)
-    formErrors.password = "Ingresa tu contraseña";
+  if (!password) formErrors.password = "Ingresa tu contraseña";
   return formErrors;
 }
 
@@ -68,6 +100,7 @@ export default function Login() {
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ type: "", message: "" });
+  const [isPolicyOpen, setIsPolicyOpen] = useState(false);
 
   const set = (field) => (e) =>
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -84,10 +117,13 @@ export default function Login() {
     const success = await login({ ...form, rol });
 
     if (success) {
-      setAlert({ type: "success", message: "¡Sesión iniciada correctamente! Redirigiendo..." });
+      setAlert({
+        type: "success",
+        message: "¡Sesión iniciada correctamente! Redirigiendo...",
+      });
       setTimeout(() => navigate("/dashboard"), 1500);
     } else {
-      setAlert({ type: "error", message: "Correo, contraseña o rol incorrectos." });
+      setAlert({ type: "error", message: "Correo o contraseña incorrectos." });
     }
 
     setLoading(false);
@@ -108,13 +144,14 @@ export default function Login() {
 
         <div className="login-header">
           <h2>Bienvenido de vuelta</h2>
-          <p>¿No tienes cuenta? <Link to="/register">Regístrate gratis</Link></p>
+          <p>
+            ¿No tienes cuenta? <Link to="/register">Regístrate gratis</Link>
+          </p>
         </div>
 
         <LoginAlert type={alert.type} message={alert.message} />
 
         <form onSubmit={handleSubmit} noValidate>
-
           {/*  <RolSelector value={rol} onChange={setRol} />
 
           {/* Email */}
@@ -122,14 +159,20 @@ export default function Login() {
             <label htmlFor="email">CORREO ELECTRÓNICO</label>
             <div className="reg-input-wrap">
               <input
-                id="email" type="email"
+                id="email"
+                type="email"
                 placeholder="juan@ejemplo.com"
-                value={form.email} onChange={set("email")}
+                value={form.email}
+                onChange={set("email")}
                 className={`reg-input ${formErrors.email ? "error" : ""}`}
               />
-              <span className="reg-input-icon"><IconMail /></span>
+              <span className="reg-input-icon">
+                <IconMail />
+              </span>
             </div>
-            {formErrors.email && <span className="reg-error">{formErrors.email}</span>}
+            {formErrors.email && (
+              <span className="reg-error">{formErrors.email}</span>
+            )}
           </div>
 
           {/* Password */}
@@ -137,17 +180,27 @@ export default function Login() {
             <label htmlFor="password">CONTRASEÑA</label>
             <div className="reg-input-wrap">
               <input
-                id="password" type={showPwd ? "text" : "password"}
+                id="password"
+                type={showPwd ? "text" : "password"}
                 placeholder="Tu contraseña"
-                value={form.password} onChange={set("password")}
+                value={form.password}
+                onChange={set("password")}
                 className={`reg-input ${formErrors.password ? "error" : ""}`}
               />
-              <span className="reg-input-icon"><IconLock /></span>
-              <button type="button" className="reg-eye" onClick={() => setShowPwd(!showPwd)}>
+              <span className="reg-input-icon">
+                <IconLock />
+              </span>
+              <button
+                type="button"
+                className="reg-eye"
+                onClick={() => setShowPwd(!showPwd)}
+              >
                 <IconEye open={showPwd} />
               </button>
             </div>
-            {formErrors.password && <span className="reg-error">{formErrors.password}</span>}
+            {formErrors.password && (
+              <span className="reg-error">{formErrors.password}</span>
+            )}
           </div>
 
           <div className="login-forgot">
@@ -158,12 +211,20 @@ export default function Login() {
             {loading && <span className="reg-spinner" />}
             {loading ? "Ingresando..." : "Iniciar sesión"}
           </button>
-
         </form>
 
+        <PolicyModal
+          isOpen={isPolicyOpen}
+          onClose={() => setIsPolicyOpen(false)}
+        />
         <p className="reg-terms">
           Protegido con cifrado de extremo a extremo.{" "}
-          <a href="#">Política de privacidad</a>
+          <button
+            type="button" className="reg-link"
+            onClick={() => setIsPolicyOpen(true)}
+          >
+            Política de privacidad
+          </button>
         </p>
       </div>
     </div>

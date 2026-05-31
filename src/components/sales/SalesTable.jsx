@@ -8,10 +8,11 @@ export default function SalesTable({ sales, onView, onCancel }) {
           <tr>
             <th style={{ width: 80  }}>ID</th>
             <th>Cliente</th>
-            <th style={{ width: 120 }}>Fecha</th>
-            <th style={{ width: 100 }}>Empleado</th>
+            <th style={{ width: 110 }}>Fecha y Hora</th>
+            <th style={{ width: 100 }}>Vendedor</th>
+            <th style={{ width: 100 }}>Método</th>
             <th style={{ width: 100 }}>Total</th>
-            <th style={{ width: 120 }}>Estado</th>
+            <th style={{ width: 110 }}>Estado</th>
             <th style={{ width: 80  }}>Acciones</th>
           </tr>
         </thead>
@@ -28,7 +29,7 @@ export default function SalesTable({ sales, onView, onCancel }) {
             ))
           ) : (
             <tr>
-              <td colSpan={7} className="table-empty">
+              <td colSpan={8} className="table-empty">
                 No se encontraron ventas
               </td>
             </tr>

@@ -11,11 +11,18 @@ import Toast from "../../components/inventory/Toast";
 import "./Suppliers.css";
 
 export default function Suppliers() {
-  // 💡 Conectamos con el contexto real
-  const { proveedores, getProveedores, createProveedor, updateProveedor, deleteProveedor } = useProveedores();
+  const {
+    proveedores,
+    categorias,
+    getProveedores,
+    getCategorias,
+    createProveedor,
+    updateProveedor,
+    deleteProveedor
+  } = useProveedores();
 
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("nombre");
+  const [sort, setSort] = useState("nombre_az");
   const [filterCategoria, setFilterCategoria] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -23,25 +30,47 @@ export default function Suppliers() {
   const [toast, setToast] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Cargar datos al iniciar
   useEffect(() => {
     getProveedores();
+    getCategorias();
   }, []);
 
-  // Extraer categorías únicas (nota: ahora usamos la data de la BD)
-  const categorias = useMemo(() => {
-    return [...new Set(proveedores.map(s => s.categoria).filter(Boolean))].sort();
-  }, [proveedores]);
+  const categoriasNombres = useMemo(() => {
+    return categorias.map(c => c.categoria).sort();
+  }, [categorias]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    let list = proveedores.filter(s =>
-      (!q || s.nombre.toLowerCase().includes(q) ||
-        s.correo?.toLowerCase().includes(q)) &&
-      (!filterCategoria || s.categoria === filterCategoria)
-    );
 
-    if (sort === "nombre") list = [...list].sort((a, b) => a.nombre.localeCompare(b.nombre));
+    let list = proveedores.filter(s => {
+      const matchSearch = !q ||
+        s.nombre.toLowerCase().includes(q) ||
+        s.correo?.toLowerCase().includes(q) ||
+        s.telefono?.includes(q);
+
+      const matchCategoria = !filterCategoria || s.nombre_categoria === filterCategoria;
+
+      return matchSearch && matchCategoria;
+    });
+
+    list = [...list].sort((a, b) => {
+      if (sort === "nombre_az") {
+        return a.nombre.localeCompare(b.nombre);
+      }
+      if (sort === "nombre_za") {
+        return b.nombre.localeCompare(a.nombre);
+      }
+      if (sort === "categoria") {
+        const catA = a.nombre_categoria || "";
+        const catB = b.nombre_categoria || "";
+        return catA.localeCompare(catB);
+      }
+      if (sort === "recientes") {
+        return b.id_proveedor - a.id_proveedor;
+      }
+      return 0;
+    });
+
     return list;
   }, [proveedores, search, sort, filterCategoria]);
 
@@ -60,8 +89,6 @@ export default function Suppliers() {
       await createProveedor(data);
       setToast("Proveedor agregado correctamente");
     }
-    setModalOpen(false);
-    setEditing(null);
   };
 
   const handleDelete = async (id) => {
@@ -84,7 +111,7 @@ export default function Suppliers() {
               search={search} onSearch={setSearch}
               sort={sort} onSort={setSort}
               filterCategoria={filterCategoria} onFilterCategoria={setFilterCategoria}
-              categorias={categorias}
+              categorias={categoriasNombres}
               count={filtered.length}
             />
             <SuppliersGrid
@@ -106,6 +133,7 @@ export default function Suppliers() {
       <SupplierModal
         open={modalOpen}
         supplier={editing}
+        categorias={categorias}
         onClose={() => { setModalOpen(false); setEditing(null); }}
         onSave={handleSave}
       />

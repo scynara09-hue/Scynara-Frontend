@@ -29,24 +29,33 @@ const IconEdit = () => (
 );
 
 export default function ClientCard({ client, index, selected, onSelect, onEdit }) {
-  const av      = COLORS[index % COLORS.length];
-  const initials = (client.nombre[0] + (client.apellidos[0] || "")).toUpperCase();
-  const total   = client.compras
+  const av = COLORS[index % COLORS.length];
+  
+  // 💡 FIX: Extracción de iniciales segura separando el nombre completo
+  const nameParts = (client.nombre || "").trim().split(" ");
+  const initials = nameParts.length > 1 
+    ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
+    : (nameParts[0]?.[0] || "?").toUpperCase();
+
+  // 💡 FIX: Protección para compras por si el backend aún no las envía
+  const compras = client.compras || [];
+  const total = compras
     .filter(c => c.estado === "completada")
     .reduce((a, c) => a + c.total, 0);
 
   return (
     <div
       className={`client-card ${selected ? "selected" : ""}`}
-      onClick={() => onSelect(client.id_C)}
+      onClick={() => onSelect(client.id_cliente)} /* 💡 FIX: Usar id_cliente */
     >
       <div className="cc-top">
         <div className="cc-avatar" style={{ background: av.bg, color: av.color }}>
           {initials}
         </div>
         <div className="cc-info">
-          <p>{client.nombre} {client.apellidos}</p>
-          <span>{client.correo}</span>
+          {/* 💡 FIX: Solo imprimimos client.nombre porque ya trae todo */}
+          <p>{client.nombre}</p>
+          <span>{client.correo || client.email}</span>
           <div className={`cc-rfc ${client.RFC ? "has" : "no"}`}>
             {client.RFC ? "● Con RFC" : "○ Sin RFC"}
           </div>
@@ -68,11 +77,11 @@ export default function ClientCard({ client, index, selected, onSelect, onEdit }
 
       <div className="cc-footer">
         <div className="cc-compras">
-          <span>{client.compras.length}</span> compras · ${total.toFixed(2)}
+          <span>{compras.length}</span> compras · ${total.toFixed(2)}
         </div>
         <button
           className="cc-edit-btn"
-          onClick={e => { e.stopPropagation(); onEdit(client.id_C); }}
+          onClick={e => { e.stopPropagation(); onEdit(client.id_cliente); }} /* 💡 FIX: Usar id_cliente */
         >
           <IconEdit />
         </button>

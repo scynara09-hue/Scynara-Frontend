@@ -1,102 +1,150 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SaleCart from "./SaleCart";
-
-const CLIENTS = [
-  { id_C: 1, nombre: "María Ramírez"  },
-  { id_C: 2, nombre: "Jorge López"    },
-  { id_C: 3, nombre: "Ana Gutiérrez"  },
-  { id_C: 4, nombre: "Roberto Mendoza"},
-];
+import { useVentas } from "../../context/VentaContext";
+import { useCustomers } from "../../context/CustomersContext";
 
 const IconClose = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="2" strokeLinecap="round" width="14" height="14">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="14" height="14">
     <line x1="18" y1="6" x2="6" y2="18"/>
     <line x1="6"  y1="6" x2="18" y2="18"/>
   </svg>
 );
 
-export default function NewSaleModal({ open, products, onClose, onSave }) {
-  const [cart,     setCart]     = useState([]);
-  const [clienteId, setCliente] = useState("");
-  const [fecha,    setFecha]    = useState(new Date().toISOString().slice(0, 10));
+export default function NewSaleModal({ open, products, onClose, onSuccess }) {
+  const { carrito, procesarVenta, limpiarCarrito, errors, setErrors } = useVentas();
+  const { customers } = useCustomers(); 
+  
+  const [clienteId, setClienteId] = useState("");
+  const [metodoPago, setMetodoPago] = useState("EFECTIVO");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      limpiarCarrito();
+      setClienteId("");
+      setMetodoPago("EFECTIVO");
+      setIsSubmitting(false);
+      setErrors(null); // Aseguramos que no queden errores fantasmas al reabrir
+    }
+  }, [open]);
 
   if (!open) return null;
 
-  const handleAdd = ({ id, nombre, precio }) => {
-    setCart(prev => {
-      const ex = prev.find(c => c.id === id);
-      if (ex) return prev.map(c => c.id === id ? { ...c, qty: c.qty + 1 } : c);
-      return [...prev, { id, nombre, precio, qty: 1 }];
-    });
+  const handleSave = async () => {
+    // 1. Validaciones básicas del frontend
+    let valid = true;
+    const localErrors = {};
+
+    if (!clienteId) {
+      localErrors.id_cliente = "Selecciona un cliente para la venta";
+      valid = false;
+    }
+
+    if (carrito.length === 0) {
+      localErrors.general = "Agrega al menos un producto al carrito";
+      valid = false;
+    }
+
+    if (!valid) {
+      setErrors(localErrors);
+      return; // Detenemos la ejecución sin tocar el backend
+    }
+
+    // 2. Si todo está bien, mandamos la petición al backend (Zod hará la revisión final)
+    setIsSubmitting(true);
+    try {
+      const response = await procesarVenta(clienteId, metodoPago);
+      onSuccess(response.id_venta); 
+    } catch (error) {
+      // El error ya fue capturado y seteado en el contexto por procesarVenta()
+      setIsSubmitting(false);
+    }
   };
 
-  const handleChangeQty = (id, delta) => {
-    setCart(prev => {
-      const updated = prev.map(c => c.id === id ? { ...c, qty: c.qty + delta } : c);
-      return updated.filter(c => c.qty > 0);
-    });
+  const handleOverlay = (e) => { 
+    if (e.target === e.currentTarget && !isSubmitting) onClose(); 
   };
-
-  const handleRemove = (id) => setCart(prev => prev.filter(c => c.id !== id));
-
-  const handleSave = () => {
-    if (!cart.length) return;
-    const total   = cart.reduce((a, c) => a + c.precio * c.qty, 0);
-    const cliente = clienteId
-      ? CLIENTS.find(c => String(c.id_C) === clienteId)?.nombre || "Mostrador"
-      : "Mostrador";
-    onSave({ clienteId, cliente, fecha, total, productos: cart });
-    setCart([]);
-    setCliente("");
-    setFecha(new Date().toISOString().slice(0, 10));
-  };
-
-  const handleOverlay = (e) => { if (e.target === e.currentTarget) onClose(); };
 
   return (
     <div className="modal-overlay" onClick={handleOverlay}>
       <div className="modal">
         <div className="modal-header">
           <h2>Registrar nueva venta</h2>
-          <button className="modal-close" onClick={onClose}><IconClose /></button>
+          <button className="modal-close" onClick={onClose} disabled={isSubmitting}>
+            <IconClose />
+          </button>
         </div>
 
         <div className="modal-body">
+          {/* Mostramos errores generales que no pertenecen a un campo específico (ej. falta de stock general) */}
+          {errors?.general && (
+            <div style={{ color: "#ef4444", backgroundColor: "#fef2f2", padding: "10px", borderRadius: "5px", marginBottom: "15px", fontSize: "0.9rem", border: "1px solid #f87171" }}>
+              {errors.general}
+            </div>
+          )}
+
           <div className="m-row2">
             <div className="m-field">
-              <label>Cliente</label>
-              <select className="m-input" value={clienteId} onChange={e => setCliente(e.target.value)}>
-                <option value="">Sin cliente (mostrador)</option>
-                {CLIENTS.map(c => (
-                  <option key={c.id_C} value={c.id_C}>{c.nombre}</option>
+              <label>Cliente <span style={{color: "red"}}>*</span></label>
+              <select 
+                className={`m-input ${errors?.id_cliente ? 'input-error' : ''}`} 
+                style={errors?.id_cliente ? { borderColor: '#ef4444' } : {}}
+                value={clienteId} 
+                onChange={e => {
+                  setClienteId(e.target.value);
+                  // Limpiamos el error de este campo en cuanto el usuario selecciona algo
+                  if (errors?.id_cliente) setErrors(prev => ({...prev, id_cliente: null}));
+                }}
+              >
+                <option value="">Selecciona un cliente...</option>
+                {customers?.map(c => (
+                  <option key={c.id_cliente} value={c.id_cliente}>
+                    {c.nombre} {c.apellidos || ""}
+                  </option>
                 ))}
               </select>
+              {/* Mostramos el error de Zod o el local debajo del input */}
+              {errors?.id_cliente && <span style={{ color: "#ef4444", fontSize: "0.8rem", marginTop: "4px" }}>{errors.id_cliente}</span>}
             </div>
+
             <div className="m-field">
-              <label>Fecha</label>
-              <input className="m-input" type="date"
-                value={fecha} onChange={e => setFecha(e.target.value)} />
+              <label>Método de Pago <span style={{color: "red"}}>*</span></label>
+              <select 
+                className={`m-input ${errors?.metodo_pago ? 'input-error' : ''}`} 
+                style={errors?.metodo_pago ? { borderColor: '#ef4444' } : {}}
+                value={metodoPago} 
+                onChange={e => {
+                  setMetodoPago(e.target.value);
+                  // Limpiamos el error de este campo al cambiar
+                  if (errors?.metodo_pago) setErrors(prev => ({...prev, metodo_pago: null}));
+                }}
+              >
+                <option value="EFECTIVO">Efectivo</option>
+                <option value="TARJETA">Tarjeta</option>
+                <option value="TRANSFERENCIA">Transferencia</option>
+              </select>
+              {errors?.metodo_pago && <span style={{ color: "#ef4444", fontSize: "0.8rem", marginTop: "4px" }}>{errors.metodo_pago}</span>}
             </div>
           </div>
 
           <div className="m-divider" />
           <div className="m-section">Productos</div>
 
-          <SaleCart
-            items={cart}
-            products={products}
-            onAdd={handleAdd}
-            onChangeQty={handleChangeQty}
-            onRemove={handleRemove}
-          />
+          <SaleCart products={products} />
+
         </div>
 
         <div className="modal-footer">
-          <button className="m-btn-cancel" onClick={onClose}>Cancelar</button>
-          <button className="m-btn-save" onClick={handleSave}
-            disabled={!cart.length} style={{ opacity: cart.length ? 1 : 0.5 }}>
-            Registrar venta
+          <button className="m-btn-cancel" onClick={onClose} disabled={isSubmitting}>
+            Cancelar
+          </button>
+          <button 
+            className="m-btn-save" 
+            onClick={handleSave}
+            disabled={isSubmitting} 
+            style={{ opacity: isSubmitting ? 0.6 : 1 }}
+          >
+            {isSubmitting ? "Procesando..." : "Registrar venta"}
           </button>
         </div>
       </div>

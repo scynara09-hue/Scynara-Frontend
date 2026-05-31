@@ -1,13 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getToken, setToken, removeToken } from "../utils/token";
 import { jwtDecode } from "jwt-decode";
-// Importamos las nuevas funciones que definimos en el servicio
+// Importamos las funciones que definimos en el servicio
 import {
   loginRequest,
   getProfileRequest,
   getUsersRequest,
   updateUserRequest,
-  deleteUserRequest
+  deleteUserRequest,
+  createUserRequest,
 } from "../services/authService";
 
 const AuthContext = createContext();
@@ -50,7 +51,6 @@ export const AuthProvider = ({ children }) => {
         });
         setIsAuthenticated(true);
       } catch (error) {
-        console.error("Error validando el token de sesión", error);
         removeToken();
         setIsAuthenticated(false);
         setUser(null);
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
       return true;
     } catch (error) {
       setErrors([error.response?.data?.message || "Error en login"]);
-      return false;
+      throw error; // 🔴 Lanzamos el error hacia el componente (ej. Login.jsx)
     }
   };
 
@@ -92,6 +92,19 @@ export const AuthProvider = ({ children }) => {
 
   // ─── NUEVAS FUNCIONES DE RUTAS CRUD INTEGRADAS ───
 
+const createUser = async (data) => {
+    try {
+      setErrors([]);
+      const res = await createUserRequest(data);
+      return res.data;
+    } catch (error) {
+      setErrors([error.response?.data?.message || "Error al crear el usuario"]);
+      
+      // Lanzamos el error hacia arriba
+      throw error; 
+    }
+  };
+
   // Obtener la lista completa de empleados (Para la tabla del Administrador)
   const getUsers = async () => {
     try {
@@ -100,7 +113,7 @@ export const AuthProvider = ({ children }) => {
       return res.data; // Retorna el arreglo de usuarios que viene de la DB
     } catch (error) {
       setErrors([error.response?.data?.message || "Error al obtener los usuarios"]);
-      return null;
+      throw error; // 🔴 Lanzamos el error hacia Employees.jsx
     }
   };
 
@@ -110,8 +123,8 @@ export const AuthProvider = ({ children }) => {
       setErrors([]);
       const res = await updateUserRequest(id, data);
 
-      // Lógicareactiva: Si el usuario actualizado es el que está logueado actualmente,
-      // actualizamos el estado global al instante para reflejar los cambios en la Sidebar/Navbar
+      // Lógica reactiva: Si el usuario actualizado es el que está logueado actualmente,
+      // actualizamos el estado global al instante para reflejar los cambios.
       if (user && user.id_usuario === parseInt(id)) {
         setUser((prev) => ({
           ...prev,
@@ -125,7 +138,7 @@ export const AuthProvider = ({ children }) => {
       return true;
     } catch (error) {
       setErrors([error.response?.data?.message || "Error al actualizar el usuario"]);
-      return false;
+      throw error; // 🔴 Lanzamos el error hacia Employees.jsx / EmployeeModal.jsx
     }
   };
 
@@ -137,7 +150,7 @@ export const AuthProvider = ({ children }) => {
       return true;
     } catch (error) {
       setErrors([error.response?.data?.message || "Error al eliminar el usuario"]);
-      return false;
+      throw error; // 🔴 Lanzamos el error para que la UI sepa que falló
     }
   };
 
@@ -148,9 +161,10 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         login,
         logout,
-        getUsers,    // Exponemos los métodos para usarlos mediante destructuring
+        getUsers,   
         updateUser,
         deleteUser,
+        createUser,
         errors,
         loading
       }}

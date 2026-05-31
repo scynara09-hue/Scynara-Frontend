@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
-// 1. Importar el hook de nuestro contexto
 import { useProducts } from "../../context/ProductContext";
-
+import { useProveedores } from "../../context/ProveedorContext";
 import Sidebar from "../../components/sidebar/Sidebar";
 import InventoryTopbar from "../../components/inventory/InventoryTopbar";
 import InventoryStats from "../../components/inventory/InventoryStats";
@@ -12,7 +11,6 @@ import Toast from "../../components/inventory/Toast";
 import "./Inventory.css";
 
 export default function Inventory() {
-  // 2. Extraer el estado y funciones del contexto
   const {
     products,
     loading,
@@ -23,6 +21,13 @@ export default function Inventory() {
     deleteProduct
   } = useProducts();
 
+  const { 
+    proveedores, 
+    categorias, 
+    getProveedores, 
+    getCategorias 
+  } = useProveedores();
+
   const [search, setSearch] = useState("");
   const [activeCategory, setCategory] = useState("Todas");
   const [modalOpen, setModalOpen] = useState(false);
@@ -30,24 +35,22 @@ export default function Inventory() {
   const [toast, setToast] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // 3. Cargar productos desde la Base de Datos al entrar a la vista
   useEffect(() => {
     loadProducts();
-  }, [loadProducts]);
+    getProveedores(); 
+    getCategorias();
+  }, []); 
 
-  // Mostrar errores en el toast si ocurren en el contexto
   useEffect(() => {
     if (error) setToast(error);
   }, [error]);
 
-  // 4. Filtrado reactivo actualizado a las claves de la Base de Datos
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
     return products.filter((p) => {
-      // Usamos 'categoria_nombre' que nos devuelve el backend en el JOIN
       const matchCat = activeCategory === "Todas" || p.categoria_nombre === activeCategory;
       const matchQ = (p.nombre || "").toLowerCase().includes(q) ||
-        (p.proveedor_nombre || "").toLowerCase().includes(q); // Usamos 'proveedor_nombre'
+        (p.proveedor_nombre || "").toLowerCase().includes(q); 
       return matchCat && matchQ;
     });
   }, [products, search, activeCategory]);
@@ -56,7 +59,6 @@ export default function Inventory() {
 
   const handleEdit = (product) => { setEditing(product); setModalOpen(true); };
 
-  // 5. Manejadores CRUD usando las funciones del backend
   const handleDelete = async (id) => {
     try {
       await deleteProduct(id);
@@ -68,7 +70,6 @@ export default function Inventory() {
 
   const handleSave = async (data) => {
     try {
-      // En tu backend, la clave primaria es 'id_producto' (singular)
       if (data.id_producto) {
         await updateProduct(data.id_producto, data);
         setToast("Producto actualizado correctamente");
@@ -93,7 +94,6 @@ export default function Inventory() {
       <main className="inv-main">
         <InventoryTopbar onAdd={handleAdd} />
 
-        {/* Si está cargando, puedes mostrar un mensaje o un spinner simple */}
         {loading ? (
           <p style={{ textAlign: "center", padding: "2rem" }}>Cargando inventario...</p>
         ) : (
@@ -101,6 +101,7 @@ export default function Inventory() {
             <InventoryStats products={products} />
             <InventoryToolbar
               search={search} onSearch={setSearch}
+              categorias={categorias}
               activeCategory={activeCategory} onCategory={setCategory}
             />
             <ProductGrid
@@ -112,11 +113,12 @@ export default function Inventory() {
         )}
       </main>
 
-      {/* Usamos una 'key' para forzar que el modal se reinicie entre creaciones y ediciones */}
       <ProductModal
         key={editing ? editing.id_producto : 'new'}
         open={modalOpen}
         product={editing}
+        categorias={categorias}
+        proveedores={proveedores} 
         onClose={() => setModalOpen(false)}
         onSave={handleSave}
       />

@@ -77,6 +77,7 @@ const NAV_ITEMS = [
   {
     section: "Gestión",
     items: [
+      { label: "Clientes", path: "/customers", icon: IconTruck, roles: ["empleado", "administrador"] },
       { label: "Proveedores", path: "/suppliers", icon: IconTruck, roles: ["empleado", "administrador"] },
       // { label: "Reportes", path: "/reports", icon: IconChart, roles: ["administrador"] },
     ],

@@ -12,6 +12,43 @@
   overflow: hidden;
 }
 
+/* =========================================
+   ESTILOS DE ERROR PARA EL MODAL DE CLIENTES
+   ========================================= */
+
+/* El texto rojo que aparece debajo del input */
+.m-error-text {
+  color: #ef4444; /* Rojo de error estándar */
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+  font-weight: 500;
+  animation: slideDownFade 0.2s ease-out forwards;
+}
+
+/* El input cuando tiene error (borde rojo y fondo con transparencia) */
+.m-input.m-input-error {
+  border-color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.03);
+}
+
+/* El brillo rojo cuando haces clic/enfocas un input con error */
+.m-input.m-input-error:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Animación fluida para que el texto de error no aparezca de golpe */
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* ─── LEFT ─────────────────────────────────────────── */
 .clients-left {
   flex: 1;

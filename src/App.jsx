@@ -5,6 +5,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { ProductProvider } from "./context/ProductContext";
 import { ProveedorProvider } from "./context/ProveedorContext";
 import { VentaProvider } from "./context/VentaContext";
+import { CustomersProvider } from "./context/CustomersContext";
 
 
 function App() {
@@ -14,7 +15,9 @@ function App() {
         <ProductProvider>
           <ProveedorProvider>
             <VentaProvider>
-            <AppRouter />
+              <CustomersProvider>
+                <AppRouter />
+              </CustomersProvider>
             </VentaProvider>
           </ProveedorProvider>
         </ProductProvider>

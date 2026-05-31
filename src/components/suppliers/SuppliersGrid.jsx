@@ -18,8 +18,8 @@ export default function SuppliersGrid({ suppliers, selectedId, onSelect, onEdit 
           key={s.id_proveedor}
           supplier={s}
           selected={s.id_proveedor === selectedId}
-          onSelect={onSelect}
-          onEdit={onEdit}
+          onSelect={() => onSelect(s.id_proveedor)}
+          onEdit={() => onEdit(s.id_proveedor)}
         />
       ))}
     </div>

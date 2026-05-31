@@ -1,29 +1,43 @@
 export default function SalesStats({ sales }) {
-  const today = new Date().toISOString().slice(0, 10);
-  const todaySales = sales.filter(s => s.fecha === today && s.estado !== "cancelada");
-  const total      = todaySales.reduce((a, s) => a + s.total, 0);
-  const clients    = new Set(todaySales.map(s => s.id_cliente)).size;
-  const cancelled  = sales.filter(s => s.fecha === today && s.estado === "cancelada").length;
+  const today = new Date().toLocaleDateString('en-CA');
+  
+  const todaySales = sales.filter(s => {
+    const ventaDate = s.fecha_hora ? s.fecha_hora.slice(0, 10) : "";
+    return ventaDate === today && s.estado !== "CANCELADA";
+  });
+
+  const total = todaySales.reduce((a, s) => a + Number(s.total), 0);
+  
+  const clients = new Set(todaySales.map(s => s.cliente_nombre)).size;
+  
+  const cancelled = sales.filter(s => {
+    const ventaDate = s.fecha_hora ? s.fecha_hora.slice(0, 10) : "";
+    return ventaDate === today && s.estado === "CANCELADA";
+  }).length;
 
   const stats = [
     {
       num: `$${total.toLocaleString("es-MX", { minimumFractionDigits: 2 })}`,
-      label: "Total del día", trend: "+12%", trendUp: true,
+      label: "Total del día", 
+      trend: "+12%", trendUp: true,
       iconBg: "var(--color-background-success)",
       icon: <IconDollar color="var(--color-text-success)" />,
     },
     {
-      num: todaySales.length, label: "Ventas registradas",
+      num: todaySales.length, 
+      label: "Ventas registradas",
       iconBg: "var(--color-background-info)",
       icon: <IconActivity color="var(--color-text-info)" />,
     },
     {
-      num: clients, label: "Clientes atendidos",
+      num: clients, 
+      label: "Clientes atendidos",
       iconBg: "var(--color-background-warning)",
       icon: <IconUsers color="var(--color-text-warning)" />,
     },
     {
-      num: cancelled, label: "Canceladas",
+      num: cancelled, 
+      label: "Canceladas",
       iconBg: "var(--color-background-danger)",
       icon: <IconX color="var(--color-text-danger)" />,
     },

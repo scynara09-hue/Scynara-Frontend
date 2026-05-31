@@ -1,15 +1,31 @@
-const CAT_COLORS = {
-  Comestibles:        { bg: "rgba(139,92,246,0.15)", color: "#a78bfa" },
-  Perecederos:        { bg: "rgba(52,211,153,0.15)",  color: "#34d399" },
-  Bebidas:            { bg: "rgba(96,165,250,0.15)",  color: "#60a5fa" },
-  Limpieza:           { bg: "rgba(45,212,191,0.15)",  color: "#2dd4bf" },
-  "Higiene personal": { bg: "rgba(244,114,182,0.15)", color: "#f472b6" },
-  Botanas:            { bg: "rgba(251,191,36,0.15)",  color: "#fbbf24" },
-  Mascotas:           { bg: "rgba(168,85,247,0.15)",  color: "#c084fc" },
-};
+import { useState } from "react";
+import { Check, X } from "lucide-react";
+
+function getDynamicColor(name) {
+  if (!name) return { bg: "rgba(156,163,175,0.15)", color: "#9ca3af" };
+  
+  const colors = [
+    { bg: "rgba(139,92,246,0.15)", color: "#a78bfa" },
+    { bg: "rgba(52,211,153,0.15)", color: "#34d399" },
+    { bg: "rgba(96,165,250,0.15)", color: "#60a5fa" },
+    { bg: "rgba(45,212,191,0.15)", color: "#2dd4bf" },
+    { bg: "rgba(244,114,182,0.15)", color: "#f472b6" },
+    { bg: "rgba(251,191,36,0.15)", color: "#fbbf24" },
+    { bg: "rgba(168,85,247,0.15)", color: "#c084fc" },
+    { bg: "rgba(248,113,113,0.15)", color: "#f87171" },
+  ];
+
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  
+  const index = Math.abs(hash) % colors.length;
+  return colors[index];
+}
 
 function daysUntil(dateStr) {
-  if (!dateStr) return null; // Retorna null si no hay fecha de caducidad
+  if (!dateStr) return null;
   return Math.ceil((new Date(dateStr) - new Date()) / (1000 * 60 * 60 * 24));
 }
 
@@ -36,8 +52,16 @@ const IconDelete = () => (
   </svg>
 );
 
+const formatMXN = (value) => {
+  return new Intl.NumberFormat('es-MX', {
+    style: 'currency',
+    currency: 'MXN',
+  }).format(Number(value) || 0);
+};
+
 export default function ProductCard({ product, onEdit, onDelete }) {
-  // ACTUALIZADO: Leemos las propiedades exactas que manda el backend
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const { 
     id_producto, 
     nombre, 
@@ -49,17 +73,14 @@ export default function ProductCard({ product, onEdit, onDelete }) {
     fecha_caducidad 
   } = product;
 
-  // Si no encuentra el color, asigna un gris genérico
-  const cc = CAT_COLORS[categoria_nombre] || { bg: "rgba(156,163,175,0.15)", color: "#9ca3af" };
+  const cc = getDynamicColor(categoria_nombre);
   const level = getStockLevel(cantidad);
   const days = daysUntil(fecha_caducidad);
   
   const stockW = Math.min(100, Math.round((cantidad / 150) * 100));
   const barColor = level === "ok" ? "#34d399" : level === "low" ? "#f59e0b" : "#f87171";
-
   const stockClass = `prod-stock ${level === "ok" ? "stock-ok" : level === "low" ? "stock-low" : "stock-critical"}`;
   
-  // Lógica para renderizar la caducidad solo si existe
   let expClass = "prod-exp";
   let expTxt = "Sin caducidad";
   if (days !== null) {
@@ -75,13 +96,37 @@ export default function ProductCard({ product, onEdit, onDelete }) {
         <span className="prod-cat-badge" style={{ background: cc.bg, color: cc.color }}>
           {categoria_nombre || "Sin categoría"}
         </span>
-        <div className="prod-actions">
-          <button className="prod-action-btn btn-edit" onClick={() => onEdit(product)}>
-            <IconEdit />
-          </button>
-          <button className="prod-action-btn btn-del" onClick={() => onDelete(id_producto)}>
-            <IconDelete />
-          </button>
+        
+        <div className="prod-actions" style={{ opacity: showConfirm ? 1 : undefined }}>
+          {!showConfirm ? (
+            <>
+              <button className="prod-action-btn btn-edit" onClick={() => onEdit(product)}>
+                <IconEdit />
+              </button>
+              <button className="prod-action-btn btn-del" onClick={() => setShowConfirm(true)}>
+                <IconDelete />
+              </button>
+            </>
+          ) : (
+            <div style={{ display: "flex", alignItems: "center", gap: "4px", background: "rgba(248,113,113,0.1)", padding: "2px 4px", borderRadius: "8px" }}>
+              <button 
+                className="prod-action-btn btn-del" 
+                onClick={() => {
+                  onDelete(id_producto);
+                  setShowConfirm(false);
+                }}
+              >
+                <Check size={14} />
+              </button>
+              <button 
+                className="prod-action-btn" 
+                style={{ background: "var(--color-background-secondary)", color: "var(--color-text-secondary)" }}
+                onClick={() => setShowConfirm(false)}
+              >
+                <X size={14} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -91,9 +136,8 @@ export default function ProductCard({ product, onEdit, onDelete }) {
       </div>
 
       <div className="prod-prices">
-        {/* Usamos precio_unitario en lugar de precio y protegemos con Number() */}
-        <span className="prod-price-main">${Number(precio_unitario || 0).toFixed(2)}</span>
-        <span className="prod-price-box">· Caja ${Number(precio_caja || 0).toFixed(2)}</span>
+        <span className="prod-price-main">{formatMXN(precio_unitario)}</span>
+        <span className="prod-price-box">· Caja {formatMXN(precio_caja)}</span>
       </div>
 
       <div className="stock-bar">
@@ -101,7 +145,6 @@ export default function ProductCard({ product, onEdit, onDelete }) {
       </div>
 
       <div className="prod-footer">
-        <span className={stockClass}>{stockIcon} {cantidad} uds</span>
         <span className={expClass}>{expTxt}</span>
       </div>
     </div>

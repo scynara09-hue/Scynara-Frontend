@@ -4,6 +4,7 @@
    🌙 TEMA OSCURO (DEFAULT)
    ========================= */
 :root {
+  /* -- TUS VARIABLES ORIGINALES -- */
   --bg: #0f172a;
   --bg-soft: #16171d;
   --card: #1e1f29;
@@ -34,12 +35,42 @@
 
   font: 16px/150% var(--sans);
   letter-spacing: 0.2px;
+
+  /* =======================================================
+     🔌 ALIAS PARA COMPONENTES (Modales, Inventario, etc.) 
+     ======================================================= */
+  
+  /* Fondos Sólidos */
+  --color-background-primary: var(--card);      /* Tarjetas y Modales */
+  --color-background-secondary: var(--bg-soft); /* Inputs y campos de texto */
+  --color-background-tertiary: var(--bg);       /* Fondo principal de la app */
+
+  /* Textos */
+  --color-text-primary: var(--text-h);
+  --color-text-secondary: var(--text);
+  --color-text-tertiary: #6b7280;               /* Gris sutil para placeholders */
+
+  /* Bordes */
+  --color-border-secondary: var(--hover);
+  --color-border-tertiary: var(--border);
+  --color-border-info: var(--accent);
+
+  /* Colores de Estado (Botones, alertas, badges) */
+  --color-background-info: var(--accent-bg);
+  --color-text-info: var(--accent);
+  
+  --color-background-danger: rgba(239, 68, 68, 0.15);
+  --color-text-danger: var(--error);
+  
+  --color-background-success: rgba(34, 197, 94, 0.15);
+  --color-text-success: var(--success);
 }
 
 /* =========================
    ☀️ TEMA CLARO
    ========================= */
 [data-theme="light"] {
+  /* -- TUS VARIABLES ORIGINALES -- */
   --bg: #f8fafc;
   --bg-soft: #ffffff;
   --card: #ffffff;
@@ -63,6 +94,35 @@
   --success: #16a34a;
   --error: #dc2626;
   --warning: #d97706;
+
+  /* =======================================================
+     🔌 ALIAS PARA COMPONENTES (Modales, Inventario, etc.) 
+     ======================================================= */
+  
+  /* Fondos Sólidos */
+  --color-background-primary: var(--card); 
+  --color-background-secondary: var(--hover);  /* Usamos hover (#f1f5f9) para que los inputs destaquen en fondo blanco */
+  --color-background-tertiary: var(--bg);
+
+  /* Textos */
+  --color-text-primary: var(--text-h);
+  --color-text-secondary: var(--text);
+  --color-text-tertiary: #94a3b8;
+
+  /* Bordes */
+  --color-border-secondary: #d1d5db;
+  --color-border-tertiary: var(--border);
+  --color-border-info: var(--accent);
+
+  /* Colores de Estado */
+  --color-background-info: var(--accent-bg);
+  --color-text-info: var(--accent);
+  
+  --color-background-danger: rgba(220, 38, 38, 0.1);
+  --color-text-danger: var(--error);
+  
+  --color-background-success: rgba(22, 163, 74, 0.1);
+  --color-text-success: var(--success);
 }
 
 /* =========================

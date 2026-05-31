@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-
 import { getProfileRequest } from "../../services/authService";
+
+import { useVentas } from "../../context/VentaContext";
+import { useCustomers } from "../../context/CustomersContext";
+import { useProducts } from "../../context/ProductContext";
 
 import Sidebar from "../../components/sidebar/Sidebar";
 import StatCards from "../../components/dashboard/StatCards/StatCards";
@@ -13,14 +16,6 @@ import SettingsModal from "../../components/dashboard/SettingsModal/SettingsModa
 import "./Dashboard.css";
 
 /* ───────────── ICONOS ───────────── */
-const IconBell = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-    strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
-    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-  </svg>
-);
-
 const IconMenu = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
     strokeLinecap="round" width="18" height="18">
@@ -47,17 +42,16 @@ function getGreeting() {
 }
 
 function formatDate() {
-  return new Date().toLocaleDateString("es-MX", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  return new Date().toLocaleDateString("es-MX", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
 }
 
-/* ───────────── COMPONENTE ───────────── */
+/* ───────────── COMPONENTE PRINCIPAL ───────────── */
 export default function Dashboard() {
   const { user } = useAuth();
+
+  const { ventas, getVentas } = useVentas();
+  const { customers, getCustomers } = useCustomers();
+  const { products, loadProducts } = useProducts();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
@@ -69,88 +63,49 @@ export default function Dashboard() {
         const res = await getProfileRequest();
         setProfileData(res.data);
       } catch (error) {
-        console.error("Error al cargar el perfil completo:", error);
+        console.error("Error al cargar el perfil:", error);
       }
     };
-
     fetchProfile();
+    getVentas();
+    getCustomers();
+    loadProducts();
   }, []);
 
   return (
     <div className="dash">
-
-      {/* Overlay móvil sidebar */}
-      {sidebarOpen && (
-        <div className="sb-overlay" onClick={() => setSidebarOpen(false)} />
-      )}
-
-      {/* Sidebar */}
-      <Sidebar
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+      {sidebarOpen && <div className="sb-overlay" onClick={() => setSidebarOpen(false)} />}
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <main className="dash-main">
-
-        {/* ───────────── TOPBAR ───────────── */}
         <div className="dash-topbar">
-
           <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-            <button
-              className="sb-menu-btn"
-              onClick={() => setSidebarOpen(true)}
-              aria-label="Abrir menú"
-            >
+            <button className="sb-menu-btn" onClick={() => setSidebarOpen(true)}>
               <IconMenu />
             </button>
-
             <div className="dash-greeting">
-              <h1>
-                {getGreeting()}, <span>{profileData?.nombre || user?.nombre || 'Usuario'}</span> 👋
-              </h1>
-
-              <p style={{ textTransform: "capitalize" }}>
-                {formatDate()}
-              </p>
+              <h1>{getGreeting()}, <span>{profileData?.nombre || user?.nombre || 'Usuario'}</span> 👋</h1>
+              <p style={{ textTransform: "capitalize" }}>{formatDate()}</p>
             </div>
           </div>
 
           <div className="dash-topbar-right">
-
-            {/* Notificaciones */}
-            <div className="dash-notif">
-              <IconBell />
-              <span className="notif-dot" />
-            </div>
-
-            {/* Botón configuración */}
-            <button
-              className="settings-btn"
-              onClick={() => setOpenSettings(true)}
-            >
+            <button className="settings-btn" onClick={() => setOpenSettings(true)}>
               <IconSettings />
             </button>
-
           </div>
         </div>
 
-        {/* ───────────── CONTENIDO ───────────── */}
-        <StatCards />
+        <StatCards ventas={ventas} customers={customers} products={products} />
         <ModuleCards />
 
         <div className="dash-bottom">
-          <RecentSales />
-          <AlertsPanel />
+          <RecentSales ventas={ventas} />
+          <AlertsPanel products={products} />
         </div>
-
       </main>
 
-      {/* ───────────── MODAL CONFIGURACIÓN ───────────── */}
-      <SettingsModal
-        open={openSettings}
-        onClose={() => setOpenSettings(false)}
-      />
-
+      <SettingsModal open={openSettings} onClose={() => setOpenSettings(false)} />
     </div>
   );
 }

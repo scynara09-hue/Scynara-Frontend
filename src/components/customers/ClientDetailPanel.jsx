@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 const COLORS = [
   { bg: "rgba(139,92,246,0.15)", color: "#a78bfa" },
   { bg: "rgba(52,211,153,0.15)",  color: "#34d399" },
@@ -21,6 +23,8 @@ const IconDoc   = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColo
 const IconEdit  = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="13" height="13"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>;
 const IconTrash = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="13" height="13"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>;
 const IconUser  = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" width="40" height="40"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>;
+const IconCheck = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" width="13" height="13"><polyline points="20 6 9 17 4 12" /></svg>;
+const IconX     = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>;
 
 function InfoRow({ bg, color, icon, label, value }) {
   return (
@@ -37,6 +41,13 @@ function InfoRow({ bg, color, icon, label, value }) {
 }
 
 export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelete }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  // Ocultamos la confirmación si cambia el cliente seleccionado
+  useEffect(() => {
+    setShowConfirm(false);
+  }, [client]);
+
   if (!client) {
     return (
       <div className="client-detail-panel">
@@ -48,9 +59,17 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
     );
   }
 
-  const av       = COLORS[clientIndex % COLORS.length];
-  const initials = (client.nombre[0] + (client.apellidos[0] || "")).toUpperCase();
-  const total    = client.compras
+  const av = COLORS[clientIndex % COLORS.length];
+  
+  // Extraemos iniciales de forma segura
+  const nameParts = (client.nombre || "").trim().split(" ");
+  const initials = nameParts.length > 1 
+    ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
+    : (nameParts[0]?.[0] || "?").toUpperCase();
+
+  // Protegemos el arreglo de compras
+  const compras = client.compras || [];
+  const total = compras
     .filter(c => c.estado === "completada")
     .reduce((a, c) => a + c.total, 0);
 
@@ -63,18 +82,34 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
             {initials}
           </div>
           <div>
-            <div className="detail-name">{client.nombre} {client.apellidos}</div>
-            <div className="detail-id">ID #{client.id_C} · {client.compras.length} compras</div>
+            <div className="detail-name">{client.nombre}</div>
+            <div className="detail-id">{client.numero} · {compras.length} compras</div>
           </div>
         </div>
 
         <div className="detail-actions">
-          <button className="detail-btn detail-btn-edit" onClick={() => onEdit(client.id_C)}>
-            <IconEdit /> Editar
-          </button>
-          <button className="detail-btn detail-btn-del" onClick={() => onDelete(client.id_C)}>
-            <IconTrash /> Eliminar
-          </button>
+          {!showConfirm ? (
+            <>
+              <button className="detail-btn detail-btn-edit" onClick={() => onEdit(client.id_cliente)}>
+                <IconEdit /> Editar
+              </button>
+              <button className="detail-btn detail-btn-del" onClick={() => setShowConfirm(true)}>
+                <IconTrash /> Eliminar
+              </button>
+            </>
+          ) : (
+            <div style={{ display: "flex", gap: "4px", background: "rgba(248,113,113,0.1)", padding: "4px 6px", borderRadius: "8px" }}>
+              <button className="detail-btn detail-btn-del" onClick={() => {
+                onDelete(client.id_cliente);
+                setShowConfirm(false);
+              }}>
+                <IconCheck /> Confirmar
+              </button>
+              <button className="detail-btn" style={{ background: "var(--color-background)", color: "var(--color-text-secondary)" }} onClick={() => setShowConfirm(false)}>
+                <IconX />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -96,19 +131,19 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
       {/* Historial */}
       <div className="detail-section">
         <div className="detail-section-title">Historial de compras</div>
-        {client.compras.length === 0 ? (
+        {compras.length === 0 ? (
           <p style={{ fontSize: 13, color: "var(--color-text-tertiary)", padding: "12px 0" }}>
             Sin compras registradas
           </p>
         ) : (
-          client.compras.map((v, i) => (
+          compras.map((v, i) => (
             <div key={i} className="history-item">
               <span className={`history-dot ${STATUS_DOT[v.estado] || "dot-amber"}`} />
               <div className="history-info">
                 <p>{v.id_venta} — {v.productos}</p>
-                <span>{v.fecha}</span>
+                <span>{new Date(v.fecha).toLocaleDateString('es-MX')}</span>
               </div>
-              <span className="history-amount">${v.total.toFixed(2)}</span>
+              <span className="history-amount">${Number(v.total).toFixed(2)}</span>
             </div>
           ))
         )}
@@ -118,11 +153,11 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
       <div className="detail-summary">
         <div className="summary-row">
           <span className="summary-label">Completadas</span>
-          <span>{client.compras.filter(c => c.estado === "completada").length}</span>
+          <span>{compras.filter(c => c.estado === "completada").length}</span>
         </div>
         <div className="summary-row">
           <span className="summary-label">Canceladas</span>
-          <span>{client.compras.filter(c => c.estado === "cancelada").length}</span>
+          <span>{compras.filter(c => c.estado === "cancelada").length}</span>
         </div>
         <div className="summary-row">
           <span className="summary-label">Total facturado</span>

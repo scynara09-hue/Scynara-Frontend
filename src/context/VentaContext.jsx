@@ -1,5 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import { createVentaRequest, getVentasRequest, getVentaByIdRequest } from "../services/ventasService";
+import { 
+  createVentaRequest, 
+  getVentasRequest, 
+  getVentaByIdRequest,
+  cancelVentaRequest
+} from "../services/ventasService";
 
 const VentaContext = createContext();
 
@@ -11,22 +16,26 @@ export const useVentas = () => {
 
 export function VentaProvider({ children }) {
   const [ventas, setVentas] = useState([]);
-  const [carrito, setCarrito] = useState([]); // Array de productos seleccionados
+  const [carrito, setCarrito] = useState([]);
+  const [errors, setErrors] = useState(null);
 
-  // Obtener historial
+  const totalCarrito = carrito.reduce(
+    (acc, item) => acc + (item.cantidad * item.precio_unitario_venta), 0
+  );
+
   const getVentas = async () => {
     try {
       const res = await getVentasRequest();
       setVentas(res.data);
     } catch (error) {
-      console.error("Error al obtener ventas:", error);
+      console.error(error);
     }
   };
 
-  // ── Lógica del Carrito ──
   const agregarAlCarrito = (producto, cantidad) => {
     setCarrito(prev => {
       const existente = prev.find(item => item.id_producto === producto.id_producto);
+      
       if (existente) {
         return prev.map(item =>
           item.id_producto === producto.id_producto
@@ -34,11 +43,12 @@ export function VentaProvider({ children }) {
             : item
         );
       }
+      
       return [...prev, {
         id_producto: producto.id_producto,
         nombre: producto.nombre,
         cantidad,
-        precio_unitario_venta: producto.precio_unitario
+        precio_unitario_venta: Number(producto.precio_unitario)
       }];
     });
   };
@@ -47,23 +57,63 @@ export function VentaProvider({ children }) {
     setCarrito(prev => prev.filter(item => item.id_producto !== id_producto));
   };
 
-  const limpiarCarrito = () => setCarrito([]);
+  const limpiarCarrito = () => {
+    setCarrito([]);
+    setErrors(null);
+  };
 
-  // Procesar venta final
-  const procesarVenta = async (ventaData) => {
+  const procesarVenta = async (id_cliente, metodo_pago) => {
     try {
-      const res = await createVentaRequest(ventaData);
-      setCarrito([]); // Limpiamos tras éxito
+      setErrors(null);
+
+      const payload = {
+        id_cliente: Number(id_cliente),
+        metodo_pago: metodo_pago,
+        total: totalCarrito,
+        detalles: carrito.map(item => ({
+          id_producto: item.id_producto,
+          cantidad: item.cantidad,
+          precio_unitario_venta: item.precio_unitario_venta
+        }))
+      };
+
+      const res = await createVentaRequest(payload);
+      setCarrito([]);
+      return res.data;
+
+    } catch (error) {
+      if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
+      } else {
+        setErrors({ general: error.response?.data?.message || "Error al procesar la venta" });
+      }
+      throw error;
+    }
+  };
+
+  const cancelarVenta = async (id) => {
+    try {
+      const res = await cancelVentaRequest(id);
+      await getVentas();
       return res.data;
     } catch (error) {
-      throw error; // El controlador capturará el error de stock/validación
+      throw error;
     }
   };
 
   return (
     <VentaContext.Provider value={{
-      ventas, carrito,
-      getVentas, agregarAlCarrito, quitarDelCarrito, limpiarCarrito, procesarVenta
+      ventas, 
+      carrito, 
+      totalCarrito,
+      errors,
+      getVentas, 
+      agregarAlCarrito, 
+      quitarDelCarrito, 
+      limpiarCarrito, 
+      procesarVenta,
+      cancelarVenta,
+      setErrors
     }}>
       {children}
     </VentaContext.Provider>

@@ -21,7 +21,6 @@ export function ProductProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Obtener productos
   const loadProducts = useCallback(async () => {
     setLoading(true);
     try {
@@ -36,15 +35,14 @@ export function ProductProvider({ children }) {
     }
   }, []);
 
-  // Crear producto
   const addProduct = async (data) => {
     try {
       await createProductRequest(data);
       await loadProducts();
       return true;
     } catch (err) {
-      console.error(err);
-      throw err;
+      console.error("Error al crear producto:", err);
+      throw err.response?.data || err;
     }
   };
 
@@ -55,20 +53,19 @@ export function ProductProvider({ children }) {
       await loadProducts();
       return true;
     } catch (err) {
-      console.error(err);
-      throw err;
+      console.error("Error al actualizar producto:", err);
+      throw err.response?.data || err;
     }
   };
 
-  // Eliminar producto
   const deleteProduct = async (id) => {
     try {
       await deleteProductRequest(id);
       setProducts((prev) => prev.filter((p) => p.id_producto !== id));
       return true;
     } catch (err) {
-      console.error(err);
-      throw err;
+      console.error("Error al eliminar producto:", err);
+      throw err.response?.data || err;
     }
   };
 

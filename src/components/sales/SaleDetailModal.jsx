@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
+import { getVentaByIdRequest } from "../../services/ventasService"; 
+
 const IconClose = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="2" strokeLinecap="round" width="14" height="14">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="14" height="14">
     <line x1="18" y1="6" x2="6" y2="18"/>
     <line x1="6"  y1="6" x2="18" y2="18"/>
   </svg>
@@ -13,9 +15,32 @@ const STATUS_LABELS = {
 };
 
 export default function SaleDetailModal({ open, sale, onClose }) {
+  const [detalles, setDetalles] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (open && sale?.id_venta) {
+      setLoading(true);
+      getVentaByIdRequest(sale.id_venta)
+        .then(res => {
+          setDetalles(res.data.detalles || []);
+        })
+        .catch(err => console.error("Error cargando detalles:", err))
+        .finally(() => setLoading(false));
+    } else {
+      setDetalles([]);
+    }
+  }, [open, sale]);
+
   if (!open || !sale) return null;
 
   const handleOverlay = (e) => { if (e.target === e.currentTarget) onClose(); };
+
+  const dateObj = sale.fecha_hora ? new Date(sale.fecha_hora) : new Date();
+  const fechaCompleta = `${dateObj.toLocaleDateString()} a las ${dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+  // 💡 Normalizamos también aquí el estado para el diccionario
+  const estadoNormalizado = sale.estado ? sale.estado.toLowerCase() : "completada";
 
   return (
     <div className="modal-overlay" onClick={handleOverlay}>
@@ -27,11 +52,12 @@ export default function SaleDetailModal({ open, sale, onClose }) {
 
         <div className="modal-body">
           {[
-            ["ID de venta",   sale.id_venta],
-            ["Cliente",       sale.cliente],
-            ["Empleado",      sale.empleado],
-            ["Fecha",         sale.fecha],
-            ["Estado",        STATUS_LABELS[sale.estado] || sale.estado],
+            ["ID de venta",   `V-${sale.id_venta}`],
+            ["Cliente",       sale.cliente_nombre || "Público General"],
+            ["Vendedor",      sale.vendedor_nombre || "Desconocido"],
+            ["Fecha y Hora",  fechaCompleta],
+            ["Método de Pago", sale.metodo_pago], 
+            ["Estado",        STATUS_LABELS[estadoNormalizado] || "Completada"], // 💡 Estado corregido
             ["Total",         `$${Number(sale.total).toFixed(2)}`],
           ].map(([label, val]) => (
             <div key={label} className="detail-row">
@@ -45,12 +71,22 @@ export default function SaleDetailModal({ open, sale, onClose }) {
           </div>
 
           <div className="detail-products">
-            {sale.productos?.map((p, i) => (
-              <div key={i} className="detail-prod-row">
-                <span>{p.nombre} × {p.qty}</span>
-                <span>${(p.precio * p.qty).toFixed(2)}</span>
+            {loading ? (
+              <div style={{ textAlign: "center", padding: "15px", color: "#6b7280" }}>
+                Cargando productos...
               </div>
-            ))}
+            ) : detalles.length > 0 ? (
+              detalles.map((p) => (
+                <div key={p.id_detalle} className="detail-prod-row">
+                  <span>{p.producto_nombre} × {p.cantidad}</span>
+                  <span>${Number(p.subtotal).toFixed(2)}</span>
+                </div>
+              ))
+            ) : (
+              <div style={{ textAlign: "center", padding: "15px", color: "#6b7280" }}>
+                No hay productos en esta venta.
+              </div>
+            )}
           </div>
         </div>
 
