@@ -191,9 +191,7 @@ function MapClickHandler({ setDireccion }) {
         if (data && data.display_name) {
           setDireccion(data.display_name);
         }
-      } catch (error) {
-        console.error("Error al obtener la dirección:", error);
-      }
+      } catch (error) {      }
     },
   });
 

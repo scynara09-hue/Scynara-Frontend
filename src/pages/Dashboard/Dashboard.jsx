@@ -62,9 +62,7 @@ export default function Dashboard() {
       try {
         const res = await getProfileRequest();
         setProfileData(res.data);
-      } catch (error) {
-        console.error("Error al cargar el perfil:", error);
-      }
+      } catch (error) {      }
     };
     fetchProfile();
     getVentas();

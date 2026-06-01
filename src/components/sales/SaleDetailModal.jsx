@@ -25,7 +25,7 @@ export default function SaleDetailModal({ open, sale, onClose }) {
         .then(res => {
           setDetalles(res.data.detalles || []);
         })
-        .catch(err => console.error("Error cargando detalles:", err))
+        .catch(err =>)
         .finally(() => setLoading(false));
     } else {
       setDetalles([]);

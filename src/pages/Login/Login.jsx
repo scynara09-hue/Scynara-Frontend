@@ -166,7 +166,6 @@ export default function Login() {
         <LoginAlert type={alert.type} message={alert.message} />
 
         <form onSubmit={handleSubmit} noValidate>
-          {}
           <div className="reg-field">
             <label htmlFor="email">CORREO ELECTRÓNICO</label>
             <div className="reg-input-wrap">
@@ -186,8 +185,6 @@ export default function Login() {
               <span className="reg-error">{formErrors.email}</span>
             )}
           </div>
-
-          {}
           <div className="reg-field">
             <label htmlFor="password">CONTRASEÑA</label>
             <div className="reg-input-wrap">

@@ -76,7 +76,6 @@ export default function NewSaleModal({ open, products, onClose, onSuccess }) {
         </div>
 
         <div className="modal-body">
-          {}
           {errors?.general && (
             <div style={{ color: "#ef4444", backgroundColor: "#fef2f2", padding: "10px", borderRadius: "5px", marginBottom: "15px", fontSize: "0.9rem", border: "1px solid #f87171" }}>
               {errors.general}
@@ -103,7 +102,6 @@ export default function NewSaleModal({ open, products, onClose, onSuccess }) {
                   </option>
                 ))}
               </select>
-              {}
               {errors?.id_cliente && <span style={{ color: "#ef4444", fontSize: "0.8rem", marginTop: "4px" }}>{errors.id_cliente}</span>}
             </div>
 

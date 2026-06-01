@@ -27,9 +27,7 @@ export function ProductProvider({ children }) {
       const res = await getProductsRequest();
       setProducts(res.data);
       setError(null);
-    } catch (err) {
-      console.error(err);
-      setError("Error al cargar el inventario");
+    } catch (err) {      setError("Error al cargar el inventario");
     } finally {
       setLoading(false);
     }
@@ -40,9 +38,7 @@ export function ProductProvider({ children }) {
       await createProductRequest(data);
       await loadProducts();
       return true;
-    } catch (err) {
-      console.error("Error al crear producto:", err);
-      throw err.response?.data || err;
+    } catch (err) {      throw err.response?.data || err;
     }
   };
 
@@ -52,9 +48,7 @@ export function ProductProvider({ children }) {
       await updateProductRequest(id, data);
       await loadProducts();
       return true;
-    } catch (err) {
-      console.error("Error al actualizar producto:", err);
-      throw err.response?.data || err;
+    } catch (err) {      throw err.response?.data || err;
     }
   };
 
@@ -63,9 +57,7 @@ export function ProductProvider({ children }) {
       await deleteProductRequest(id);
       setProducts((prev) => prev.filter((p) => p.id_producto !== id));
       return true;
-    } catch (err) {
-      console.error("Error al eliminar producto:", err);
-      throw err.response?.data || err;
+    } catch (err) {      throw err.response?.data || err;
     }
   };
 

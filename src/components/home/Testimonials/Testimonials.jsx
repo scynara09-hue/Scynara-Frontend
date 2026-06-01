@@ -48,9 +48,7 @@ export default function Testimonials() {
         } else {
           setTestimonials(BACKUP_TESTIMONIALS);
         }
-      } catch (error) {
-        console.error("Error al cargar testimonios, usando respaldo:", error);
-        setTestimonials(BACKUP_TESTIMONIALS);
+      } catch (error) {        setTestimonials(BACKUP_TESTIMONIALS);
       }
     };
 

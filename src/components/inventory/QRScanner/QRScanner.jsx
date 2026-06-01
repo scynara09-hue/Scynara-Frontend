@@ -27,17 +27,13 @@ const QRScanner = () => {
 
               try {
                 await enviarQR(decodedText);
-              } catch (error) {
-                console.error(error);
-              }
+              } catch (error) {              }
             }
           }
         );
 
         isRunningRef.current = true;
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {      }
     };
 
     startScanner();

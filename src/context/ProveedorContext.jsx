@@ -26,18 +26,14 @@ export function ProveedorProvider({ children }) {
     try {
       const res = await getCategoriasRequest();
       setCategorias(res.data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {    }
   };
 
   const getProveedores = async () => {
     try {
       const res = await getProveedoresRequest();
       setProveedores(res.data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {    }
   };
 
  const createProveedor = async (proveedor) => {
@@ -54,18 +50,14 @@ export function ProveedorProvider({ children }) {
     try {
       await deleteProveedorRequest(id);
       setProveedores(proveedores.filter((p) => p.id_proveedor !== id));
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {    }
   };
 
   const getProveedor = async (id) => {
     try {
       const res = await getProveedorByIdRequest(id);
       return res.data;
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {    }
   };
 
   const updateProveedor = async (id, proveedor) => {

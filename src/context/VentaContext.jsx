@@ -27,9 +27,7 @@ export function VentaProvider({ children }) {
     try {
       const res = await getVentasRequest();
       setVentas(res.data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {    }
   };
 
   const agregarAlCarrito = (producto, cantidad) => {

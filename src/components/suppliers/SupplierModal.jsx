@@ -45,9 +45,7 @@ function MapClickHandler({ setDireccion }) {
         if (data && data.display_name) {
           setDireccion(data.display_name);
         }
-      } catch (error) {
-        console.error("Error al obtener la dirección:", error);
-      }
+      } catch (error) {      }
     },
   });
 
@@ -113,9 +111,7 @@ export default function SupplierModal({ open, supplier, categorias = [], onClose
           
         } else if (backendError?.mensaje) {
           alert(`Error: ${backendError.mensaje}`);
-        } else {
-          console.error("Error inesperado:", backendError);
-        }
+        } else {        }
       }
     } 
   };
