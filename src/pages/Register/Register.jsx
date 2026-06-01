@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { registerRequest } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
 
-// --- IMPORTACIONES DEL MAPA ---
+
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -17,7 +17,7 @@ import PolicyModal from "../../components/shared/PolicyModal";
 
 import "./Register.css";
 
-// --- FIX PARA EL ÍCONO DEL MARCADOR EN REACT ---
+
 let DefaultIcon = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
@@ -25,7 +25,7 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// ── Iconos Originales ──────────────────────────────────────────
+
 const IconBack = () => (
   <svg
     viewBox="0 0 24 24"
@@ -140,7 +140,7 @@ const IconEye = ({ open }) => (
   </svg>
 );
 
-// ── Iconos Nuevos (Tienda) ───────────────────────────────────
+
 const IconStore = () => (
   <svg
     viewBox="0 0 24 24"
@@ -173,7 +173,7 @@ const IconMapPin = () => (
   </svg>
 );
 
-// ── COMPONENTE SECUNDARIO PARA CLICS EN EL MAPA ──────────────
+
 function MapClickHandler({ setDireccion }) {
   const [position, setPosition] = useState(null);
 
@@ -200,19 +200,19 @@ function MapClickHandler({ setDireccion }) {
   return position === null ? null : <Marker position={position} />;
 }
 
-// ── Validaciones ────────────────────────────────────
+
 function validate(fields) {
   const errors = {};
 
-  // Validación de la Tienda
+  
   if (!fields.nombreTienda.trim())
     errors.nombreTienda = "El nombre de la tienda es requerido";
 
-  // CAMBIO 1: La dirección ahora es obligatoria
+  
   if (!fields.direccionTienda.trim())
     errors.direccionTienda = "La dirección de la tienda es requerida";
 
-  // Validación del Usuario
+  
   if (!fields.nombre.trim()) errors.nombre = "El nombre es requerido";
   if (!fields.apellido.trim()) errors.apellido = "El apellido es requerido";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email))
@@ -227,12 +227,12 @@ function validate(fields) {
   return errors;
 }
 
-// ── Componente principal ────────────────────────────
+
 export default function Register() {
   const navigate = useNavigate();
   const { register } = useAuth();
 
-  // Estado para mostrar/ocultar el mapa
+  
   const [showMap, setShowMap] = useState(false);
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
 
@@ -390,7 +390,7 @@ export default function Register() {
             icon={<IconStore />}
           />
 
-          {/* CAMBIO 2: Sección de Dirección con botón para abrir mapa */}
+          {}
           <div className="reg-field" style={{ marginBottom: "15px" }}>
             <RegisterInput
               id="direccionTienda"
@@ -422,7 +422,7 @@ export default function Register() {
             </button>
           </div>
 
-          {/* CAMBIO 3: Renderizado Condicional del Mapa */}
+          {}
           {showMap && (
             <div
               style={{
@@ -435,7 +435,7 @@ export default function Register() {
               }}
             >
               <MapContainer
-                center={[19.4326, -99.1332]} // Cambia estas coordenadas a tu ciudad por defecto
+                center={[19.4326, -99.1332]} 
                 zoom={13}
                 style={{ height: "100%", width: "100%", zIndex: 0 }}
               >

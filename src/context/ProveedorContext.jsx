@@ -21,7 +21,7 @@ export function ProveedorProvider({ children }) {
   const [categorias, setCategorias] = useState([]); 
   const [errors, setErrors] = useState([]);
 
-  // ─── NUEVO: OBTENER CATEGORÍAS ───
+  
   const getCategorias = async () => {
     try {
       const res = await getCategoriasRequest();

@@ -46,7 +46,7 @@ export function ProductProvider({ children }) {
     }
   };
 
-  // Actualizar producto
+  
   const updateProduct = async (id, data) => {
     try {
       await updateProductRequest(id, data);

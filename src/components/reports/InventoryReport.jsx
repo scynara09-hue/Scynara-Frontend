@@ -54,7 +54,7 @@ export default function InventoryReport() {
       </div>
 
       <div className="report-grid-2">
-        {/* Stock bajo */}
+        {}
         <div className="chart-card">
           <div className="chart-card-header">
             <div>
@@ -77,7 +77,7 @@ export default function InventoryReport() {
           })}
         </div>
 
-        {/* Valor por categoría */}
+        {}
         <ReportChart
           title="Valor por categoría"
           sub="Distribución del inventario en $"

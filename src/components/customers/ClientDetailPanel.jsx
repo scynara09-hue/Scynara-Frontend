@@ -15,7 +15,7 @@ const STATUS_DOT = {
   pendiente:  "dot-amber",
 };
 
-// ── Iconos info ──────────────────────────────────────
+
 const IconMail  = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" width="13" height="13"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>;
 const IconPhone = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" width="13" height="13"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>;
 const IconLoc   = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" width="13" height="13"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>;
@@ -43,7 +43,7 @@ function InfoRow({ bg, color, icon, label, value }) {
 export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelete }) {
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // Ocultamos la confirmación si cambia el cliente seleccionado
+  
   useEffect(() => {
     setShowConfirm(false);
   }, [client]);
@@ -61,13 +61,13 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
 
   const av = COLORS[clientIndex % COLORS.length];
   
-  // Extraemos iniciales de forma segura
+  
   const nameParts = (client.nombre || "").trim().split(" ");
   const initials = nameParts.length > 1 
     ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
     : (nameParts[0]?.[0] || "?").toUpperCase();
 
-  // Protegemos el arreglo de compras
+  
   const compras = client.compras || [];
   const total = compras
     .filter(c => c.estado === "completada")
@@ -75,7 +75,7 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
 
   return (
     <div className="client-detail-panel">
-      {/* Header */}
+      {}
       <div className="detail-header">
         <div className="detail-avatar-row">
           <div className="detail-avatar" style={{ background: av.bg, color: av.color }}>
@@ -115,7 +115,7 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
 
       <div className="detail-divider" />
 
-      {/* Info */}
+      {}
       <div className="detail-section">
         <div className="detail-section-title">Información de contacto</div>
         <InfoRow bg="rgba(139,92,246,0.12)" color="#a78bfa" icon={<IconMail />}  label="Correo"    value={client.correo}    />
@@ -128,7 +128,7 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
 
       <div className="detail-divider" />
 
-      {/* Historial */}
+      {}
       <div className="detail-section">
         <div className="detail-section-title">Historial de compras</div>
         {compras.length === 0 ? (
@@ -149,7 +149,7 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
         )}
       </div>
 
-      {/* Resumen */}
+      {}
       <div className="detail-summary">
         <div className="summary-row">
           <span className="summary-label">Completadas</span>

@@ -10,7 +10,7 @@ import SupplierModal from "../../components/suppliers/SupplierModal";
 import Toast from "../../components/inventory/Toast";
 import "./Suppliers.css";
 
-/* ───────────── 💡 1. AGREGAMOS EL ICONO DEL MENÚ ───────────── */
+
 const IconMenu = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
     strokeLinecap="round" width="18" height="18">
@@ -116,7 +116,7 @@ export default function Suppliers() {
         <div className="suppliers-body">
           <div className="suppliers-left">
             
-            {/* ───────────── 💡 2. ENVOLVEMOS EL TOPBAR Y AGREGAMOS EL BOTÓN ───────────── */}
+            {}
             <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px" }}>
               <button 
                 className="sb-menu-btn" 

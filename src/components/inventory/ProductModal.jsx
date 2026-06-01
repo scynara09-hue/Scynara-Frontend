@@ -11,13 +11,13 @@ const EMPTY = {
   fecha_caducidad: "",
 };
 
-// Helper para asegurar que la fecha se vea bien en el input de tipo date
+
 const formatDateForInput = (dateString) => {
   if (!dateString) return "";
   return dateString.split("T")[0]; 
 };
 
-// 🔴 Recibimos las listas reales desde los props
+
 export default function ProductModal({ open, product, categorias = [], proveedores = [], onClose, onSave }) {
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({});
@@ -44,7 +44,7 @@ export default function ProductModal({ open, product, categorias = [], proveedor
     if (errors[field]) setErrors(prev => ({ ...prev, [field]: null }));
   };
 
-  // ── MOTOR DE VALIDACIÓN FRONTEND ──
+  
   const validateForm = () => {
     const newErrors = {};
 
@@ -55,9 +55,9 @@ export default function ProductModal({ open, product, categorias = [], proveedor
     if (form.cantidad === "" || parseInt(form.cantidad) < 0) newErrors.cantidad = "Ingresa una cantidad válida.";
     if (!form.id_proveedor) newErrors.id_proveedor = "Selecciona un proveedor.";
 
-    // 🔴 NUEVO: Validación estricta para evitar fechas de caducidad en el pasado
+    
     if (form.fecha_caducidad) {
-      // Obtenemos la fecha de hoy en formato YYYY-MM-DD
+      
       const todayStr = new Date().toISOString().split('T')[0];
       if (form.fecha_caducidad < todayStr) {
         newErrors.fecha_caducidad = "La fecha de caducidad no puede estar en el pasado.";
@@ -119,7 +119,7 @@ export default function ProductModal({ open, product, categorias = [], proveedor
                 onChange={set("id_categoria")}
               >
                 <option value="">Selecciona...</option>
-                {/* 🔴 Iteramos sobre las categorías reales de la BD */}
+                {}
                 {categorias.map(c => (
                   <option key={c.id_categoria} value={c.id_categoria}>
                     {c.categoria}
@@ -131,7 +131,7 @@ export default function ProductModal({ open, product, categorias = [], proveedor
 
             <div className="m-field">
               <label>Proveedor *</label>
-              {/* 🔴 Reemplazamos el input de número por una lista desplegable de proveedores */}
+              {}
               <select 
                 className={`m-input ${errors.id_proveedor ? "input-error" : ""}`} 
                 value={form.id_proveedor} 
@@ -195,7 +195,7 @@ export default function ProductModal({ open, product, categorias = [], proveedor
                 value={form.fecha_caducidad} 
                 onChange={set("fecha_caducidad")} 
               />
-              {/* Mostramos el error si la fecha seleccionada es en el pasado */}
+              {}
               {errors.fecha_caducidad && <span className="sup-error-msg"><AlertCircle size={10}/> {errors.fecha_caducidad}</span>}
             </div>
           </div>

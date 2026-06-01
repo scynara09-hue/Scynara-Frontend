@@ -1,6 +1,6 @@
 import "./Footer.css";
 
-// 💡 Estructura mejorada con enlaces reales a las secciones de tu Home
+
 const navLinks = {
   Producto: [
     { label: "Características", href: "#Características" },
@@ -8,7 +8,7 @@ const navLinks = {
     { label: "Testimonios", href: "#Testimonios" }
   ],
   Empresa: [
-    { label: "Contacto", href: "mailto:tu-correo@gmail.com" } // 💡 Cambia por tu correo
+    { label: "Contacto", href: "mailto:tu-correo@gmail.com" } 
   ]
 };
 
@@ -21,7 +21,7 @@ export default function Footer() {
           <div className="footer-logo">SCYNARA</div>
           <p>Sistema de gestión moderno para tiendas de abarrotes. Ventas, inventario, clientes y proveedores en un solo lugar.</p>
           <div className="footer-social">
-            {/* 💡 Pasa tus URLs reales de GitHub, LinkedIn, etc. */}
+            {}
             <SocialBtn icon={<IconTwitter />} url="https://twitter.com" />
             <SocialBtn icon={<IconLinkedin />} url="https://linkedin.com/in/tu-perfil" />
             <SocialBtn icon={<IconGithub />} url="https://github.com/tu-usuario" />
@@ -54,14 +54,14 @@ export default function Footer() {
   );
 }
 
-// 💡 Cambiamos de <div> a <a> para que los enlaces sociales abran en otra pestaña
+
 const SocialBtn = ({ icon, url }) => (
   <a href={url} target="_blank" rel="noopener noreferrer" className="social-btn">
     {icon}
   </a>
 );
 
-// 💡 Los SVGs se mantienen igual
+
 const IconTwitter = () => (
   <svg viewBox="0 0 24 24" width="15" height="15" fill="#64748b">
     <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 22.43.36a9 9 0 0 1-2.88 1.1A4.52 4.52 0 0 0 16.11 0c-2.5 0-4.52 2.02-4.52 4.52 0 .35.04.7.11 1.03C7.69 5.37 4.07 3.58 1.64.9a4.53 4.53 0 0 0-.61 2.27c0 1.57.8 2.95 2.01 3.76a4.5 4.5 0 0 1-2.05-.57v.06c0 2.19 1.56 4.02 3.63 4.43a4.5 4.5 0 0 1-2.04.08 4.53 4.53 0 0 0 4.22 3.14A9.06 9.06 0 0 1 0 19.54a12.8 12.8 0 0 0 6.92 2.03c8.3 0 12.85-6.88 12.85-12.85 0-.2 0-.39-.01-.58A9.17 9.17 0 0 0 23 3z"/>

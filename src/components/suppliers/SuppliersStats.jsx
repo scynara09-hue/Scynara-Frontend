@@ -1,10 +1,10 @@
 import { Truck, CheckCircle, PauseCircle } from "lucide-react";
 
 export default function SuppliersStats({ suppliers }) {
-  // Aseguramos la comparación convirtiendo a mayúsculas, así empatamos con la BD
+  
   const activos = suppliers.filter(s => s.estado?.toUpperCase() === "ACTIVO").length;
   
-  // Los inactivos son simplemente el total menos los activos
+  
   const inactivos = suppliers.length - activos;
 
   const stats = [

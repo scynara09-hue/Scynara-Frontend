@@ -1,4 +1,4 @@
-/* ─── LAYOUT ─────────────────────────────────────────── */
+
 .sales-main {
   flex: 1;
   padding: 28px 32px;
@@ -6,7 +6,7 @@
   background: var(--color-background-tertiary);
 }
 
-/* ─── TOPBAR ─────────────────────────────────────────── */
+
 .sales-topbar {
   display: flex;
   align-items: center;
@@ -47,7 +47,7 @@
   transform: translateY(-1px);
 }
 
-/* ─── STATS ─────────────────────────────────────────── */
+
 .sales-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -96,7 +96,7 @@
 .trend-up { background: var(--color-background-success); color: var(--color-text-success); }
 .trend-dn { background: var(--color-background-danger);  color: var(--color-text-danger);  }
 
-/* ─── TOOLBAR ─────────────────────────────────────────── */
+
 .sales-toolbar {
   display: flex;
   align-items: center;
@@ -157,7 +157,7 @@
   cursor: pointer;
 }
 
-/* ─── TABLE ─────────────────────────────────────────── */
+
 .sales-table-wrap {
   background: var(--color-background-primary);
   border: 0.5px solid var(--color-border-tertiary);
@@ -265,7 +265,7 @@
 .btn-view:hover,
 .btn-cancel:hover { filter: brightness(1.12); }
 
-/* ─── PAGINATION ─────────────────────────────────────── */
+
 .sales-pagination {
   display: flex;
   align-items: center;
@@ -302,7 +302,7 @@
   border-color: var(--color-border-info);
 }
 
-/* ─── MODAL ─────────────────────────────────────────── */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -401,7 +401,7 @@
   margin-bottom: 12px;
 }
 
-/* ─── CART ─────────────────────────────────────────── */
+
 .cart-add-row { display: flex; gap: 8px; margin-bottom: 12px; }
 .cart-add-row .m-input { flex: 1; }
 
@@ -519,7 +519,7 @@
 .cart-total-label  { font-size: 13px; font-weight: 600; color: var(--color-text-info); }
 .cart-total-amount { font-size: 18px; font-weight: 800; color: var(--color-text-info); }
 
-/* ─── DETAIL MODAL ─────────────────────────────────── */
+
 .detail-row {
   display: flex;
   justify-content: space-between;
@@ -544,7 +544,7 @@
   color: var(--color-text-primary);
 }
 
-/* ─── MODAL FOOTER ─────────────────────────────────── */
+
 .modal-footer {
   display: flex;
   gap: 10px;
@@ -580,7 +580,7 @@
 
 .m-btn-save:hover { background: #6d28d9; }
 
-/* ─── TOAST ─────────────────────────────────────────── */
+
 .toast {
   position: fixed;
   bottom: 24px;
@@ -611,7 +611,7 @@
 @keyframes slideUp   { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
 @keyframes slideDown { to   { opacity:0; transform:translateY(16px); } }
 
-/* ─── RESPONSIVE ─────────────────────────────────────── */
+
 @media (max-width: 1024px) {
   .sales-stats { grid-template-columns: repeat(2, 1fr); }
   .sale-date, .sale-emp,

@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { X, MapPin, AlertCircle } from "lucide-react";
 
-// --- IMPORTACIONES DEL MAPA ---
+
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
-// --- FIX PARA EL ÍCONO DEL MARCADOR EN REACT ---
+
 let DefaultIcon = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
@@ -16,7 +16,7 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// Agregamos "estado" por defecto como ACTIVO
+
 const EMPTY = {
   nombre: "",
   telefono: "",
@@ -27,7 +27,7 @@ const EMPTY = {
   estado: "ACTIVO",
 };
 
-// ── COMPONENTE SECUNDARIO PARA CLICS EN EL MAPA ──────────────
+
 function MapClickHandler({ setDireccion }) {
   const [position, setPosition] = useState(null);
 
@@ -54,7 +54,7 @@ function MapClickHandler({ setDireccion }) {
   return position === null ? null : <Marker position={position} />;
 }
 
-// ── COMPONENTE PRINCIPAL ──────────────────────────────────────
+
 export default function SupplierModal({ open, supplier, categorias = [], onClose, onSave }) {
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({}); 
@@ -226,7 +226,7 @@ export default function SupplierModal({ open, supplier, categorias = [], onClose
             </div>
           )}
 
-          {/* Envolvemos en un div condicional para mantener el diseño si solo hay un campo */}
+          {}
           <div className={supplier ? "sup-row2" : ""}>
             <div className="sup-field">
               <label>Tiempo de entrega (Horas) *</label>
@@ -246,7 +246,7 @@ export default function SupplierModal({ open, supplier, categorias = [], onClose
               {errors.tiempo_entregas && <span className="sup-error-msg"><AlertCircle size={10}/> {errors.tiempo_entregas}</span>}
             </div>
 
-            {/* Este campo SOLO se renderiza si estamos en modo Edición */}
+            {}
             {supplier && (
               <div className="sup-field">
                 <label>Estado del proveedor</label>

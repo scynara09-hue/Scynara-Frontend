@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
-/* ───────────── Iconos ───────────── */
+
 const IconLock = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="14" height="14">
     <rect x="3" y="11" width="18" height="11" rx="2"/>
@@ -47,7 +47,7 @@ const IconChart = () => (
   </svg>
 );
 
-/* ───────────── MÓDULOS ───────────── */
+
 const MODULES = [
   {
     label: "Ventas",
@@ -55,7 +55,7 @@ const MODULES = [
     desc: "Registra una transacción y revisa el historial de tu sucursal.",
     tag: "Ventas",
     bgClass: "si-green",
-    roles: ["EMPLEADO", "ADMINISTRADOR"], // 💡 Coincide con el ENUM de la BD
+    roles: ["EMPLEADO", "ADMINISTRADOR"], 
     icon: IconDollar
   },
   {
@@ -91,7 +91,7 @@ const MODULES = [
     desc: "Gestión de empleados y cuentas de acceso.",
     tag: "Solo admin",
     bgClass: "si-gray",
-    roles: ["ADMINISTRADOR"], // 💡 Bloqueado para empleados
+    roles: ["ADMINISTRADOR"], 
     icon: IconUser
   },
   {
@@ -100,12 +100,12 @@ const MODULES = [
     desc: "Análisis de ingresos y desempeño de la tienda.",
     tag: "Solo admin",
     bgClass: "si-gray",
-    roles: ["ADMINISTRADOR"], // 💡 Bloqueado para empleados
+    roles: ["ADMINISTRADOR"], 
     icon: IconChart
   }
 ];
 
-/* ───────────── COMPONENTE ───────────── */
+
 export default function ModuleCards() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -116,7 +116,7 @@ export default function ModuleCards() {
 
       <div className="dash-modules">
         {MODULES.map((mod) => {
-          // 💡 Validamos convirtiendo a mayúsculas por si el token viene diferente
+          
           const userRole = user?.rol?.toUpperCase();
           const allowed = mod.roles.includes(userRole);
           const Icon = mod.icon;

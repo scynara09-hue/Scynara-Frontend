@@ -16,7 +16,7 @@ import "./Sales.css";
 
 const PER_PAGE = 5;
 
-/* ───────────── 💡 1. AGREGAMOS EL ICONO DEL MENÚ ───────────── */
+
 const IconMenu = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
     strokeLinecap="round" width="18" height="18">
@@ -29,7 +29,7 @@ const IconMenu = () => (
 export default function Sales() {
   const { user } = useAuth();
   
-  // 💡 Extraemos cancelarVenta del contexto
+  
   const { ventas, getVentas, cancelarVenta } = useVentas(); 
   const { customers, getCustomers } = useCustomers(); 
   const { products, loadProducts } = useProducts();   
@@ -52,7 +52,7 @@ export default function Sales() {
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
     
-    // 💡 Calculamos la medianoche de hoy en tu computadora (00:00:00)
+    
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
@@ -67,7 +67,7 @@ export default function Sales() {
       let matchDt = true;
       const ventaTimeObj = s.fecha_hora ? new Date(s.fecha_hora) : new Date();
 
-      // 💡 Comparamos: Si la venta ocurrió DESPUÉS de la medianoche de hoy, la mostramos
+      
       if (dateRange === "today") matchDt = ventaTimeObj >= todayStart;
       if (dateRange === "week") matchDt = ventaTimeObj >= new Date(Date.now() - 7 * 864e5);
       if (dateRange === "month") matchDt = ventaTimeObj >= new Date(Date.now() - 30 * 864e5);
@@ -78,19 +78,19 @@ export default function Sales() {
 
   const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
   
-  // 💡 LÓGICA DE CANCELACIÓN REAL
+  
   const handleCancel = async (id) => {
     try {
-      // Ejecutamos la cancelación de inmediato
+      
       await cancelarVenta(id);
       
-      // Avisamos del éxito con tu Toast
+      
       setToast(`Venta V-${id} cancelada. Inventario restaurado.`);
       
-      // Recargamos los productos para reflejar el stock devuelto
+      
       loadProducts(); 
     } catch (error) {
-      // Si el backend nos manda un error, lo pintamos en el Toast
+      
       setToast(error.response?.data?.message || "Error al cancelar la venta");
     }
   };
@@ -111,7 +111,7 @@ export default function Sales() {
 
       <main className="sales-main">
         
-        {/* ───────────── 💡 2. ENVOLVEMOS EL TOPBAR Y AGREGAMOS EL BOTÓN ───────────── */}
+        {}
         <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px" }}>
           <button 
             className="sb-menu-btn" 

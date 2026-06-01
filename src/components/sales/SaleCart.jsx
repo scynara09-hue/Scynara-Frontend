@@ -10,7 +10,7 @@ const IconTrash  = () => (
 );
 
 export default function SaleCart({ products }) {
-  // 💡 Consumimos la lógica directamente del contexto
+  
   const { carrito, totalCarrito, agregarAlCarrito, quitarDelCarrito, errors } = useVentas();
 
   const handleAdd = () => {
@@ -18,14 +18,14 @@ export default function SaleCart({ products }) {
     const opt = sel.options[sel.selectedIndex];
     if (!opt.value) return;
     
-    // Adaptamos el objeto a la estructura que espera la función agregarAlCarrito en el Contexto
+    
     agregarAlCarrito({
       id_producto: Number(opt.value),
       nombre: opt.text.split(" — ")[0],
       precio_unitario: parseFloat(opt.dataset.price),
-    }, 1); // 1 es la cantidad inicial
+    }, 1); 
     
-    sel.value = ""; // Reiniciamos el select
+    sel.value = ""; 
   };
 
   return (
@@ -44,7 +44,7 @@ export default function SaleCart({ products }) {
         </button>
       </div>
 
-      {/* 💡 Mostramos si hay un error global en los detalles del carrito (ej. desde Zod) */}
+      {}
       {errors?.detalles && (
          <div style={{ color: "#ef4444", fontSize: "0.85rem", marginBottom: "10px" }}>{errors.detalles}</div>
       )}
@@ -54,7 +54,7 @@ export default function SaleCart({ products }) {
           <div className="cart-empty">Agrega productos para comenzar</div>
         ) : (
           carrito.map((item, index) => {
-            // Buscamos si este producto específico tiene un error (ej. "detalles.0.cantidad": "Stock insuficiente")
+            
             const itemError = errors && Object.keys(errors).find(k => k.startsWith(`detalles.${index}`));
             
             return (

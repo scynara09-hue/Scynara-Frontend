@@ -33,7 +33,7 @@ export default function SaleRow({ sale, index, onView, onCancel }) {
   const initials = clienteNombre.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
   const av = AVATAR_COLORS[index % AVATAR_COLORS.length];
   
-  // 💡 SOLUCIÓN: Convertimos a minúsculas lo que viene de la base de datos
+  
   const estadoNormalizado = sale.estado ? sale.estado.toLowerCase() : "completada";
   const badge = STATUS_MAP[estadoNormalizado] || STATUS_MAP.completada;
 
@@ -69,7 +69,7 @@ export default function SaleRow({ sale, index, onView, onCancel }) {
       </td>
       <td><span className="sale-amount">${Number(sale.total).toFixed(2)}</span></td>
       
-      {/* 💡 Renderizamos la etiqueta ya corregida */}
+      {}
       <td><span className={`sale-badge ${badge.cls}`}>{badge.txt}</span></td>
       
       <td>
@@ -78,7 +78,7 @@ export default function SaleRow({ sale, index, onView, onCancel }) {
             <IconEye />
           </button>
           
-          {/* 💡 Ocultamos el botón de cancelar si ya está cancelada */}
+          {}
           {estadoNormalizado !== "cancelada" && (
             <button className="sale-action-btn btn-cancel" onClick={() => onCancel(sale.id_venta)}>
               <IconCancel />

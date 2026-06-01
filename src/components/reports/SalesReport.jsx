@@ -5,7 +5,7 @@ import { DollarSign, ShoppingCart, TrendingUp, Receipt } from "lucide-react";
 
 const RANK_CLASS = ["gold", "silver", "bronze"];
 
-// Datos de ejemplo — reemplaza con tu API
+
 const ventasPorDia = [
   { name: "Lun", total: 1200 }, { name: "Mar", total: 980 },
   { name: "Mié", total: 1540 }, { name: "Jue", total: 870 },

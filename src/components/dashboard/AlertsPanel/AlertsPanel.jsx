@@ -22,9 +22,9 @@ export default function AlertsPanel({ products = [] }) {
   const limite = new Date();
   limite.setDate(hoy.getDate() + 30);
 
-  // 💡 Filtramos los productos problemáticos
+  
   const alertas = products.reduce((acc, p) => {
-    // 1. Verificar stock bajo (menor o igual a 5)
+    
     if (Number(p.cantidad) <= 5) {
       acc.push({
         id: `stock-${p.id_producto}`,
@@ -34,7 +34,7 @@ export default function AlertsPanel({ products = [] }) {
       });
     }
 
-    // 2. Verificar caducidad (próximos 30 días)
+    
     if (p.fecha_caducidad) {
       const [year, month, day] = p.fecha_caducidad.split('T')[0].split('-');
       const caducidad = new Date(year, month - 1, day);

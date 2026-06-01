@@ -9,10 +9,10 @@ const IconSearch = () => (
 export default function InventoryToolbar({ search, onSearch, activeCategory, onCategory, categorias = [] }) {
   
 
-  // Aseguramos que siempre sea un arreglo (por si llega undefined o null)
+  
   const listaSegura = Array.isArray(categorias) ? categorias : [];
 
-  // Filtramos datos corruptos y extraemos el string
+  
   const categoryNames = [
     "Todas", 
     ...listaSegura.filter(c => c && c.categoria).map(c => c.categoria)

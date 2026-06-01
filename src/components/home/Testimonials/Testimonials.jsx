@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-// 💡 Importamos la petición directamente del servicio (ajusta la ruta si es necesario)
+
 import { getPublicEvaluationsRequest } from "../../../services/authService"; 
 import "./Testimonials.css";
 
@@ -37,10 +37,10 @@ export default function Testimonials() {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        // 💡 Usamos la función importada de tu archivo api.js/authService.js
+        
         const res = await getPublicEvaluationsRequest();
         
-        // Axios guarda la respuesta del backend dentro de la propiedad .data
+        
         const json = res.data; 
 
         if (json.success && json.data.length > 0) {

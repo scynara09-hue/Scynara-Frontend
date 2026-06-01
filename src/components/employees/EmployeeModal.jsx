@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-/* ─── Iconos ─────────────────────────────────────────── */
+
 const IconClose = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="13" height="13">
     <line x1="18" y1="6" x2="6" y2="18" />
@@ -95,7 +95,7 @@ const IconEye = ({ open }) => (
   </svg>
 );
 
-/* ─── Subcomponentes ─────────────────────────────────── */
+
 function SectionLabel({ children }) {
   return <div className="em-section">{children}</div>;
 }
@@ -122,7 +122,7 @@ function InputWrap({ icon, children }) {
   );
 }
 
-/* ─── Estado inicial ─────────────────────────────────── */
+
 const EMPTY = {
   nombre: "",
   apellidos: "",
@@ -138,7 +138,7 @@ const EMPTY = {
   permisos: "ACCESO_GENERAL",
 };
 
-/* ─── Componente principal ───────────────────────────── */
+
 export default function EmployeeModal({
   open,
   employee,
@@ -198,7 +198,7 @@ export default function EmployeeModal({
   const isEmpleado = form.rol === "EMPLEADO";
   const canEditLaboral = isAdmin;
 
-  /* ─── Set helper ───────────────────────────────────── */
+  
   const set = (field) => (e) => {
     const value = e.target.value;
 
@@ -214,7 +214,7 @@ export default function EmployeeModal({
     }));
   };
 
-  /* ─── Validaciones ─────────────────────────────────── */
+  
   const validateForm = () => {
     const newErrors = {};
 
@@ -261,7 +261,7 @@ export default function EmployeeModal({
   };
 
 const handleSave = async (e) => {
-    // PREVENCIÓN DE EVENTOS FANTASMAS
+    
     if (e) {
       e.preventDefault(); 
       e.stopPropagation();
@@ -295,7 +295,7 @@ const handleSave = async (e) => {
     try {
       await onSave(data);
       
-      // SOLO AQUÍ SE DEBE CERRAR
+      
       onClose();
 
     } catch (error) {
@@ -326,7 +326,7 @@ const handleSave = async (e) => {
       }}
     >
       <div className="modal">
-        {/* HEADER */}
+        {}
         <div className="em-header">
           <div className="em-header-icon">
             <IconUserAdd />
@@ -353,7 +353,7 @@ const handleSave = async (e) => {
           </button>
         </div>
 
-        {/* BODY */}
+        {}
         <div className="em-body">
           <SectionLabel>Datos personales</SectionLabel>
 
@@ -439,7 +439,7 @@ const handleSave = async (e) => {
 
           <div className="em-divider" />
 
-          {/* ROL */}
+          {}
           {canEditLaboral && (
             <>
               <SectionLabel>Rol en el sistema</SectionLabel>
@@ -478,7 +478,7 @@ const handleSave = async (e) => {
             </>
           )}
 
-          {/* EMPLEADO */}
+          {}
           {(isEmpleado || !canEditLaboral) && (
             <>
               <SectionLabel>Datos laborales</SectionLabel>
@@ -546,7 +546,7 @@ const handleSave = async (e) => {
             </>
           )}
 
-          {/* ADMIN */}
+          {}
           {!isEmpleado && canEditLaboral && (
             <>
               <SectionLabel>Datos de administrador</SectionLabel>
@@ -600,12 +600,12 @@ const handleSave = async (e) => {
           )}
         </div>
 
-        {/* Error general */}
+        {}
         {errors.general && (
           <div className="em-general-error">{errors.general}</div>
         )}
 
-        {/* FOOTER */}
+        {}
         <div className="em-footer">
   <button type="button" className="em-btn-cancel" onClick={(e) => {
     e.stopPropagation();

@@ -1,10 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap');
 
-/* =========================
-   🌙 TEMA OSCURO (DEFAULT)
-   ========================= */
+
 :root {
-  /* -- TUS VARIABLES ORIGINALES -- */
+  
   --bg: #0f172a;
   --bg-soft: #16171d;
   --card: #1e1f29;
@@ -36,26 +34,24 @@
   font: 16px/150% var(--sans);
   letter-spacing: 0.2px;
 
-  /* =======================================================
-     🔌 ALIAS PARA COMPONENTES (Modales, Inventario, etc.) 
-     ======================================================= */
   
-  /* Fondos Sólidos */
-  --color-background-primary: var(--card);      /* Tarjetas y Modales */
-  --color-background-secondary: var(--bg-soft); /* Inputs y campos de texto */
-  --color-background-tertiary: var(--bg);       /* Fondo principal de la app */
+  
+  
+  --color-background-primary: var(--card);      
+  --color-background-secondary: var(--bg-soft); 
+  --color-background-tertiary: var(--bg);       
 
-  /* Textos */
+  
   --color-text-primary: var(--text-h);
   --color-text-secondary: var(--text);
-  --color-text-tertiary: #6b7280;               /* Gris sutil para placeholders */
+  --color-text-tertiary: #6b7280;               
 
-  /* Bordes */
+  
   --color-border-secondary: var(--hover);
   --color-border-tertiary: var(--border);
   --color-border-info: var(--accent);
 
-  /* Colores de Estado (Botones, alertas, badges) */
+  
   --color-background-info: var(--accent-bg);
   --color-text-info: var(--accent);
   
@@ -66,11 +62,9 @@
   --color-text-success: var(--success);
 }
 
-/* =========================
-   ☀️ TEMA CLARO
-   ========================= */
+
 [data-theme="light"] {
-  /* -- TUS VARIABLES ORIGINALES -- */
+  
   --bg: #f8fafc;
   --bg-soft: #ffffff;
   --card: #ffffff;
@@ -95,26 +89,24 @@
   --error: #dc2626;
   --warning: #d97706;
 
-  /* =======================================================
-     🔌 ALIAS PARA COMPONENTES (Modales, Inventario, etc.) 
-     ======================================================= */
   
-  /* Fondos Sólidos */
+  
+  
   --color-background-primary: var(--card); 
-  --color-background-secondary: var(--hover);  /* Usamos hover (#f1f5f9) para que los inputs destaquen en fondo blanco */
+  --color-background-secondary: var(--hover);  
   --color-background-tertiary: var(--bg);
 
-  /* Textos */
+  
   --color-text-primary: var(--text-h);
   --color-text-secondary: var(--text);
   --color-text-tertiary: #94a3b8;
 
-  /* Bordes */
+  
   --color-border-secondary: #d1d5db;
   --color-border-tertiary: var(--border);
   --color-border-info: var(--accent);
 
-  /* Colores de Estado */
+  
   --color-background-info: var(--accent-bg);
   --color-text-info: var(--accent);
   
@@ -125,9 +117,7 @@
   --color-text-success: var(--success);
 }
 
-/* =========================
-   RESET BASE
-   ========================= */
+
 * {
   box-sizing: border-box;
 }
@@ -149,9 +139,7 @@ body {
   padding: 0;
 }
 
-/* =========================
-   TIPOGRAFÍA
-   ========================= */
+
 h1, h2, h3 {
   font-family: var(--heading);
   color: var(--text-h);
@@ -174,9 +162,7 @@ p {
   color: var(--text);
 }
 
-/* =========================
-   BOTONES
-   ========================= */
+
 button {
   font-family: var(--sans);
 }
@@ -208,9 +194,7 @@ button {
   background: var(--accent-bg);
 }
 
-/* =========================
-   COMPONENTES
-   ========================= */
+
 .card {
   background: var(--card);
   border-radius: 14px;
@@ -224,9 +208,7 @@ button {
   background: var(--hover);
 }
 
-/* =========================
-   ELEMENTOS
-   ========================= */
+
 img {
   max-width: 100%;
   display: block;
@@ -249,9 +231,7 @@ code {
   color: var(--text-h);
 }
 
-/* =========================
-   RESPONSIVE
-   ========================= */
+
 @media (max-width: 1024px) {
   h1 {
     font-size: 36px;

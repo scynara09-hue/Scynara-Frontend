@@ -8,7 +8,7 @@ import {
 
 const CustomersContext = createContext();
 
-// Hook personalizado para consumir el contexto de forma sencilla
+
 export const useCustomers = () => {
   const context = useContext(CustomersContext);
   if (!context) {
@@ -22,31 +22,31 @@ export const CustomersProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ─── OBTENER CLIENTES ───
+  
   const getCustomers = async () => {
     setLoading(true);
     try {
       setErrors([]);
       const res = await getClientesRequest();
       
-      // Formateamos los datos directamente en el contexto para mantener limpia la UI
+      
       const formattedData = (res.data || []).map(cli => ({
         ...cli,
         numero: `C-${String(cli.id_cliente).padStart(5, '0')}`,
-        compras: cli.compras || [] // Previene errores de lectura de arrays en el panel de detalles
+        compras: cli.compras || [] 
       }));
       
       setCustomers(formattedData);
       return formattedData;
     } catch (error) {
       setErrors([error.response?.data?.message || "Error al obtener los clientes"]);
-      throw error; // Transmitimos el error por si la página necesita manejar el catch
+      throw error; 
     } finally {
       setLoading(false);
     }
   };
 
-  // ─── CREAR CLIENTE ───
+  
   const createCustomer = async (data) => {
     try {
       setErrors([]);
@@ -54,11 +54,11 @@ export const CustomersProvider = ({ children }) => {
       return res.data;
     } catch (error) {
       setErrors([error.response?.data?.message || "Error al registrar el cliente"]);
-      throw error; // 🔴 CRÍTICO: Permite que el modal intercepte los errores de campo de Zod
+      throw error; 
     }
   };
 
-  // ─── ACTUALIZAR CLIENTE ───
+  
   const updateCustomer = async (id, data) => {
     try {
       setErrors([]);
@@ -66,11 +66,11 @@ export const CustomersProvider = ({ children }) => {
       return res.data;
     } catch (error) {
       setErrors([error.response?.data?.message || "Error al actualizar el cliente"]);
-      throw error; // 🔴 CRÍTICO: Permite que el modal mantenga los datos y se pinte de rojo
+      throw error; 
     }
   };
 
-  // ─── ELIMINAR CLIENTE ───
+  
   const deleteCustomer = async (id) => {
     try {
       setErrors([]);
@@ -92,7 +92,7 @@ export const CustomersProvider = ({ children }) => {
         createCustomer,
         updateCustomer,
         deleteCustomer,
-        setCustomers // Útil por si necesitas limpiar el estado local al desloguearse
+        setCustomers 
       }}
     >
       {children}

@@ -12,10 +12,10 @@ function initials(nombre) {
   return nombre?.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase() || "?";
 }
 export default function SupplierCard({ supplier, selected, onSelect, onEdit }) {
-  // 1. Aseguramos que el ID sea un número válido (si no existe, usamos 0)
+  
   const safeId = Number(supplier.id_S) || 0;
   
-  // 2. Calculamos el índice y siempre tenemos un color de respaldo
+  
   const col = COLORS[safeId % COLORS.length] || COLORS[0];
   
   const estadoClass = supplier.estado === "activo" ? "activo" : supplier.estado === "pausado" ? "pausado" : "inactivo";

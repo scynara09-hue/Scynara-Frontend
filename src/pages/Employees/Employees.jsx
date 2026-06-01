@@ -8,7 +8,7 @@ import Toast from "../../components/inventory/Toast";
 import { useAuth } from "../../context/AuthContext";
 import "./Employees.css";
 
-/* ───────────── 💡 1. AGREGAMOS EL ICONO DEL MENÚ ───────────── */
+
 const IconMenu = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
     strokeLinecap="round" width="18" height="18">
@@ -28,12 +28,12 @@ export default function Employees() {
   const [toast, setToast] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // ─── CARGAR EMPLEADOS DESDE EL BACKEND ───
+  
   const loadEmployees = async () => {
     if (isAdmin) {
       const data = await getUsers();
       if (data) {
-        // Formateamos los datos para generar el "numero" (ej. E-001)
+        
         const formattedData = data.map(emp => ({
           ...emp,
           numero: `E-${String(emp.id_usuario).padStart(3, '0')}`
@@ -45,10 +45,10 @@ export default function Employees() {
 
   useEffect(() => {
     loadEmployees();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [isAdmin]);
 
-  // Filtrado directo: Si es admin ve todos (menos él mismo), si es empleado ve solo su perfil
+  
   const filtered = useMemo(() => {
     const currentUserId = user?.id_usuario || user?.id;
 
@@ -73,7 +73,7 @@ export default function Employees() {
 
   const isOwnProfile = editing?.id_usuario === (user?.id_usuario || user?.id);
 
-  // ─── MANEJADORES DE ACCIONES (CRUD) ───
+  
   const handleEdit = (id) => {
     const empToEdit = filtered.find((e) => e.id_usuario === id) || null;
     setEditing(empToEdit);
@@ -137,7 +137,7 @@ export default function Employees() {
 
       <main className="emp-main">
         
-        {/* ───────────── 💡 2. ENVOLVEMOS EL TOPBAR Y AGREGAMOS EL BOTÓN ───────────── */}
+        {}
         <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px" }}>
           <button 
             className="sb-menu-btn" 

@@ -1,6 +1,4 @@
-/* =========================
-   VARIABLES (DEFAULT = 🌙 OSCURO)
-========================= */
+
 
 :root {
   --dash-bg: #0a0c18;
@@ -87,9 +85,7 @@
 }
 
 
-/* =========================
-   🌞 MODO CLARO
-========================= */
+
 
 [data-theme="light"] {
   --dash-bg: #f1f5f9;
@@ -176,14 +172,14 @@
 }
 
 
-/* ─── LAYOUT ─────────────────────────────────────────── */
+
 .dash {
   display: flex;
   min-height: 100vh;
   background: var(--dash-bg);
 }
 
-/* ─── SIDEBAR ─────────────────────────────────────────── */
+
 .sidebar {
   width: 240px;
   flex-shrink: 0;
@@ -318,7 +314,7 @@
 .sb-logout:hover { color: var(--dash-logout-hover); }
 .sb-logout svg { width: 16px; height: 16px; }
 
-/* ─── OVERLAY MÓVIL ─────────────────────────────────── */
+
 .sb-overlay {
   position: fixed;
   inset: 0;
@@ -336,14 +332,14 @@
   color: var(--dash-text-muted);
 }
 
-/* ─── MAIN ─────────────────────────────────────────── */
+
 .dash-main {
   flex: 1;
   overflow-y: auto;
   padding: 32px;
 }
 
-/* ─── TOPBAR ─────────────────────────────────────────── */
+
 .dash-topbar {
   display: flex;
   align-items: center;
@@ -393,7 +389,7 @@
   border: 1.5px solid var(--dash-notif-dot);
 }
 
-/* ─── STATS ─────────────────────────────────────────── */
+
 .dash-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -445,7 +441,7 @@
 .stat-num   { font-size: 26px; font-weight: 800; color: var(--dash-stat-num); line-height: 1; }
 .stat-label { font-size: 12px; color: var(--dash-stat-label); margin-top: 4px; }
 
-/* ─── MODULES ─────────────────────────────────────────── */
+
 .dash-section-title {
   font-size: 13px;
   font-weight: 600;
@@ -519,7 +515,7 @@
 
 
 
-/* ─── BOTTOM PANELS ─────────────────────────────────── */
+
 .dash-bottom {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
@@ -616,7 +612,7 @@
   transform: scale(0.92) rotate(10deg);
 }
 
-/* ─── RESPONSIVE ─────────────────────────────────────── */
+
 @media (max-width: 1024px) {
   .dash-stats   { grid-template-columns: repeat(2, 1fr); }
   .dash-modules { grid-template-columns: repeat(2, 1fr); }

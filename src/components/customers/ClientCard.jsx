@@ -31,13 +31,13 @@ const IconEdit = () => (
 export default function ClientCard({ client, index, selected, onSelect, onEdit }) {
   const av = COLORS[index % COLORS.length];
   
-  // 💡 FIX: Extracción de iniciales segura separando el nombre completo
+  
   const nameParts = (client.nombre || "").trim().split(" ");
   const initials = nameParts.length > 1 
     ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
     : (nameParts[0]?.[0] || "?").toUpperCase();
 
-  // 💡 FIX: Protección para compras por si el backend aún no las envía
+  
   const compras = client.compras || [];
   const total = compras
     .filter(c => c.estado === "completada")
@@ -46,14 +46,14 @@ export default function ClientCard({ client, index, selected, onSelect, onEdit }
   return (
     <div
       className={`client-card ${selected ? "selected" : ""}`}
-      onClick={() => onSelect(client.id_cliente)} /* 💡 FIX: Usar id_cliente */
+      onClick={() => onSelect(client.id_cliente)} 
     >
       <div className="cc-top">
         <div className="cc-avatar" style={{ background: av.bg, color: av.color }}>
           {initials}
         </div>
         <div className="cc-info">
-          {/* 💡 FIX: Solo imprimimos client.nombre porque ya trae todo */}
+          {}
           <p>{client.nombre}</p>
           <span>{client.correo || client.email}</span>
           <div className={`cc-rfc ${client.RFC ? "has" : "no"}`}>
@@ -81,7 +81,7 @@ export default function ClientCard({ client, index, selected, onSelect, onEdit }
         </div>
         <button
           className="cc-edit-btn"
-          onClick={e => { e.stopPropagation(); onEdit(client.id_cliente); }} /* 💡 FIX: Usar id_cliente */
+          onClick={e => { e.stopPropagation(); onEdit(client.id_cliente); }} 
         >
           <IconEdit />
         </button>

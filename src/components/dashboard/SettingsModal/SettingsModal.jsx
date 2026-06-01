@@ -3,7 +3,7 @@ import "./SettingsModal.css";
 import { useTheme } from "../../../context/ThemeContext";
 import { useAuth } from "../../../context/AuthContext";
 
-/* ───────────── NAVEGACIÓN ───────────── */
+
 const NAV_ITEMS = [
   {
     id: "general",
@@ -31,7 +31,7 @@ const NAV_ITEMS = [
     id: "feedback",
     label: "Evaluar Scynara",
     subtitle: "Danos tu opinión sobre el sistema",
-    adminOnly: true, // 💡 Bandera para ocultarlo a empleados
+    adminOnly: true, 
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -40,7 +40,7 @@ const NAV_ITEMS = [
   },
 ];
 
-/* ───────────── COMPONENTES DE UI ───────────── */
+
 function SettingRow({ label, description, children }) {
   return (
     <div className="sm-row">
@@ -53,7 +53,7 @@ function SettingRow({ label, description, children }) {
   );
 }
 
-/* ───────────── PANEL GENERAL ───────────── */
+
 function PanelGeneral({ theme, changeTheme }) {
   const themeMap = { light: "Claro", dark: "Oscuro", system: "Sistema" };
   const currentModeText = themeMap[theme] || "Oscuro";
@@ -85,7 +85,7 @@ function PanelGeneral({ theme, changeTheme }) {
   );
 }
 
-/* ───────────── PANEL DE CUENTA ───────────── */
+
 function PanelCuenta({ user, isSubmitting, setIsSubmitting, updateUser }) {
   const [formData, setFormData] = useState({ nombre: "", correo: "", telefono: "" });
   const [feedback, setFeedback] = useState(null);
@@ -171,9 +171,9 @@ function PanelCuenta({ user, isSubmitting, setIsSubmitting, updateUser }) {
   );
 }
 
-/* ───────────── NUEVO: PANEL DE FEEDBACK ───────────── */
+
 function PanelFeedback({ isSubmitting, setIsSubmitting, sendEvaluation }) {
-  const [rating, setRating] = useState(5); // Por defecto 5 estrellas
+  const [rating, setRating] = useState(5); 
   const [hoverRating, setHoverRating] = useState(0);
   const [comentario, setComentario] = useState("");
   const [feedback, setFeedback] = useState(null);
@@ -184,10 +184,10 @@ function PanelFeedback({ isSubmitting, setIsSubmitting, sendEvaluation }) {
     setFeedback(null);
 
     try {
-      // 💡 Consumimos la función de nuestro AuthContext
+      
       await sendEvaluation({ calificacion: rating, comentario });
       setFeedback({ type: "success", msg: "¡Gracias! Tu evaluación ha sido enviada con éxito." });
-      setComentario(""); // Limpiamos el texto
+      setComentario(""); 
       setRating(5);
     } catch (error) {
       setFeedback({ type: "error", msg: error.message || "No se pudo enviar la evaluación." });
@@ -213,7 +213,7 @@ function PanelFeedback({ isSubmitting, setIsSubmitting, sendEvaluation }) {
 
       <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         
-        {/* Estrellas Interactivas */}
+        {}
         <div>
           <span className="sm-row-label" style={{ display: "block", marginBottom: "8px" }}>Calificación</span>
           <div style={{ display: "flex", gap: "5px", cursor: "pointer" }}>
@@ -235,7 +235,7 @@ function PanelFeedback({ isSubmitting, setIsSubmitting, sendEvaluation }) {
           </div>
         </div>
 
-        {/* Textarea */}
+        {}
         <div>
           <span className="sm-row-label" style={{ display: "block", marginBottom: "8px" }}>Comentario (Aparecerá en la página principal)</span>
           <textarea
@@ -259,17 +259,17 @@ function PanelFeedback({ isSubmitting, setIsSubmitting, sendEvaluation }) {
   );
 }
 
-/* ───────────── MAPEO DE PANELES ───────────── */
+
 const PANELS = {
   general: PanelGeneral,
   cuenta: PanelCuenta,
   feedback: PanelFeedback,
 };
 
-/* ───────────── COMPONENTE PRINCIPAL ───────────── */
+
 export default function SettingsModal({ open, onClose }) {
   const { theme, changeTheme } = useTheme();
-  // 💡 Traemos sendEvaluation y updateUser del contexto
+  
   const { user, sendEvaluation, updateUser } = useAuth(); 
   
   const [activeTab, setActiveTab] = useState("general");
@@ -277,7 +277,7 @@ export default function SettingsModal({ open, onClose }) {
 
   if (!open) return null;
 
-  // 💡 Filtramos las pestañas de navegación según el rol
+  
   const visibleNavItems = NAV_ITEMS.filter(item => !item.adminOnly || user?.rol === 'ADMINISTRADOR');
 
   const activeNav = visibleNavItems.find((n) => n.id === activeTab) || visibleNavItems[0];
@@ -287,7 +287,7 @@ export default function SettingsModal({ open, onClose }) {
     <div className="sm-overlay" onClick={(e) => { if(e.target === e.currentTarget && !isSubmitting) onClose(); }}>
       <div className="sm-modal" role="dialog" aria-modal="true" aria-label="Configuración">
         
-        {/* Sidebar */}
+        {}
         <aside className="sm-sidebar">
           <span className="sm-sidebar-title">Ajustes</span>
           {visibleNavItems.map((item) => (
@@ -302,7 +302,7 @@ export default function SettingsModal({ open, onClose }) {
           ))}
         </aside>
 
-        {/* Main */}
+        {}
         <div className="sm-main">
           <div className="sm-header">
             <div>
@@ -333,14 +333,14 @@ export default function SettingsModal({ open, onClose }) {
               {activeTab === "general" ? "Cerrar" : "Cancelar"}
             </button>
 
-            {/* Botón de Guardar Perfil */}
+            {}
             {activeTab === "cuenta" && (
               <button className="sm-btn-save" type="submit" form="form-cuenta" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.6 : 1 }}>
                 {isSubmitting ? "Guardando..." : "Guardar cambios"}
               </button>
             )}
 
-            {/* Botón de Enviar Testimonio */}
+            {}
             {activeTab === "feedback" && (
               <button className="sm-btn-save" type="submit" form="form-feedback" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.6 : 1, backgroundColor: "var(--color-text-info)" }}>
                 {isSubmitting ? "Enviando..." : "Enviar evaluación"}

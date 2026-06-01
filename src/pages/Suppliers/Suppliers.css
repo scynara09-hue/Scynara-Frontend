@@ -1,4 +1,4 @@
-/* ─── LAYOUT ─────────────────────────────────────────── */
+
 .suppliers-main {
   flex: 1;
   display: flex;
@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 
-/* ─── LEFT ─────────────────────────────────────────── */
+
 .suppliers-left {
   flex: 1;
   padding: 24px 28px;
@@ -20,7 +20,7 @@
   background: var(--color-background-tertiary);
 }
 
-/* ─── TOPBAR ─────────────────────────────────────────── */
+
 .suppliers-topbar {
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@
   transform: translateY(-1px);
 }
 
-/* ─── STATS ─────────────────────────────────────────── */
+
 .suppliers-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -102,7 +102,7 @@
   color: var(--color-text-secondary); 
 }
 
-/* ─── TOOLBAR ─────────────────────────────────────────── */
+
 .suppliers-toolbar {
   display: flex;
   align-items: center;
@@ -169,7 +169,7 @@
   white-space: nowrap; 
 }
 
-/* ─── GRID ─────────────────────────────────────────── */
+
 .suppliers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -187,7 +187,7 @@
   margin-top: 12px; 
 }
 
-/* ─── SUPPLIER CARD ─────────────────────────────────── */
+
 .supplier-card {
   background: var(--color-background-primary);
   border: 1px solid var(--color-border-tertiary);
@@ -304,10 +304,10 @@
   border-color: var(--color-border-info);
 }
 
-/* ─── ERROR  ─────────────────────────────────────────── */
+
 .sup-input.input-error {
   border-color: var(--error) !important;
-  background-color: rgba(239, 68, 68, 0.05); /* Tinte rojo super sutil */
+  background-color: rgba(239, 68, 68, 0.05); 
 }
 
 .sup-error-msg {
@@ -321,7 +321,7 @@
   animation: fadeIn 0.2s ease-out;
 }
 
-/* ─── DETAIL PANEL ─────────────────────────────────── */
+
 .supplier-detail-panel {
   width: 320px;
   flex-shrink: 0;
@@ -428,7 +428,7 @@
 .sp-info-label { font-size: 10px; color: var(--color-text-tertiary); }
 .sp-info-val   { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
 
-/* ─── PRODUCTOS DEL PROVEEDOR ────────────────────────── */
+
 .sp-product-item {
   display: flex;
   align-items: center;
@@ -451,7 +451,7 @@
 .sp-product-info span { font-size: 11px; color: var(--color-text-tertiary); }
 .sp-product-price { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--color-text-primary); flex-shrink: 0; }
 
-/* ─── RESUMEN PANEL ─────────────────────────────────── */
+
 .sp-summary {
   margin: 0 22px 22px;
   background: var(--color-background-secondary);
@@ -477,7 +477,7 @@
 
 .sp-summary-label { color: var(--color-text-secondary); }
 
-/* ─── MODAL ─────────────────────────────────────────── */
+
 
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -492,7 +492,7 @@
 .sup-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5); /* Overlay elegante */
+  background: rgba(0, 0, 0, 0.5); 
   backdrop-filter: blur(5px);
   z-index: 100;
   display: flex;
@@ -507,7 +507,7 @@
   border: 1px solid var(--color-border-secondary); 
   border-radius: 18px;
   width: 100%;
-  max-width: 440px; /* Tamaño compacto */
+  max-width: 440px; 
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -528,7 +528,7 @@
   letter-spacing: -0.01em;
 }
 
-/* Icono <X /> perfectamente centrado */
+
 .sup-modal-close {
   width: 32px;
   height: 32px;
@@ -591,7 +591,7 @@
   opacity: 0.7; 
 }
 
-/* Campos de texto usando las nuevas variables limpias */
+
 .sup-input, .sup-select, .sup-textarea {
   background-color: var(--color-background-secondary);
   border: 1px solid var(--color-border-tertiary);
@@ -694,7 +694,7 @@
   transform: translateY(0);
 }
 
-/* ─── RESPONSIVE ─────────────────────────────────────── */
+
 @media (max-width: 1100px) {
   .supplier-detail-panel { width: 280px; }
   .suppliers-stats { grid-template-columns: repeat(2, 1fr); }

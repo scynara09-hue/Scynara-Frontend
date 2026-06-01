@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { getToken, setToken, removeToken } from "../utils/token";
 import { jwtDecode } from "jwt-decode";
 
-// 💡 Importamos la nueva función createEvaluationRequest
+
 import {
   loginRequest,
   getProfileRequest,
@@ -11,7 +11,7 @@ import {
   deleteUserRequest,
   createUserRequest,
   createEvaluationRequest
-} from "../services/authService"; // Ajusta la ruta si tu archivo se llama diferente
+} from "../services/authService"; 
 
 const AuthContext = createContext();
 
@@ -27,13 +27,13 @@ const isTokenValid = (token) => {
 };
 
 export const AuthProvider = ({ children }) => {
-  // 💡 Corregido el pequeño error de tipeo aquí
+  
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ─── VERIFICAR SESIÓN AL RECARGAR ───
+  
   useEffect(() => {
     const checkLogin = async () => {
       const token = getToken();
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
     checkLogin();
   }, []);
 
-  // ─── INICIAR SESIÓN ───
+  
   const login = async (data) => {
     try {
       setErrors([]);
@@ -86,14 +86,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ─── CERRAR SESIÓN ───
+  
   const logout = () => {
     removeToken();
     setUser(null);
     setIsAuthenticated(false);
   };
 
-  // ─── CRUD INTEGRADAS ───
+  
   const createUser = async (data) => {
     try {
       setErrors([]);
@@ -148,15 +148,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ─── NUEVA FUNCIÓN: ENVIAR EVALUACIÓN ───
+  
   const sendEvaluation = async (data) => {
     try {
       setErrors([]);
-      // data debe ser un objeto: { calificacion: 5, comentario: "..." }
+      
       const res = await createEvaluationRequest(data);
       return res.data; 
     } catch (error) {
-      // Manejamos los errores de Zod o del servidor
+      
       const errMsg = error.response?.data?.message || "Error al enviar la evaluación";
       setErrors([errMsg]);
       throw error;
@@ -174,7 +174,7 @@ export const AuthProvider = ({ children }) => {
         updateUser,
         deleteUser,
         createUser,
-        sendEvaluation, // 💡 Exponemos la nueva función al resto de la app
+        sendEvaluation, 
         errors,
         loading
       }}

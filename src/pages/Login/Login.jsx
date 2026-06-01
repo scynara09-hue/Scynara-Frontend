@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import LoginAlert from "../../components/login/LoginAlert";
 import PolicyModal from "../../components/shared/PolicyModal";
-// import RolSelector from "../../components/login/RolSelector";
+
 import "./Login.css";
 
-// ── Iconos ──────────────────────────────────────────
+
 const IconMail = () => (
   <svg
     viewBox="0 0 24 24"
@@ -80,7 +80,7 @@ const IconBack = () => (
   </svg>
 );
 
-// ── Validación ──────────────────────────────────────
+
 function validate({ email, password }) {
   const formErrors = {};
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
@@ -89,10 +89,10 @@ function validate({ email, password }) {
   return formErrors;
 }
 
-// ── Componente principal ────────────────────────────
+
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth(); // ✅ solo login, el contexto maneja todo internamente
+  const { login } = useAuth(); 
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [rol, setRol] = useState("empleado");
@@ -152,9 +152,7 @@ export default function Login() {
         <LoginAlert type={alert.type} message={alert.message} />
 
         <form onSubmit={handleSubmit} noValidate>
-          {/*  <RolSelector value={rol} onChange={setRol} />
-
-          {/* Email */}
+          {}
           <div className="reg-field">
             <label htmlFor="email">CORREO ELECTRÓNICO</label>
             <div className="reg-input-wrap">
@@ -175,7 +173,7 @@ export default function Login() {
             )}
           </div>
 
-          {/* Password */}
+          {}
           <div className="reg-field">
             <label htmlFor="password">CONTRASEÑA</label>
             <div className="reg-input-wrap">

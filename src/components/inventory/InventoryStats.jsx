@@ -1,4 +1,4 @@
-// 💡 CORRECCIÓN: Manejamos el caso donde la fecha sea null o indefinida
+
 function daysUntil(dateStr) {
   if (!dateStr) return null;
   const d = new Date(dateStr) - new Date();
@@ -17,9 +17,9 @@ export default function InventoryStats({ products }) {
   const low = products.filter(p => getStockLevel(p.cantidad) !== "ok").length;
 
   const exp = products.filter(p => {
-    // Leemos la propiedad exacta de la base de datos
+    
     const d = daysUntil(p.fecha_caducidad);
-    // Solo contamos si d no es null, y si faltan entre 0 y 7 días
+    
     return d !== null && d >= 0 && d <= 7;
   }).length;
 
@@ -47,7 +47,7 @@ export default function InventoryStats({ products }) {
   );
 }
 
-// ─── Iconos (Se mantienen idénticos) ───
+
 const IconBox = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="1.8" strokeLinecap="round">
     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />

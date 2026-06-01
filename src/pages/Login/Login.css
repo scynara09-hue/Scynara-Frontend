@@ -1,6 +1,4 @@
-/* =========================
-   VARIABLES (DEFAULT = 🌙 OSCURO)
-========================= */
+
 
 :root {
   --login-bg: #0a0c18;
@@ -28,9 +26,7 @@
   --login-grid-dot: rgba(255, 255, 255, 0.04);
 }
 
-/* =========================
-   🌞 MODO CLARO
-========================= */
+
 
 [data-theme="light"] {
   --login-bg: #ffffff;
@@ -58,9 +54,7 @@
   --login-grid-dot: rgba(0, 0, 0, 0.04);
 }
 
-/* =========================
-   PAGE
-========================= */
+
 .reg-link {
   background: none;
   border: none;
@@ -101,9 +95,7 @@
   transform: scale(1.05);
 }
 
-/* =========================
-   BACKGROUND
-========================= */
+
 
 .reg-bg {
   position: absolute;
@@ -147,9 +139,7 @@
   left: -150px;
 }
 
-/* =========================
-   CARD
-========================= */
+
 
 .login-card {
   position: relative;
@@ -200,9 +190,7 @@
   text-decoration: underline;
 }
 
-/* =========================
-   ROLE
-========================= */
+
 
 .login-rol-hint {
   display: flex;
@@ -254,9 +242,7 @@
   color: var(--login-text-muted);
 }
 
-/* =========================
-   INPUTS
-========================= */
+
 
 .reg-field {
   display: flex;
@@ -337,9 +323,7 @@
   color: #f87171;
 }
 
-/* =========================
-   ALERT
-========================= */
+
 
 .reg-alert {
   display: flex;
@@ -363,9 +347,7 @@
   color: #6ee7b7;
 }
 
-/* =========================
-   FORGOT
-========================= */
+
 
 .login-forgot {
   display: flex;
@@ -384,9 +366,7 @@
   text-decoration: underline;
 }
 
-/* =========================
-   SUBMIT
-========================= */
+
 
 .reg-submit {
   width: 100%;
@@ -433,9 +413,7 @@
   }
 }
 
-/* =========================
-   TERMS
-========================= */
+
 
 .reg-terms {
   font-size: 11px;
@@ -454,9 +432,7 @@
   text-decoration: underline;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+
 
 @media (max-width: 480px) {
   .login-card {

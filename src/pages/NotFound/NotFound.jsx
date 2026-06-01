@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <div className="nf-wrapper">
 
-      {/* Fondo decorativo */}
+      {}
       <div className="nf-bg">
         <div className="nf-orb orb-1" />
         <div className="nf-orb orb-2" />

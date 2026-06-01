@@ -1,6 +1,4 @@
-/* =========================
-   OVERLAY & MODAL
-========================= */
+
 
 .sm-overlay {
   position: fixed;
@@ -26,9 +24,7 @@
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+
 
 .sm-sidebar {
   width: 180px;
@@ -87,9 +83,7 @@
   opacity: 1;
 }
 
-/* =========================
-   MAIN
-========================= */
+
 
 .sm-main {
   flex: 1;
@@ -98,9 +92,7 @@
   overflow: hidden;
 }
 
-/* =========================
-   HEADER
-========================= */
+
 
 .sm-header {
   display: flex;
@@ -142,9 +134,7 @@
   color: var(--dash-text);
 }
 
-/* =========================
-   BODY
-========================= */
+
 
 .sm-body {
   flex: 1;
@@ -199,9 +189,7 @@
   flex-shrink: 0;
 }
 
-/* =========================
-   TOGGLE
-========================= */
+
 
 .sm-toggle {
   position: relative;
@@ -247,9 +235,7 @@
   transform: translateX(16px);
 }
 
-/* =========================
-   PILLS
-========================= */
+
 
 .sm-pills {
   display: flex;
@@ -278,9 +264,7 @@
   color: var(--dash-accent);
 }
 
-/* =========================
-   INPUTS & SELECT
-========================= */
+
 
 .sm-select {
   font-size: 13px;
@@ -309,9 +293,7 @@
   border-color: var(--dash-accent);
 }
 
-/* =========================
-   AVATAR
-========================= */
+
 
 .sm-avatar-row {
   display: flex;
@@ -355,9 +337,7 @@
   color: var(--dash-text-muted);
 }
 
-/* =========================
-   BADGES
-========================= */
+
 
 .sm-badge {
   font-size: 11px;
@@ -373,9 +353,7 @@
   color: var(--dash-trend-up-color);
 }
 
-/* =========================
-   BUTTONS
-========================= */
+
 
 .sm-ghost-btn {
   font-size: 12px;
@@ -393,9 +371,7 @@
   color: var(--dash-text-strong);
 }
 
-/* =========================
-   DANGER ZONE
-========================= */
+
 
 .sm-danger-zone {
   border: 1px solid rgba(239, 68, 68, 0.25);
@@ -439,9 +415,7 @@
   background: rgba(239, 68, 68, 0.08);
 }
 
-/* =========================
-   FOOTER
-========================= */
+
 
 .sm-footer {
   padding: 14px 24px;
@@ -483,9 +457,7 @@
   filter: brightness(1.1);
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+
 
 @media (max-width: 600px) {
   .sm-modal {

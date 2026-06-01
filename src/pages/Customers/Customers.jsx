@@ -9,7 +9,6 @@ import ClientModal from "../../components/customers/ClientModal";
 import Toast from "../../components/inventory/Toast";
 
 import { useCustomers } from "../../context/CustomersContext"; 
-// 💡 Borramos la importación de lucide-react porque ya tenemos nuestro IconMenu
 
 import "./Customers.css";
 
@@ -22,7 +21,7 @@ const IconMenu = () => (
   </svg>
 );
 
-// ─── Función auxiliar segura ───
+
 function totalCompras(client) {
   const compras = client.compras || [];
   return compras
@@ -31,7 +30,7 @@ function totalCompras(client) {
 }
 
 export default function Customers() {
-  // ─── Extraemos el estado y las funciones del Contexto ───
+  
   const { 
     customers, 
     getCustomers, 
@@ -48,14 +47,14 @@ export default function Customers() {
   const [toast, setToast] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // ─── CARGAR CLIENTES ───
+  
   useEffect(() => {
-    // getCustomers ya maneja el loading y los errores internamente en el contexto
+    
     getCustomers().catch(() => setToast("Error al cargar la lista de clientes"));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, []);
 
-  // ─── FILTRADO Y ORDENADO DINÁMICO ───
+  
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
     let list = customers.filter(
@@ -84,7 +83,7 @@ export default function Customers() {
   const selectedClient = customers.find((c) => c.id_cliente === selectedId) || null;
   const selectedIndex = selectedClient ? customers.indexOf(selectedClient) : 0;
 
-  // ─── MANEJADORES DE EVENTOS (CRUD) ───
+  
   const handleEdit = (id) => {
     setEditing(customers.find((c) => c.id_cliente === id));
     setModalOpen(true);
@@ -100,7 +99,7 @@ export default function Customers() {
         res = await createCustomer(data);
       }
 
-      // Interceptor por si tu backend responde 200 con { errors: {...} } en lugar de 400
+      
       const possibleErrors = res?.errors || res?.data?.errors;
       if (possibleErrors) {
         const msg = res?.message || res?.data?.message || "Revisa los campos marcados en rojo";
@@ -110,7 +109,7 @@ export default function Customers() {
 
       setToast(data.id_cliente ? "Cliente actualizado" : "Cliente agregado correctamente");
       
-      // Refrescamos la lista global
+      
       getCustomers();
       
       if (data.id_cliente && selectedId === data.id_cliente) {
@@ -120,7 +119,7 @@ export default function Customers() {
       return { success: true }; 
 
     } catch (error) {
-      // El contexto lanza el error de Axios (ej. 400), lo atrapamos aquí
+      
       const backendErrors = error.response?.data?.errors || { general: "Error al guardar" };
       setToast(error.response?.data?.message || "Revisa los campos marcados en rojo");
       return { success: false, errors: backendErrors }; 
@@ -147,17 +146,16 @@ export default function Customers() {
 
       <div className="clients-main">
         <div className="clients-body">
-          {/* Columna izquierda */}
+          {}
           <div className="clients-left">
             
-            {/* ───────────── 💡 2. ENVOLVEMOS EL TOPBAR Y AGREGAMOS EL BOTÓN ───────────── */}
+            {}
             <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px" }}>
               <button 
                 className="sb-menu-btn" 
                 onClick={() => setSidebarOpen(true)}
                 title="Abrir menú"
               >
-                {/* 💡 Dejamos un solo ícono */}
                 <IconMenu />
               </button>
               
@@ -187,7 +185,7 @@ export default function Customers() {
             />
           </div>
 
-          {/* Panel lateral */}
+          {}
           <ClientDetailPanel
             client={selectedClient}
             clientIndex={selectedIndex}

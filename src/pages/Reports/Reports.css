@@ -1,4 +1,4 @@
-/* ─── LAYOUT ─────────────────────────────────────────── */
+
 .reports-main {
   flex: 1;
   display: flex;
@@ -13,7 +13,7 @@
   padding: 24px 28px 40px;
 }
 
-/* ─── TOPBAR ─────────────────────────────────────────── */
+
 .reports-topbar {
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@
   color: var(--color-text-primary);
 }
 
-/* ─── DATE FILTER ─────────────────────────────────────── */
+
 .reports-date-filter {
   display: flex;
   align-items: center;
@@ -117,7 +117,7 @@
 
 .rdf-date-input:focus { border-color: #10b981; }
 
-/* ─── TABS ─────────────────────────────────────────────── */
+
 .reports-tabs {
   display: flex;
   align-items: center;
@@ -159,7 +159,7 @@
   border-radius: 50%;
 }
 
-/* ─── KPI CARDS ─────────────────────────────────────────── */
+
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -208,7 +208,7 @@
 .kpi-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
 .kpi-sub   { font-size: 11px; color: var(--color-text-tertiary); }
 
-/* ─── CHART CARD ─────────────────────────────────────────── */
+
 .chart-card {
   background: var(--color-background-primary);
   border: 0.5px solid var(--color-border-tertiary);
@@ -258,7 +258,7 @@
   color: var(--color-text-primary);
 }
 
-/* ─── REPORT GRID 2 cols ─────────────────────────────────── */
+
 .report-grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -266,7 +266,7 @@
   margin-bottom: 16px;
 }
 
-/* ─── TABLE ─────────────────────────────────────────────── */
+
 .r-table-wrap { overflow-x: auto; }
 
 .r-table {
@@ -316,7 +316,7 @@
 .r-rank.silver { background: rgba(148,163,184,0.15); color: #94a3b8; }
 .r-rank.bronze { background: rgba(180,120,80,0.15);  color: #b47850; }
 
-/* ─── STOCK ALERT ────────────────────────────────────────── */
+
 .stock-alert-row {
   display: flex;
   align-items: center;
@@ -348,7 +348,7 @@
 .stock-warning  { color: #f59e0b; }
 .stock-ok       { color: #34d399; }
 
-/* ─── DONUT LEGEND ───────────────────────────────────────── */
+
 .donut-legend {
   display: flex;
   flex-direction: column;
@@ -377,7 +377,7 @@
   color: var(--color-text-primary);
 }
 
-/* ─── EMPTY STATE ─────────────────────────────────────────── */
+
 .r-empty {
   text-align: center;
   padding: 40px 20px;
@@ -385,7 +385,7 @@
   font-size: 13px;
 }
 
-/* ─── RESPONSIVE ─────────────────────────────────────────── */
+
 @media (max-width: 1100px) {
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
 }

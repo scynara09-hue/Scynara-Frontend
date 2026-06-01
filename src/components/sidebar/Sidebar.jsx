@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
-/* ───────────── Iconos ───────────── */
+
 const IconGrid = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
     <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -62,8 +62,8 @@ const IconLogout = () => (
   </svg>
 );
 
-/* ───────────── NAV ITEMS ───────────── */
-// Los roles aquí se compararán ignorando mayúsculas/minúsculas más adelante
+
+
 const NAV_ITEMS = [
   {
     section: "Principal",
@@ -71,7 +71,7 @@ const NAV_ITEMS = [
       { label: "Dashboard", path: "/dashboard", icon: IconGrid, roles: ["empleado", "administrador"] },
       { label: "Inventario", path: "/inventory", icon: IconHome, roles: ["empleado", "administrador"], badge: "12" },
       { label: "Ventas", path: "/sales", icon: IconDollar, roles: ["empleado", "administrador"] },
-      // { label: "Clientes", path: "/customers", icon: IconUsers, roles: ["empleado", "administrador"] },
+      
     ],
   },
   {
@@ -79,7 +79,7 @@ const NAV_ITEMS = [
     items: [
       { label: "Clientes", path: "/customers", icon: IconTruck, roles: ["empleado", "administrador"] },
       { label: "Proveedores", path: "/suppliers", icon: IconTruck, roles: ["empleado", "administrador"] },
-      // { label: "Reportes", path: "/reports", icon: IconChart, roles: ["administrador"] },
+      
     ],
   },
   {
@@ -90,7 +90,7 @@ const NAV_ITEMS = [
   },
 ];
 
-/* ───────────── COMPONENTE ───────────── */
+
 export default function Sidebar({ open, onClose }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -104,14 +104,14 @@ export default function Sidebar({ open, onClose }) {
     ? user.nombre.slice(0, 1).toUpperCase()
     : "U";
 
-  // Estandarizamos el rol del usuario a minúsculas para compararlo fácilmente
+  
   const userRole = user?.rol?.toLowerCase() || "";
 
   return (
     <aside className={`sidebar ${open ? "open" : ""}`}>
       <div className="sb-logo">SCYNARA</div>
 
-      {/* Usuario */}
+      {}
       <div className="sb-user">
         <div className="sb-avatar">{initials}</div>
         <div className="sb-user-info">
@@ -121,20 +121,20 @@ export default function Sidebar({ open, onClose }) {
         </div>
       </div>
 
-      {/* Navegación */}
+      {}
       <nav className="sb-nav">
         {NAV_ITEMS.map(({ section, items }) => {
-          // 1. Filtramos los items que el usuario actual SÍ tiene permitido ver
+          
           const allowedItems = items.filter((item) => item.roles.includes(userRole));
 
-          // 2. Si después de filtrar, la sección se queda vacía, no renderizamos nada (ni el título)
+          
           if (allowedItems.length === 0) return null;
 
           return (
             <div key={section}>
               <div className="sb-section">{section}</div>
 
-              {/* 3. Mapeamos solo los items permitidos */}
+              {}
               {allowedItems.map((item) => {
                 const Icon = item.icon;
 
@@ -158,7 +158,7 @@ export default function Sidebar({ open, onClose }) {
         })}
       </nav>
 
-      {/* Footer */}
+      {}
       <div className="sb-footer">
         <button className="sb-logout" onClick={handleLogout}>
           <IconLogout />

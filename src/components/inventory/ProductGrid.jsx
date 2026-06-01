@@ -21,7 +21,7 @@ export default function ProductGrid({ products, onEdit, onDelete }) {
     <div className="inv-grid">
       {products.map((p) => (
         <ProductCard
-          key={p.id_producto} // ACTUALIZADO a singular
+          key={p.id_producto} 
           product={p}
           onEdit={onEdit}
           onDelete={onDelete}

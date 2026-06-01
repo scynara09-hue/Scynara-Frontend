@@ -28,7 +28,7 @@ export default function Hero() {
           </p>
 
           <div className="hero-btn-row">
-            {/* 💡 Agregamos el onClick para redirigir a la ruta de registro */}
+            {}
             <button 
               className="btn-primary"
               onClick={() => navigate('/register')}

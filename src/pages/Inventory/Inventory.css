@@ -1,4 +1,4 @@
-/* ─── TOPBAR ─────────────────────────────────────────── */
+
 .inv-main {
   flex: 1;
   padding: 28px 32px;
@@ -46,7 +46,7 @@
   transform: translateY(-1px);
 }
 
-/* ─── STATS ─────────────────────────────────────────── */
+
 .inv-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -88,7 +88,7 @@
   color: var(--color-text-secondary);
 }
 
-/* ─── TOOLBAR ─────────────────────────────────────────── */
+
 .inv-toolbar {
   display: flex;
   align-items: center;
@@ -156,7 +156,7 @@
   color: var(--color-text-info);
 }
 
-/* ─── GRID ─────────────────────────────────────────── */
+
 .inv-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -174,7 +174,7 @@
   margin-top: 12px;
 }
 
-/* ─── PRODUCT CARD ─────────────────────────────────── */
+
 .prod-card {
   background: var(--color-background-primary);
   border: 0.5px solid var(--color-border-tertiary);
@@ -301,8 +301,8 @@
 .prod-exp      { font-size: 11px; color: var(--color-text-secondary); }
 .prod-exp.near { color: var(--color-text-warning); }
 
-/* ─── MODAL ─────────────────────────────────────────── */
-/* ─── MODAL DE INVENTARIO (AISLADO) ─────────────────────────── */
+
+
 
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -495,7 +495,7 @@
 
 
 
-/* ─── TOAST ─────────────────────────────────────────── */
+
 .toast {
   position: fixed;
   bottom: 24px;
@@ -533,7 +533,7 @@
   to { opacity: 0; transform: translateY(20px); }
 }
 
-/* ─── SIDEBAR COMPARTIDO ─────────────────────────────── */
+
 .sidebar {
   width: 240px;
   flex-shrink: 0;
@@ -706,7 +706,7 @@
   color: var(--color-text-secondary);
 }
 
-/* ─── RESPONSIVE ─────────────────────────────────────── */
+
 @media (max-width: 1024px) {
   .inv-stats { grid-template-columns: repeat(2, 1fr); }
 }

@@ -39,7 +39,7 @@ export default function SaleDetailModal({ open, sale, onClose }) {
   const dateObj = sale.fecha_hora ? new Date(sale.fecha_hora) : new Date();
   const fechaCompleta = `${dateObj.toLocaleDateString()} a las ${dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
 
-  // 💡 Normalizamos también aquí el estado para el diccionario
+  
   const estadoNormalizado = sale.estado ? sale.estado.toLowerCase() : "completada";
 
   return (
@@ -57,7 +57,7 @@ export default function SaleDetailModal({ open, sale, onClose }) {
             ["Vendedor",      sale.vendedor_nombre || "Desconocido"],
             ["Fecha y Hora",  fechaCompleta],
             ["Método de Pago", sale.metodo_pago], 
-            ["Estado",        STATUS_LABELS[estadoNormalizado] || "Completada"], // 💡 Estado corregido
+            ["Estado",        STATUS_LABELS[estadoNormalizado] || "Completada"], 
             ["Total",         `$${Number(sale.total).toFixed(2)}`],
           ].map(([label, val]) => (
             <div key={label} className="detail-row">

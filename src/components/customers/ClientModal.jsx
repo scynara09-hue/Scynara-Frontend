@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
-// --- IMPORTACIONES DEL MAPA ---
+
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
-// --- FIX PARA EL ÍCONO DEL MARCADOR EN REACT ---
+
 let DefaultIcon = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
@@ -24,7 +24,7 @@ const EMPTY = {
   direccion: "",
 };
 
-/* ─── Iconos ─── */
+
 const IconClose = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="13" height="13">
     <line x1="18" y1="6" x2="6" y2="18"/>
@@ -45,7 +45,7 @@ const IconMapPin = () => (
   </svg>
 );
 
-// ── COMPONENTE SECUNDARIO PARA CLICS EN EL MAPA ──────────────
+
 function MapClickHandler({ setDireccion }) {
   const [position, setPosition] = useState(null);
 
@@ -72,7 +72,7 @@ function MapClickHandler({ setDireccion }) {
   return position === null ? null : <Marker position={position} />;
 }
 
-// ── COMPONENTE PRINCIPAL ─────────────────────────────────────
+
 export default function ClientModal({ open, client, onClose, onSave }) {
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({});
@@ -268,7 +268,7 @@ export default function ClientModal({ open, client, onClose, onSave }) {
             </div>
           </div>
 
-          {/* ─── SECCIÓN DE DIRECCIÓN Y MAPA ─── */}
+          {}
           <div className="m-field">
             <label>Dirección</label>
             <input 
@@ -302,7 +302,7 @@ export default function ClientModal({ open, client, onClose, onSave }) {
             {showMap && (
               <div style={{ marginTop: '12px', borderRadius: '8px', overflow: 'hidden', height: '200px', background: 'var(--color-background-alt)', border: "1px solid var(--color-border)" }}>
                 <MapContainer
-                  center={[19.6018, -99.0395]} // Coordenadas centradas en Ecatepec
+                  center={[19.6018, -99.0395]} 
                   zoom={14}
                   style={{ height: "100%", width: "100%", zIndex: 0 }}
                 >

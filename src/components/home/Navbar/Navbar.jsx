@@ -49,7 +49,7 @@ export default function Navbar() {
           SCYNARA
         </h2>
 
-        {/* Links escritorio */}
+        {}
         <ul className="nav-links">
           {links.map((link) => (
             <li
@@ -78,7 +78,7 @@ export default function Navbar() {
             </>
           )}
 
-          {/* Hamburguesa */}
+          {}
           <button
             className={`hamburger ${menuOpen ? "open" : ""}`}
             onClick={() => setMenuOpen(!menuOpen)}

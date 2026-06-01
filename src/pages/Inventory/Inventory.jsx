@@ -10,7 +10,7 @@ import ProductModal from "../../components/inventory/ProductModal";
 import Toast from "../../components/inventory/Toast";
 import "./Inventory.css";
 
-/* ───────────── 💡 1. AGREGAMOS EL ICONO DEL MENÚ ───────────── */
+
 const IconMenu = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
     strokeLinecap="round" width="18" height="18">
@@ -44,7 +44,7 @@ export default function Inventory() {
   const [editing, setEditing] = useState(null);
   const [toast, setToast] = useState("");
   
-  // Este es el estado que controla si se ve o no el menú
+  
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export default function Inventory() {
 
   return (
     <div className="dash">
-      {/* Overlay oscuro para cerrar el menú al hacer clic fuera */}
+      {}
       {sidebarOpen && (
         <div className="sb-overlay" onClick={() => setSidebarOpen(false)} />
       )}
@@ -106,7 +106,7 @@ export default function Inventory() {
 
       <main className="inv-main">
         
-        {/* ───────────── 💡 2. ENVOLVEMOS EL TOPBAR Y AGREGAMOS EL BOTÓN ───────────── */}
+        {}
         <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px" }}>
           
           <button 
@@ -117,7 +117,7 @@ export default function Inventory() {
             <IconMenu />
           </button>
           
-          {/* El contenedor toma el resto del espacio para no aplastar tu topbar */}
+          {}
           <div style={{ flex: 1, width: "100%" }}>
             <InventoryTopbar onAdd={handleAdd} />
           </div>

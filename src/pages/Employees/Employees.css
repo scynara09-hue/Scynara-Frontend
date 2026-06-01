@@ -1,4 +1,4 @@
-/* ─── MAIN ─────────────────────────────────────────── */
+
 .emp-main {
   flex: 1;
   padding: 28px 32px;
@@ -6,7 +6,7 @@
   background: var(--color-background-tertiary);
 }
 
-/* ERRORS */
+
 .em-input-error {
   border: 1px solid #ef4444 !important;
   box-shadow: 0 0 0 1px #ef4444;
@@ -20,7 +20,7 @@
   font-weight: 500;
 }
 
-/* ─── TOPBAR ─────────────────────────────────────────── */
+
 .emp-topbar {
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@
   transform: translateY(-1px);
 }
 
-/* ─── ROLE BANNER ─────────────────────────────────────── */
+
 .role-banner {
   display: flex;
   align-items: center;
@@ -86,7 +86,7 @@
   color: var(--color-text-info);
 }
 
-/* ─── STATS ─────────────────────────────────────────── */
+
 .emp-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -117,7 +117,7 @@
 .e-stat-num   { font-size: 20px; font-weight: 800; color: var(--color-text-primary); line-height: 1; }
 .e-stat-label { font-size: 11px; color: var(--color-text-secondary); }
 
-/* ─── TOOLBAR ─────────────────────────────────────────── */
+
 .emp-toolbar {
   display: flex;
   align-items: center;
@@ -173,11 +173,11 @@
   cursor: pointer;
 }
 
-/* ─── ESTILOS DE ERROR PARA EL MODAL ─── */
 
-/* El texto rojo debajo del input */
+
+
 .m-error-text {
-  color: var(--color-danger, #ef4444); /* Fallback a rojo si no tienes la variable */
+  color: var(--color-danger, #ef4444); 
   font-size: 12px;
   margin-top: 4px;
   display: block;
@@ -185,19 +185,19 @@
   animation: slideDownFade 0.2s ease-out forwards;
 }
 
-/* El input cuando tiene error (borde rojo y fondo ligerito) */
+
 .m-input.m-input-error {
   border-color: var(--color-danger, #ef4444);
   background-color: rgba(239, 68, 68, 0.03);
 }
 
-/* Cuando haces clic en el input con error */
+
 .m-input.m-input-error:focus {
   border-color: var(--color-danger, #ef4444);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
 }
 
-/* Animación para que el error no aparezca de golpe */
+
 @keyframes slideDownFade {
   from {
     opacity: 0;
@@ -208,7 +208,7 @@
     transform: translateY(0);
   }
 }
-/* ─── TABLE ─────────────────────────────────────────── */
+
 .emp-table-wrap {
   background: var(--color-background-primary);
   border: 0.5px solid var(--color-border-tertiary);
@@ -319,7 +319,7 @@
 
 .emp-horario { font-size: 12px; color: var(--color-text-secondary); }
 
-/* ─── ACTIONS ─────────────────────────────────────────── */
+
 .row-actions { display: flex; gap: 6px; }
 
 .row-btn {
@@ -340,7 +340,7 @@
 .row-btn:hover  { filter: brightness(1.12); }
 .disabled-btn   { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
 
-/* ─── PAGINATION ─────────────────────────────────────── */
+
 .emp-pagination {
   display: flex;
   align-items: center;
@@ -377,7 +377,7 @@
   border-color: var(--color-border-info);
 }
 
-/* ─── EMPLOYEE MODAL REDISEÑADO ─────────────────────── */
+
 .em-header {
   padding: 22px 26px 18px;
   border-bottom: 0.5px solid var(--color-border-tertiary);
@@ -414,7 +414,7 @@
 
 .em-body { padding: 22px 26px; }
 
-/* Section label */
+
 .em-section {
   display: flex;
   align-items: center;
@@ -445,7 +445,7 @@
   background: var(--color-border-tertiary);
 }
 
-/* Grid */
+
 .em-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -453,7 +453,7 @@
   margin-bottom: 14px;
 }
 
-/* Field */
+
 .em-field {
   display: flex;
   flex-direction: column;
@@ -478,7 +478,7 @@
   margin-left: 5px;
 }
 
-/* Input wrap */
+
 .em-input-wrap {
   position: relative;
   display: flex;
@@ -526,7 +526,7 @@
   background-position: right 12px center;
 }
 
-/* Eye btn */
+
 .em-eye-btn {
   position: absolute;
   right: 12px;
@@ -541,14 +541,14 @@
 
 .em-eye-btn:hover { color: #a78bfa; }
 
-/* Divider */
+
 .em-divider {
   height: 0.5px;
   background: var(--color-border-tertiary);
   margin: 18px 0;
 }
 
-/* Rol chips */
+
 .em-rol-chips {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -596,7 +596,7 @@
 
 .em-rol-name { font-size: 13px; font-weight: 600; color: var(--color-text-primary); }
 .em-rol-sub  { font-size: 11px; color: var(--color-text-secondary); margin-left: 16px; }
-/* Estado toggle */
+
 .em-estado { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 
 .em-estado-opt {
@@ -625,7 +625,7 @@
 
 .em-estado-opt:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* Horario */
+
 .em-time-wrap {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -640,7 +640,7 @@
   text-align: center;
 }
 
-/* Footer */
+
 .em-footer {
   display: flex;
   gap: 10px;
@@ -682,7 +682,7 @@
 
 .em-btn-save:hover { opacity: 0.9; transform: translateY(-1px); }
 
-/* ─── TOAST ─────────────────────────────────────────── */
+
 .toast {
   position: fixed;
   bottom: 22px;
@@ -713,7 +713,7 @@
 @keyframes slideUp   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes slideDown { to   { opacity: 0; transform: translateY(14px); } }
 
-/* ─── RESPONSIVE ─────────────────────────────────────── */
+
 @media (max-width: 1024px) {
   .emp-stats { grid-template-columns: repeat(2, 1fr); }
   .emp-table th:nth-child(4),

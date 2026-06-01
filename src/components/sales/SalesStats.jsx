@@ -1,9 +1,9 @@
 export default function SalesStats({ sales }) {
-  // 💡 Calculamos la medianoche de hoy
+  
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
   
-  // Filtramos ventas exitosas desde la medianoche en adelante
+  
   const todaySales = sales.filter(s => {
     if (!s.fecha_hora) return false;
     const ventaTimeObj = new Date(s.fecha_hora);
@@ -15,7 +15,7 @@ export default function SalesStats({ sales }) {
   const total = todaySales.reduce((a, s) => a + Number(s.total), 0);
   const clients = new Set(todaySales.map(s => s.cliente_nombre)).size;
   
-  // Filtramos ventas CANCELADAS desde la medianoche en adelante
+  
   const cancelled = sales.filter(s => {
     if (!s.fecha_hora) return false;
     const ventaTimeObj = new Date(s.fecha_hora);

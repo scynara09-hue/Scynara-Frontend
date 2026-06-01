@@ -15,7 +15,7 @@ import SettingsModal from "../../components/dashboard/SettingsModal/SettingsModa
 
 import "./Dashboard.css";
 
-/* ───────────── ICONOS ───────────── */
+
 const IconMenu = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
     strokeLinecap="round" width="18" height="18">
@@ -33,7 +33,7 @@ const IconSettings = () => (
   </svg>
 );
 
-/* ───────────── HELPERS ───────────── */
+
 function getGreeting() {
   const h = new Date().getHours();
   if (h < 12) return "Buenos días";
@@ -45,7 +45,7 @@ function formatDate() {
   return new Date().toLocaleDateString("es-MX", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
 }
 
-/* ───────────── COMPONENTE PRINCIPAL ───────────── */
+
 export default function Dashboard() {
   const { user } = useAuth();
 

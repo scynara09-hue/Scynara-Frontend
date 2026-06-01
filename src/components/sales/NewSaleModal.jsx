@@ -24,14 +24,14 @@ export default function NewSaleModal({ open, products, onClose, onSuccess }) {
       setClienteId("");
       setMetodoPago("EFECTIVO");
       setIsSubmitting(false);
-      setErrors(null); // Aseguramos que no queden errores fantasmas al reabrir
+      setErrors(null); 
     }
   }, [open]);
 
   if (!open) return null;
 
   const handleSave = async () => {
-    // 1. Validaciones básicas del frontend
+    
     let valid = true;
     const localErrors = {};
 
@@ -47,16 +47,16 @@ export default function NewSaleModal({ open, products, onClose, onSuccess }) {
 
     if (!valid) {
       setErrors(localErrors);
-      return; // Detenemos la ejecución sin tocar el backend
+      return; 
     }
 
-    // 2. Si todo está bien, mandamos la petición al backend (Zod hará la revisión final)
+    
     setIsSubmitting(true);
     try {
       const response = await procesarVenta(clienteId, metodoPago);
       onSuccess(response.id_venta); 
     } catch (error) {
-      // El error ya fue capturado y seteado en el contexto por procesarVenta()
+      
       setIsSubmitting(false);
     }
   };
@@ -76,7 +76,7 @@ export default function NewSaleModal({ open, products, onClose, onSuccess }) {
         </div>
 
         <div className="modal-body">
-          {/* Mostramos errores generales que no pertenecen a un campo específico (ej. falta de stock general) */}
+          {}
           {errors?.general && (
             <div style={{ color: "#ef4444", backgroundColor: "#fef2f2", padding: "10px", borderRadius: "5px", marginBottom: "15px", fontSize: "0.9rem", border: "1px solid #f87171" }}>
               {errors.general}
@@ -92,7 +92,7 @@ export default function NewSaleModal({ open, products, onClose, onSuccess }) {
                 value={clienteId} 
                 onChange={e => {
                   setClienteId(e.target.value);
-                  // Limpiamos el error de este campo en cuanto el usuario selecciona algo
+                  
                   if (errors?.id_cliente) setErrors(prev => ({...prev, id_cliente: null}));
                 }}
               >
@@ -103,7 +103,7 @@ export default function NewSaleModal({ open, products, onClose, onSuccess }) {
                   </option>
                 ))}
               </select>
-              {/* Mostramos el error de Zod o el local debajo del input */}
+              {}
               {errors?.id_cliente && <span style={{ color: "#ef4444", fontSize: "0.8rem", marginTop: "4px" }}>{errors.id_cliente}</span>}
             </div>
 
@@ -115,7 +115,7 @@ export default function NewSaleModal({ open, products, onClose, onSuccess }) {
                 value={metodoPago} 
                 onChange={e => {
                   setMetodoPago(e.target.value);
-                  // Limpiamos el error de este campo al cambiar
+                  
                   if (errors?.metodo_pago) setErrors(prev => ({...prev, metodo_pago: null}));
                 }}
               >

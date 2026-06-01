@@ -10,7 +10,7 @@ export default function PolicyModal({ isOpen, onClose }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content fade-in-up" onClick={(e) => e.stopPropagation()}>
         
-        {/* Cabecera del Modal */}
+        {}
         <div className="modal-header">
           <h2>Términos y Privacidad</h2>
           <button className="modal-close-btn" onClick={onClose} aria-label="Cerrar">
@@ -21,7 +21,7 @@ export default function PolicyModal({ isOpen, onClose }) {
           </button>
         </div>
         
-        {/* Pestañas de Navegación */}
+        {}
         <div className="modal-tabs">
           <button 
             className={`modal-tab ${activeTab === 'privacy' ? 'active' : ''}`}
@@ -37,7 +37,7 @@ export default function PolicyModal({ isOpen, onClose }) {
           </button>
         </div>
 
-        {/* Cuerpo desplazable */}
+        {}
         <div className="modal-body">
           {activeTab === 'privacy' && (
             <div className="tab-content fade-in">
@@ -66,7 +66,7 @@ export default function PolicyModal({ isOpen, onClose }) {
           )}
         </div>
         
-        {/* Pie del Modal */}
+        {}
         <div className="modal-footer">
           <button className="modal-accept-btn" onClick={onClose}>
             Entendido

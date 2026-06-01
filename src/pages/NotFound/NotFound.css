@@ -1,4 +1,4 @@
-/* ─── WRAPPER ───────────────────────── */
+
 .nf-wrapper {
   position: relative;
   height: 100vh;
@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-/* ─── FONDO DECORATIVO ───────────────────────── */
+
 .nf-bg {
   position: absolute;
   inset: 0;
@@ -37,7 +37,7 @@
   right: 20%;
 }
 
-/* ─── CONTENEDOR ───────────────────────── */
+
 .nf-container {
   position: relative;
   z-index: 2;
@@ -51,7 +51,7 @@
   box-shadow: var(--shadow);
 }
 
-/* ─── 404 GRANDE ───────────────────────── */
+
 .nf-illustration {
   display: flex;
   justify-content: center;
@@ -82,7 +82,7 @@
   50% { transform: translateY(-8px); }
 }
 
-/* ─── TEXTO ───────────────────────── */
+
 .nf-content h1 {
   font-size: 24px;
   color: var(--text-h);
@@ -96,7 +96,7 @@
   line-height: 1.6;
 }
 
-/* ─── BOTONES ───────────────────────── */
+
 .nf-actions {
   display: flex;
   justify-content: center;
@@ -104,7 +104,7 @@
   flex-wrap: wrap;
 }
 
-/* Mejora botones */
+
 .nf-actions .btn-primary {
   box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
 }
@@ -117,7 +117,7 @@
   transform: translateY(-2px);
 }
 
-/* ─── RESPONSIVE ───────────────────────── */
+
 @media (max-width: 480px) {
   .nf-illustration span {
     font-size: 70px;

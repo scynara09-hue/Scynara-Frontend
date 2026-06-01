@@ -19,17 +19,17 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Rutas públicas restringidas */}
+        {}
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
 
-        {/* Rutas públicas normales */}
+        {}
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
 
-        {/* Rutas protegidas */}
+        {}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/inventory" element={<Inventory />} />
