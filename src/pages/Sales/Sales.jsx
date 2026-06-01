@@ -39,9 +39,13 @@ export default function Sales() {
     loadProducts(); 
   }, []);
 
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    const today = new Date().toLocaleDateString('en-CA'); 
+    
+    // 💡 Calculamos la medianoche de hoy en tu computadora (00:00:00)
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
 
     return ventas.filter(s => {
       const matchQ = !q || 
@@ -49,13 +53,13 @@ export default function Sales() {
         String(s.id_venta).includes(q) ||
         (s.vendedor_nombre && s.vendedor_nombre.toLowerCase().includes(q));
       
-      const matchSt = status === "all" || s.estado === status;
+      const matchSt = status === "all" || (s.estado && s.estado.toUpperCase() === status.toUpperCase());
       
       let matchDt = true;
-      const ventaDate = s.fecha_hora ? s.fecha_hora.slice(0, 10) : ""; 
-      const ventaTimeObj = new Date(s.fecha_hora);
+      const ventaTimeObj = s.fecha_hora ? new Date(s.fecha_hora) : new Date();
 
-      if (dateRange === "today") matchDt = ventaDate === today;
+      // 💡 Comparamos: Si la venta ocurrió DESPUÉS de la medianoche de hoy, la mostramos
+      if (dateRange === "today") matchDt = ventaTimeObj >= todayStart;
       if (dateRange === "week") matchDt = ventaTimeObj >= new Date(Date.now() - 7 * 864e5);
       if (dateRange === "month") matchDt = ventaTimeObj >= new Date(Date.now() - 30 * 864e5);
       
@@ -64,7 +68,6 @@ export default function Sales() {
   }, [ventas, search, status, dateRange]);
 
   const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
-
   // 💡 LÓGICA DE CANCELACIÓN REAL
  const handleCancel = async (id) => {
     try {

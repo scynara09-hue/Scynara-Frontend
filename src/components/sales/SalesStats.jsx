@@ -1,25 +1,33 @@
 export default function SalesStats({ sales }) {
-  const today = new Date().toLocaleDateString('en-CA');
+  // 💡 Calculamos la medianoche de hoy
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
   
+  // Filtramos ventas exitosas desde la medianoche en adelante
   const todaySales = sales.filter(s => {
-    const ventaDate = s.fecha_hora ? s.fecha_hora.slice(0, 10) : "";
-    return ventaDate === today && s.estado !== "CANCELADA";
+    if (!s.fecha_hora) return false;
+    const ventaTimeObj = new Date(s.fecha_hora);
+    const estado = s.estado ? s.estado.toUpperCase() : "";
+    
+    return ventaTimeObj >= todayStart && estado !== "CANCELADA";
   });
 
   const total = todaySales.reduce((a, s) => a + Number(s.total), 0);
-  
   const clients = new Set(todaySales.map(s => s.cliente_nombre)).size;
   
+  // Filtramos ventas CANCELADAS desde la medianoche en adelante
   const cancelled = sales.filter(s => {
-    const ventaDate = s.fecha_hora ? s.fecha_hora.slice(0, 10) : "";
-    return ventaDate === today && s.estado === "CANCELADA";
+    if (!s.fecha_hora) return false;
+    const ventaTimeObj = new Date(s.fecha_hora);
+    const estado = s.estado ? s.estado.toUpperCase() : "";
+    
+    return ventaTimeObj >= todayStart && estado === "CANCELADA";
   }).length;
 
   const stats = [
     {
       num: `$${total.toLocaleString("es-MX", { minimumFractionDigits: 2 })}`,
       label: "Total del día", 
-      trend: "+12%", trendUp: true,
       iconBg: "var(--color-background-success)",
       icon: <IconDollar color="var(--color-text-success)" />,
     },
@@ -53,11 +61,6 @@ export default function SalesStats({ sales }) {
           <div>
             <div className="s-stat-num">{s.num}</div>
             <div className="s-stat-label">{s.label}</div>
-            {s.trend && (
-              <span className={`s-trend ${s.trendUp ? "trend-up" : "trend-dn"}`}>
-                {s.trend}
-              </span>
-            )}
           </div>
         </div>
       ))}

@@ -7,7 +7,7 @@ export default function NotFoundActions() {
     <div className="nf-actions">
       <button
         className="btn-primary"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/dashboard")}
       >
         Ir al Dashboard
       </button>
