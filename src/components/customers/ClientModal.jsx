@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { sanitizeInput, sanitizeAddress, sanitizePhoneNumber, sanitizeCoordinates } from "../../utils/sanitize";
+import { fetchAddressFromCoordinates } from "../../utils/nominatimLimiter";
 
 
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
@@ -55,15 +57,14 @@ function MapClickHandler({ setDireccion }) {
       setPosition(e.latlng);
 
       try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-        );
-        const data = await response.json();
-
-        if (data && data.display_name) {
-          setDireccion(data.display_name);
+        const { latitude, longitude } = sanitizeCoordinates(lat, lng);
+        const address = await fetchAddressFromCoordinates(latitude, longitude);
+        if (address) {
+          setDireccion(sanitizeAddress(address));
         }
-      } catch (error) {      }
+      } catch (error) {
+        // Silently fail - user can enter address manually
+      }
     },
   });
 

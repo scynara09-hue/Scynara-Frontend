@@ -1,6 +1,7 @@
 import AppRouter from "./routes/AppRouter";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
+import ErrorBoundary from "./components/shared/ErrorBoundary";
 
 import { ProductProvider } from "./context/ProductContext";
 import { ProveedorProvider } from "./context/ProveedorContext";
@@ -10,8 +11,9 @@ import { CustomersProvider } from "./context/CustomersContext";
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
         <ProductProvider>
           <ProveedorProvider>
             <VentaProvider>
@@ -21,8 +23,9 @@ function App() {
             </VentaProvider>
           </ProveedorProvider>
         </ProductProvider>
-      </AuthProvider>
-    </ThemeProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

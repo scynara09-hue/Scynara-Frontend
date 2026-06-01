@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerRequest } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
+import { sanitizeInput, sanitizeEmail, sanitizePhoneNumber, sanitizeAddress } from "../../utils/sanitize";
 
 
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
@@ -202,27 +203,55 @@ function MapClickHandler({ setDireccion }) {
 function validate(fields) {
   const errors = {};
 
-  
   if (!fields.nombreTienda.trim())
     errors.nombreTienda = "El nombre de la tienda es requerido";
 
-  
   if (!fields.direccionTienda.trim())
     errors.direccionTienda = "La dirección de la tienda es requerida";
 
-  
   if (!fields.nombre.trim()) errors.nombre = "El nombre es requerido";
   if (!fields.apellido.trim()) errors.apellido = "El apellido es requerido";
+  
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email))
     errors.email = "Correo no válido";
-  if (fields.telefono.replace(/\D/g, "").length < 10)
+  
+  const phoneDigits = fields.telefono.replace(/\D/g, "");
+  if (phoneDigits.length < 10)
     errors.telefono = "Mínimo 10 dígitos";
+  
   if (!fields.rol) errors.rol = "Selecciona un rol";
-  if (fields.password.length < 8) errors.password = "Mínimo 8 caracteres";
+  
+  // Enhanced password validation
+  const password = fields.password;
+  if (password.length < 10) {
+    errors.password = "Mínimo 10 caracteres";
+  } else if (!/[a-z]/.test(password)) {
+    errors.password = "Debe incluir letras minúsculas";
+  } else if (!/[A-Z]/.test(password)) {
+    errors.password = "Debe incluir letras mayúsculas";
+  } else if (!/\d/.test(password)) {
+    errors.password = "Debe incluir números";
+  } else if (!/[!@#$%^&*()\-_=+\[\]{};:'",.<>?/\\|`~]/.test(password)) {
+    errors.password = "Debe incluir caracteres especiales (!@#$%^&*)";
+  }
+  
   if (fields.password !== fields.confirm)
     errors.confirm = "Las contraseñas no coinciden";
 
   return errors;
+}
+
+function sanitizeFormData(fields) {
+  return {
+    nombreTienda: sanitizeInput(fields.nombreTienda),
+    direccionTienda: sanitizeAddress(fields.direccionTienda),
+    nombre: sanitizeInput(fields.nombre),
+    apellido: sanitizeInput(fields.apellido),
+    email: sanitizeEmail(fields.email),
+    telefono: sanitizePhoneNumber(fields.telefono),
+    rol: fields.rol,
+    password: fields.password,
+  };
 }
 
 
@@ -262,15 +291,16 @@ export default function Register() {
     setLoading(true);
     setAlert({ type: "", message: "" });
     try {
+      const sanitizedData = sanitizeFormData(form);
       await registerRequest({
-        nombre_tienda: form.nombreTienda,
-        direccion_tienda: form.direccionTienda,
-        nombre: form.nombre,
-        apellidos: form.apellido,
-        email: form.email,
-        telefono: form.telefono,
-        rol: form.rol,
-        password: form.password,
+        nombre_tienda: sanitizedData.nombreTienda,
+        direccion_tienda: sanitizedData.direccionTienda,
+        nombre: sanitizedData.nombre,
+        apellidos: sanitizedData.apellido,
+        email: sanitizedData.email,
+        telefono: sanitizedData.telefono,
+        rol: sanitizedData.rol,
+        password: sanitizedData.password,
       });
 
       setAlert({
