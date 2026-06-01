@@ -281,18 +281,29 @@ export default function Register() {
       });
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.errors) {
+      const errorCode = err?.response?.data?.code;
+      const errorMessage = err?.response?.data?.message;
+      
+      if (errorCode === 'REGISTRATION_CLOSED') {
+        setAlert({
+          type: "error",
+          message: "El registro está cerrado. Contacta con un administrador para crear una cuenta.",
+        });
+      } else if (err.response && err.response.data && err.response.data.errors) {
         setFormErrors(err.response.data.errors);
         setAlert({
           type: "error",
           message: "Revisa los campos marcados en rojo.",
         });
+      } else if (err?.response?.status === 429) {
+        setAlert({
+          type: "error",
+          message: "Demasiados intentos. Intenta más tarde.",
+        });
       } else {
         setAlert({
           type: "error",
-          message:
-            err?.response?.data?.message ||
-            "Error al registrar. Intenta de nuevo.",
+          message: errorMessage || "Error al registrar. Intenta de nuevo.",
         });
       }
     } finally {

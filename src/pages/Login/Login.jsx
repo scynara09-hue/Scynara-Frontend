@@ -114,19 +114,33 @@ export default function Login() {
     setLoading(true);
     setAlert({ type: "", message: "" });
 
-    const success = await login({ ...form, rol });
+    try {
+      const success = await login({ ...form, rol });
 
-    if (success) {
-      setAlert({
-        type: "success",
-        message: "¡Sesión iniciada correctamente! Redirigiendo...",
-      });
-      setTimeout(() => navigate("/dashboard"), 1500);
-    } else {
-      setAlert({ type: "error", message: "Correo o contraseña incorrectos." });
+      if (success) {
+        setAlert({
+          type: "success",
+          message: "¡Sesión iniciada correctamente! Redirigiendo...",
+        });
+        setTimeout(() => navigate("/dashboard"), 1500);
+      } else {
+        setAlert({ type: "error", message: "Correo o contraseña incorrectos." });
+      }
+    } catch (error) {
+      if (error?.response?.status === 429) {
+        setAlert({
+          type: "error",
+          message: "Demasiados intentos de inicio de sesión. Intenta más tarde.",
+        });
+      } else {
+        setAlert({
+          type: "error",
+          message: error?.message || "Error al iniciar sesión. Intenta de nuevo.",
+        });
+      }
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const handleBack = () => navigate("/");

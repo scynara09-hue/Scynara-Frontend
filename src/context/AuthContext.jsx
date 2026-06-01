@@ -81,7 +81,17 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       return true;
     } catch (error) {
-      setErrors([error.response?.data?.message || "Error en login"]);
+      const message = error.response?.data?.message || "Error en login";
+      const errorStatus = error.response?.status;
+      
+      if (errorStatus === 429) {
+        setErrors(["Demasiados intentos de acceso. Intenta más tarde."]);
+      } else if (error.response?.data?.errors) {
+        setErrors(Object.values(error.response.data.errors));
+      } else {
+        setErrors([message]);
+      }
+      
       throw error;
     }
   };
@@ -91,6 +101,7 @@ export const AuthProvider = ({ children }) => {
     removeToken();
     setUser(null);
     setIsAuthenticated(false);
+    sessionStorage.clear();
   };
 
   
@@ -100,8 +111,16 @@ export const AuthProvider = ({ children }) => {
       const res = await createUserRequest(data);
       return res.data;
     } catch (error) {
-      setErrors([error.response?.data?.message || "Error al crear el usuario"]);
-      throw error; 
+      const message = error.response?.data?.message || "Error al crear el usuario";
+      const errorCode = error.response?.data?.code;
+      
+      if (errorCode === 'REGISTRATION_CLOSED') {
+        setErrors(["El registro ha sido cerrado. Contacta con un administrador."]);
+      } else {
+        setErrors([message]);
+      }
+      
+      throw error;
     }
   };
 
