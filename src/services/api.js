@@ -1,14 +1,17 @@
-  import axios from "axios";
-  import { getToken, removeToken } from "../utils/token";
+import axios from "axios";
+import { getToken, removeToken } from "../utils/token";
 
 const baseURL = import.meta.env.VITE_API_URL;
 
 if (!baseURL) {
   throw new Error('VITE_API_URL environment variable is not set');
 }
-  });
 
-  api.interceptors.request.use(
+const api = axios.create({
+  baseURL,
+});
+
+api.interceptors.request.use(
     (config) => {
       const token = getToken();
 
