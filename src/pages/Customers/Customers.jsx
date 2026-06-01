@@ -9,10 +9,18 @@ import ClientModal from "../../components/customers/ClientModal";
 import Toast from "../../components/inventory/Toast";
 
 import { useCustomers } from "../../context/CustomersContext"; 
-import { Menu } from "lucide-react";
+// 💡 Borramos la importación de lucide-react porque ya tenemos nuestro IconMenu
 
 import "./Customers.css";
 
+const IconMenu = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+    strokeLinecap="round" width="18" height="18">
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+);
 
 // ─── Función auxiliar segura ───
 function totalCompras(client) {
@@ -149,8 +157,8 @@ export default function Customers() {
                 onClick={() => setSidebarOpen(true)}
                 title="Abrir menú"
               >
+                {/* 💡 Dejamos un solo ícono */}
                 <IconMenu />
-                <Menu size={18} strokeWidth={1.8} />
               </button>
               
               <div style={{ flex: 1, width: "100%" }}>
