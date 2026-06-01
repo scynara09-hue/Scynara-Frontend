@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getToken, setToken, removeToken } from "../utils/token";
 import { jwtDecode } from "jwt-decode";
-// Importamos las funciones que definimos en el servicio
+
+// 💡 Importamos la nueva función createEvaluationRequest
 import {
   loginRequest,
   getProfileRequest,
@@ -9,7 +10,8 @@ import {
   updateUserRequest,
   deleteUserRequest,
   createUserRequest,
-} from "../services/authService";
+  createEvaluationRequest
+} from "../services/authService"; // Ajusta la ruta si tu archivo se llama diferente
 
 const AuthContext = createContext();
 
@@ -25,6 +27,7 @@ const isTokenValid = (token) => {
 };
 
 export const AuthProvider = ({ children }) => {
+  // 💡 Corregido el pequeño error de tipeo aquí
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -79,7 +82,7 @@ export const AuthProvider = ({ children }) => {
       return true;
     } catch (error) {
       setErrors([error.response?.data?.message || "Error en login"]);
-      throw error; // 🔴 Lanzamos el error hacia el componente (ej. Login.jsx)
+      throw error;
     }
   };
 
@@ -90,46 +93,38 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
-  // ─── NUEVAS FUNCIONES DE RUTAS CRUD INTEGRADAS ───
-
-const createUser = async (data) => {
+  // ─── CRUD INTEGRADAS ───
+  const createUser = async (data) => {
     try {
       setErrors([]);
       const res = await createUserRequest(data);
       return res.data;
     } catch (error) {
       setErrors([error.response?.data?.message || "Error al crear el usuario"]);
-      
-      // Lanzamos el error hacia arriba
       throw error; 
     }
   };
 
-  // Obtener la lista completa de empleados (Para la tabla del Administrador)
   const getUsers = async () => {
     try {
       setErrors([]);
       const res = await getUsersRequest();
-      return res.data; // Retorna el arreglo de usuarios que viene de la DB
+      return res.data; 
     } catch (error) {
       setErrors([error.response?.data?.message || "Error al obtener los usuarios"]);
-      throw error; // 🔴 Lanzamos el error hacia Employees.jsx
+      throw error; 
     }
   };
 
-  // Actualizar cualquier usuario por su ID
   const updateUser = async (id, data) => {
     try {
       setErrors([]);
       const res = await updateUserRequest(id, data);
 
-      // Lógica reactiva: Si el usuario actualizado es el que está logueado actualmente,
-      // actualizamos el estado global al instante para reflejar los cambios.
       if (user && user.id_usuario === parseInt(id)) {
         setUser((prev) => ({
           ...prev,
           ...data,
-          // Mantenemos propiedades calculadas o fijas que no mutan en el formulario
           nombre: data.nombre || prev.nombre,
           correo: data.correo || prev.correo
         }));
@@ -138,11 +133,10 @@ const createUser = async (data) => {
       return true;
     } catch (error) {
       setErrors([error.response?.data?.message || "Error al actualizar el usuario"]);
-      throw error; // 🔴 Lanzamos el error hacia Employees.jsx / EmployeeModal.jsx
+      throw error; 
     }
   };
 
-  // Eliminar un usuario por su ID
   const deleteUser = async (id) => {
     try {
       setErrors([]);
@@ -150,7 +144,22 @@ const createUser = async (data) => {
       return true;
     } catch (error) {
       setErrors([error.response?.data?.message || "Error al eliminar el usuario"]);
-      throw error; // 🔴 Lanzamos el error para que la UI sepa que falló
+      throw error; 
+    }
+  };
+
+  // ─── NUEVA FUNCIÓN: ENVIAR EVALUACIÓN ───
+  const sendEvaluation = async (data) => {
+    try {
+      setErrors([]);
+      // data debe ser un objeto: { calificacion: 5, comentario: "..." }
+      const res = await createEvaluationRequest(data);
+      return res.data; 
+    } catch (error) {
+      // Manejamos los errores de Zod o del servidor
+      const errMsg = error.response?.data?.message || "Error al enviar la evaluación";
+      setErrors([errMsg]);
+      throw error;
     }
   };
 
@@ -165,6 +174,7 @@ const createUser = async (data) => {
         updateUser,
         deleteUser,
         createUser,
+        sendEvaluation, // 💡 Exponemos la nueva función al resto de la app
         errors,
         loading
       }}

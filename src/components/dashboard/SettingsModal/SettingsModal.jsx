@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import "./SettingsModal.css";
 import { useTheme } from "../../../context/ThemeContext";
 import { useAuth } from "../../../context/AuthContext";
-import { updateUserRequest } from "../../../services/authService";
 
 /* ───────────── NAVEGACIÓN ───────────── */
 const NAV_ITEMS = [
@@ -25,6 +24,17 @@ const NAV_ITEMS = [
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
         <circle cx="8" cy="5" r="3" />
         <path d="M2 14c0-3.31 2.69-6 6-6s6 2.69 6 6" />
+      </svg>
+    ),
+  },
+  {
+    id: "feedback",
+    label: "Evaluar Scynara",
+    subtitle: "Danos tu opinión sobre el sistema",
+    adminOnly: true, // 💡 Bandera para ocultarlo a empleados
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
       </svg>
     ),
   },
@@ -75,17 +85,11 @@ function PanelGeneral({ theme, changeTheme }) {
   );
 }
 
-/* ───────────── PANEL DE CUENTA (Funcional para Update) ───────────── */
-function PanelCuenta({ user, isSubmitting, setIsSubmitting }) {
-  // 1. Estados locales para el formulario
-  const [formData, setFormData] = useState({
-    nombre: "",
-    correo: "",
-    telefono: ""
-  });
+/* ───────────── PANEL DE CUENTA ───────────── */
+function PanelCuenta({ user, isSubmitting, setIsSubmitting, updateUser }) {
+  const [formData, setFormData] = useState({ nombre: "", correo: "", telefono: "" });
   const [feedback, setFeedback] = useState(null);
 
-  // 2. Cargamos los datos del usuario cuando el componente se monta
   useEffect(() => {
     if (user) {
       setFormData({
@@ -98,7 +102,7 @@ function PanelCuenta({ user, isSubmitting, setIsSubmitting }) {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setFeedback(null); // Limpiamos mensajes al escribir
+    setFeedback(null);
   };
 
   const getInitials = (nombreCompleto) => {
@@ -108,28 +112,18 @@ function PanelCuenta({ user, isSubmitting, setIsSubmitting }) {
     return nombreCompleto.substring(0, 2).toUpperCase();
   };
 
-  // 3. Manejador del envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setFeedback(null);
 
     try {
-      // 💡 AQUÍ CONECTAS TU BACKEND
-      // await updateUserRequest(user.id_usuario, formData);
-      
-      // 💡 Simulamos el tiempo de petición (Bórralo cuando conectes tu API real)
-      await new Promise(resolve => setTimeout(resolve, 1000)); 
-
+      if (updateUser && user) {
+        await updateUser(user.id_usuario, formData);
+      }
       setFeedback({ type: "success", msg: "Perfil actualizado correctamente." });
-      
-      // 💡 OPCIONAL: Aquí puedes llamar a una función de tu AuthContext para recargar los datos
-      // refreshUser(); 
     } catch (error) {
-      setFeedback({ 
-        type: "error", 
-        msg: error.response?.data?.message || "Ocurrió un error al actualizar." 
-      });
+      setFeedback({ type: "error", msg: error.message || "Ocurrió un error al actualizar." });
     } finally {
       setIsSubmitting(false);
     }
@@ -139,13 +133,9 @@ function PanelCuenta({ user, isSubmitting, setIsSubmitting }) {
     <form id="form-cuenta" onSubmit={handleSubmit} className="sm-section">
       <div className="sm-section-label">Perfil de Usuario</div>
       
-      {/* Mensaje de retroalimentación (Éxito o Error) */}
       {feedback && (
         <div style={{ 
-          padding: "10px", 
-          marginBottom: "15px", 
-          borderRadius: "6px", 
-          fontSize: "0.9rem",
+          padding: "10px", marginBottom: "15px", borderRadius: "6px", fontSize: "0.9rem",
           backgroundColor: feedback.type === "success" ? "#ecfdf5" : "#fef2f2",
           color: feedback.type === "success" ? "#059669" : "#dc2626",
           border: `1px solid ${feedback.type === "success" ? "#a7f3d0" : "#fecaca"}`
@@ -155,9 +145,7 @@ function PanelCuenta({ user, isSubmitting, setIsSubmitting }) {
       )}
 
       <div className="sm-avatar-row">
-        <div className="sm-avatar">
-          {getInitials(formData.nombre)}
-        </div>
+        <div className="sm-avatar">{getInitials(formData.nombre)}</div>
         <div className="sm-avatar-info">
           <span className="sm-avatar-name">{formData.nombre || "Usuario"}</span>
           <span className="sm-avatar-email">{user?.rol || "EMPLEADO"}</span>
@@ -165,46 +153,108 @@ function PanelCuenta({ user, isSubmitting, setIsSubmitting }) {
       </div>
 
       <SettingRow label="Nombre completo">
-        <input
-          className="sm-input"
-          type="text"
-          name="nombre"
-          value={formData.nombre}
-          onChange={handleChange}
-          required
-        />
+        <input className="sm-input" type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
       </SettingRow>
       
       <SettingRow label="Correo electrónico">
-        <input
-          className="sm-input"
-          type="email"
-          name="correo"
-          value={formData.correo}
-          onChange={handleChange}
-          required
-        />
+        <input className="sm-input" type="email" name="correo" value={formData.correo} onChange={handleChange} required />
       </SettingRow>
 
       <SettingRow label="Teléfono">
-        <input
-          className="sm-input"
-          type="text"
-          name="telefono"
-          value={formData.telefono}
-          onChange={handleChange}
-        />
+        <input className="sm-input" type="text" name="telefono" value={formData.telefono} onChange={handleChange} />
       </SettingRow>
 
       <SettingRow label="Rol en la sucursal" description="Solo modificable por el administrador global">
-        <input
-          className="sm-input"
-          type="text"
-          value={user?.rol || "EMPLEADO"}
-          disabled
-          style={{ backgroundColor: "#f3f4f6", color: "#9ca3af", cursor: "not-allowed" }}
-        />
+        <input className="sm-input" type="text" value={user?.rol || "EMPLEADO"} disabled style={{ backgroundColor: "#f3f4f6", color: "#9ca3af", cursor: "not-allowed" }} />
       </SettingRow>
+    </form>
+  );
+}
+
+/* ───────────── NUEVO: PANEL DE FEEDBACK ───────────── */
+function PanelFeedback({ isSubmitting, setIsSubmitting, sendEvaluation }) {
+  const [rating, setRating] = useState(5); // Por defecto 5 estrellas
+  const [hoverRating, setHoverRating] = useState(0);
+  const [comentario, setComentario] = useState("");
+  const [feedback, setFeedback] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setFeedback(null);
+
+    try {
+      // 💡 Consumimos la función de nuestro AuthContext
+      await sendEvaluation({ calificacion: rating, comentario });
+      setFeedback({ type: "success", msg: "¡Gracias! Tu evaluación ha sido enviada con éxito." });
+      setComentario(""); // Limpiamos el texto
+      setRating(5);
+    } catch (error) {
+      setFeedback({ type: "error", msg: error.message || "No se pudo enviar la evaluación." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form id="form-feedback" onSubmit={handleSubmit} className="sm-section">
+      <div className="sm-section-label">Cuéntanos tu experiencia</div>
+      
+      {feedback && (
+        <div style={{ 
+          padding: "10px", marginBottom: "15px", borderRadius: "6px", fontSize: "0.9rem",
+          backgroundColor: feedback.type === "success" ? "#ecfdf5" : "#fef2f2",
+          color: feedback.type === "success" ? "#059669" : "#dc2626",
+          border: `1px solid ${feedback.type === "success" ? "#a7f3d0" : "#fecaca"}`
+        }}>
+          {feedback.msg}
+        </div>
+      )}
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        
+        {/* Estrellas Interactivas */}
+        <div>
+          <span className="sm-row-label" style={{ display: "block", marginBottom: "8px" }}>Calificación</span>
+          <div style={{ display: "flex", gap: "5px", cursor: "pointer" }}>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <svg 
+                key={star}
+                onClick={() => setRating(star)}
+                onMouseEnter={() => setHoverRating(star)}
+                onMouseLeave={() => setHoverRating(0)}
+                width="32" height="32" viewBox="0 0 24 24" 
+                fill={star <= (hoverRating || rating) ? "#fbbf24" : "transparent"} 
+                stroke={star <= (hoverRating || rating) ? "#fbbf24" : "var(--color-text-tertiary)"}
+                strokeWidth="1.5"
+                style={{ transition: "all 0.2s" }}
+              >
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            ))}
+          </div>
+        </div>
+
+        {/* Textarea */}
+        <div>
+          <span className="sm-row-label" style={{ display: "block", marginBottom: "8px" }}>Comentario (Aparecerá en la página principal)</span>
+          <textarea
+            className="sm-input"
+            rows="4"
+            placeholder="Ej: Antes llevaba todo en Excel y era un desastre. Con Scynara ahora..."
+            value={comentario}
+            onChange={(e) => {
+              setComentario(e.target.value);
+              setFeedback(null);
+            }}
+            required
+            minLength="10"
+            maxLength="1000"
+            style={{ resize: "vertical", width: "100%" }}
+          ></textarea>
+        </div>
+
+      </div>
     </form>
   );
 }
@@ -213,20 +263,25 @@ function PanelCuenta({ user, isSubmitting, setIsSubmitting }) {
 const PANELS = {
   general: PanelGeneral,
   cuenta: PanelCuenta,
+  feedback: PanelFeedback,
 };
 
 /* ───────────── COMPONENTE PRINCIPAL ───────────── */
 export default function SettingsModal({ open, onClose }) {
   const { theme, changeTheme } = useTheme();
-  const { user } = useAuth(); 
+  // 💡 Traemos sendEvaluation y updateUser del contexto
+  const { user, sendEvaluation, updateUser } = useAuth(); 
   
   const [activeTab, setActiveTab] = useState("general");
-  const [isSubmitting, setIsSubmitting] = useState(false); // Estado para bloquear botones
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!open) return null;
 
-  const activeNav = NAV_ITEMS.find((n) => n.id === activeTab);
-  const ActivePanel = PANELS[activeTab];
+  // 💡 Filtramos las pestañas de navegación según el rol
+  const visibleNavItems = NAV_ITEMS.filter(item => !item.adminOnly || user?.rol === 'ADMINISTRADOR');
+
+  const activeNav = visibleNavItems.find((n) => n.id === activeTab) || visibleNavItems[0];
+  const ActivePanel = PANELS[activeNav.id];
 
   return (
     <div className="sm-overlay" onClick={(e) => { if(e.target === e.currentTarget && !isSubmitting) onClose(); }}>
@@ -235,10 +290,10 @@ export default function SettingsModal({ open, onClose }) {
         {/* Sidebar */}
         <aside className="sm-sidebar">
           <span className="sm-sidebar-title">Ajustes</span>
-          {NAV_ITEMS.map((item) => (
+          {visibleNavItems.map((item) => (
             <button
               key={item.id}
-              className={`sm-nav-btn${activeTab === item.id ? " active" : ""}`}
+              className={`sm-nav-btn${activeNav.id === item.id ? " active" : ""}`}
               onClick={() => !isSubmitting && setActiveTab(item.id)}
             >
               {item.icon}
@@ -266,6 +321,8 @@ export default function SettingsModal({ open, onClose }) {
               theme={theme}
               changeTheme={changeTheme}
               user={user}
+              updateUser={updateUser}
+              sendEvaluation={sendEvaluation}
               isSubmitting={isSubmitting}
               setIsSubmitting={setIsSubmitting}
             />
@@ -273,19 +330,20 @@ export default function SettingsModal({ open, onClose }) {
 
           <div className="sm-footer" style={{ justifyContent: 'flex-end', gap: '10px' }}>
             <button className="sm-btn-cancel" onClick={onClose} disabled={isSubmitting}>
-              {activeTab === "cuenta" ? "Cancelar" : "Cerrar"}
+              {activeTab === "general" ? "Cerrar" : "Cancelar"}
             </button>
 
-            {/* 💡 Este botón solo aparece en la pestaña de cuenta y dispara el formulario */}
+            {/* Botón de Guardar Perfil */}
             {activeTab === "cuenta" && (
-              <button 
-                className="sm-btn-save" 
-                type="submit" 
-                form="form-cuenta"
-                disabled={isSubmitting}
-                style={{ opacity: isSubmitting ? 0.6 : 1 }}
-              >
+              <button className="sm-btn-save" type="submit" form="form-cuenta" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.6 : 1 }}>
                 {isSubmitting ? "Guardando..." : "Guardar cambios"}
+              </button>
+            )}
+
+            {/* Botón de Enviar Testimonio */}
+            {activeTab === "feedback" && (
+              <button className="sm-btn-save" type="submit" form="form-feedback" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.6 : 1, backgroundColor: "var(--color-text-info)" }}>
+                {isSubmitting ? "Enviando..." : "Enviar evaluación"}
               </button>
             )}
           </div>

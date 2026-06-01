@@ -10,6 +10,16 @@ import ProductModal from "../../components/inventory/ProductModal";
 import Toast from "../../components/inventory/Toast";
 import "./Inventory.css";
 
+/* ───────────── 💡 1. AGREGAMOS EL ICONO DEL MENÚ ───────────── */
+const IconMenu = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+    strokeLinecap="round" width="18" height="18">
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+);
+
 export default function Inventory() {
   const {
     products,
@@ -33,6 +43,8 @@ export default function Inventory() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [toast, setToast] = useState("");
+  
+  // Este es el estado que controla si se ve o no el menú
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -85,6 +97,7 @@ export default function Inventory() {
 
   return (
     <div className="dash">
+      {/* Overlay oscuro para cerrar el menú al hacer clic fuera */}
       {sidebarOpen && (
         <div className="sb-overlay" onClick={() => setSidebarOpen(false)} />
       )}
@@ -92,7 +105,24 @@ export default function Inventory() {
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <main className="inv-main">
-        <InventoryTopbar onAdd={handleAdd} />
+        
+        {/* ───────────── 💡 2. ENVOLVEMOS EL TOPBAR Y AGREGAMOS EL BOTÓN ───────────── */}
+        <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px" }}>
+          
+          <button 
+            className="sb-menu-btn" 
+            onClick={() => setSidebarOpen(true)}
+            title="Abrir menú"
+          >
+            <IconMenu />
+          </button>
+          
+          {/* El contenedor toma el resto del espacio para no aplastar tu topbar */}
+          <div style={{ flex: 1, width: "100%" }}>
+            <InventoryTopbar onAdd={handleAdd} />
+          </div>
+
+        </div>
 
         {loading ? (
           <p style={{ textAlign: "center", padding: "2rem" }}>Cargando inventario...</p>

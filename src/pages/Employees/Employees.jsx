@@ -8,6 +8,16 @@ import Toast from "../../components/inventory/Toast";
 import { useAuth } from "../../context/AuthContext";
 import "./Employees.css";
 
+/* ───────────── 💡 1. AGREGAMOS EL ICONO DEL MENÚ ───────────── */
+const IconMenu = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+    strokeLinecap="round" width="18" height="18">
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+);
+
 export default function Employees() {
   const { user, getUsers, updateUser, deleteUser, createUser } = useAuth();
   const isAdmin = user?.rol?.toLowerCase() === "administrador";
@@ -99,8 +109,7 @@ export default function Employees() {
     }
   };
 
-
-const handleSave = async (data) => {
+  const handleSave = async (data) => {
     try {
       if (data.id_usuario) {
         await updateUser(data.id_usuario, data);
@@ -112,15 +121,12 @@ const handleSave = async (data) => {
       loadEmployees();
       
     } catch (error) {
-      
       const backendErrors = error.response?.data?.errors || { general: "Error al guardar" };
       setToast(error.response?.data?.message || "Revisa los campos marcados en rojo");
       
       throw error; 
     }
   };
-
-
 
   return (
     <div className="dash">
@@ -130,13 +136,27 @@ const handleSave = async (data) => {
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />  
 
       <main className="emp-main">
-        <EmployeesTopbar
-          rol={user?.rol}
-          onAdd={() => {
-            setEditing(null);
-            setModalOpen(true);
-          }}
-        />
+        
+        {/* ───────────── 💡 2. ENVOLVEMOS EL TOPBAR Y AGREGAMOS EL BOTÓN ───────────── */}
+        <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px" }}>
+          <button 
+            className="sb-menu-btn" 
+            onClick={() => setSidebarOpen(true)}
+            title="Abrir menú"
+          >
+            <IconMenu />
+          </button>
+          
+          <div style={{ flex: 1, width: "100%" }}>
+            <EmployeesTopbar
+              rol={user?.rol}
+              onAdd={() => {
+                setEditing(null);
+                setModalOpen(true);
+              }}
+            />
+          </div>
+        </div>
 
         <RoleBanner rol={user?.rol} />
 

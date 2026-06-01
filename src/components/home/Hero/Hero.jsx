@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "./Hero.css";
 
 export default function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section className="hero">
       <div className="hero-bg-dots" />
@@ -25,8 +28,13 @@ export default function Hero() {
           </p>
 
           <div className="hero-btn-row">
-            <button className="btn-primary">Comenzar ahora</button>
-            <button className="btn-secondary">Ver demo →</button>
+            {/* 💡 Agregamos el onClick para redirigir a la ruta de registro */}
+            <button 
+              className="btn-primary"
+              onClick={() => navigate('/register')}
+            >
+              Comenzar ahora
+            </button>
           </div>
 
           <div className="hero-stats">

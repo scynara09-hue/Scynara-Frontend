@@ -1,58 +1,29 @@
+import { useState, useEffect } from "react";
+// 💡 Importamos la petición directamente del servicio (ajusta la ruta si es necesario)
+import { getPublicEvaluationsRequest } from "../../../services/authService"; 
 import "./Testimonials.css";
 
-const Stars = () => (
+const Stars = ({ count }) => (
   Array.from({ length: 5 }).map((_, i) => (
-    <svg key={i} className="t-star" viewBox="0 0 24 24">
+    <svg 
+      key={i} 
+      className="t-star" 
+      viewBox="0 0 24 24"
+      fill={i < count ? "currentColor" : "none"} 
+      style={{ color: i < count ? "#fbbf24" : "var(--color-text-tertiary)" }}
+    >
       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
     </svg>
   ))
 );
 
-const testimonials = [
-  {
-    quote: <>Antes llevaba todo en Excel y siempre había errores en el inventario. Con Scynara sé exactamente cuánto tengo de cada producto y qué está por caducar. <strong>El cambio fue inmediato.</strong></>,
-    name: "María Ramírez",
-    business: "Abarrotes La Esperanza · CDMX",
-    initials: "MR",
-    avatarClass: "av-purple",
-    featured: true,
-  },
-  {
-    quote: <>Los proveedores ya no son un dolor de cabeza. Sé exactamente quién me surte cada producto y cuándo llega. <strong>El control de ventas por empleado también me ayudó mucho.</strong></>,
-    name: "Jorge López",
-    business: "Mini super Don Jorge · Monterrey",
-    initials: "JL",
-    avatarClass: "av-blue",
-  },
-  {
-    quote: <>Mis empleados se adaptaron rápido. Cada quien tiene su acceso y yo como encargada puedo ver todo desde mi cuenta. <strong>La facturación con RFC ya no me toma más de un minuto.</strong></>,
-    name: "Ana Gutiérrez",
-    business: "Abarrotes El Triunfo · Guadalajara",
-    initials: "AG",
-    avatarClass: "av-green",
-  },
-  {
-    quote: <>Tenía miedo de que fuera complicado pero la configuración inicial fue sencilla. En una tarde ya tenía todos mis productos cargados con sus categorías y proveedores. <strong>Muy intuitivo.</strong></>,
-    name: "Roberto Mendoza",
-    business: "Tienda San Isidro · Puebla",
-    initials: "RM",
-    avatarClass: "av-amber",
-  },
-  {
-    quote: <>El reporte de ventas por empleado me permite saber quién atiende mejor y en qué turnos se vende más. <strong>Nunca imaginé tener esa visibilidad en mi tiendita.</strong></>,
-    name: "Laura Vázquez",
-    business: "Abarrotes La Paloma · León",
-    initials: "LV",
-    avatarClass: "av-pink",
-  },
-  {
-    quote: <>Ya no pierdo dinero por productos caducados. La alerta me avisa con tiempo y puedo hacer promociones antes de que se venzan. <strong>Se pagó solo en el primer mes.</strong></>,
-    name: "Carlos Flores",
-    business: "Minisuper El Roble · Querétaro",
-    initials: "CF",
-    avatarClass: "av-teal",
-  },
+const BACKUP_TESTIMONIALS = [
+  { comentario: "Antes llevaba todo en Excel y siempre había errores en el inventario. Con Scynara sé exactamente cuánto tengo de cada producto y qué está por caducar. El cambio fue inmediato.", autor: "María Ramírez", empresa: "Abarrotes La Esperanza · CDMX", iniciales: "MR" },
+  { comentario: "Los proveedores ya no son un dolor de cabeza. Sé exactamente quién me surte cada producto y cuándo llega. El control de ventas por empleado también me ayudó mucho.", autor: "Jorge López", empresa: "Mini super Don Jorge · Monterrey", iniciales: "JL" },
+  { comentario: "Mis empleados se adaptaron rápido. Cada quien tiene su acceso y yo como encargada puedo ver todo desde mi cuenta. La facturación con RFC ya no me toma más de un minuto.", autor: "Ana Gutiérrez", empresa: "Abarrotes El Triunfo · Guadalajara", iniciales: "AG" }
 ];
+
+const AVATAR_COLORS = ["av-purple", "av-blue", "av-green", "av-amber", "av-pink", "av-teal"];
 
 const stats = [
   { num: "+1,200", label: "Tiendas activas" },
@@ -61,6 +32,31 @@ const stats = [
 ];
 
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        // 💡 Usamos la función importada de tu archivo api.js/authService.js
+        const res = await getPublicEvaluationsRequest();
+        
+        // Axios guarda la respuesta del backend dentro de la propiedad .data
+        const json = res.data; 
+
+        if (json.success && json.data.length > 0) {
+          setTestimonials(json.data);
+        } else {
+          setTestimonials(BACKUP_TESTIMONIALS);
+        }
+      } catch (error) {
+        console.error("Error al cargar testimonios, usando respaldo:", error);
+        setTestimonials(BACKUP_TESTIMONIALS);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
   return (
     <section className="testimonials">
       <div className="t-bg" />
@@ -77,20 +73,27 @@ export default function Testimonials() {
       </div>
 
       <div className="t-grid">
-        {testimonials.map((t, i) => (
-          <div key={i} className={`t-card ${t.featured ? "t-card--featured" : ""}`}>
-            <div className="t-stars"><Stars /></div>
-            <p className="t-quote">{t.quote}</p>
-            <div className="t-divider" />
-            <div className="t-author">
-              <div className={`t-avatar ${t.avatarClass}`}>{t.initials}</div>
-              <div className="t-author-info">
-                <p>{t.name}</p>
-                <span>{t.business}</span>
+        {testimonials.map((t, i) => {
+          const avatarColor = AVATAR_COLORS[i % AVATAR_COLORS.length];
+          const isFeatured = i === 0;
+
+          return (
+            <div key={t.id_evaluacion || i} className={`t-card ${isFeatured ? "t-card--featured" : ""}`}>
+              <div className="t-stars">
+                <Stars count={t.calificacion || 5} />
+              </div>
+              <p className="t-quote">{t.comentario}</p>
+              <div className="t-divider" />
+              <div className="t-author">
+                <div className={`t-avatar ${avatarColor}`}>{t.iniciales}</div>
+                <div className="t-author-info">
+                  <p>{t.autor}</p>
+                  <span>{t.empresa}</span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="t-stats">

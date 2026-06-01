@@ -8,10 +8,19 @@ import ClientDetailPanel from "../../components/customers/ClientDetailPanel";
 import ClientModal from "../../components/customers/ClientModal";
 import Toast from "../../components/inventory/Toast";
 
-// ─── Importamos el Hook del Contexto ───
 import { useCustomers } from "../../context/CustomersContext"; 
+import { Menu } from "lucide-react";
 
 import "./Customers.css";
+
+const IconMenu = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+    strokeLinecap="round" width="18" height="18">
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+);
 
 // ─── Función auxiliar segura ───
 function totalCompras(client) {
@@ -140,12 +149,28 @@ export default function Customers() {
         <div className="clients-body">
           {/* Columna izquierda */}
           <div className="clients-left">
-            <ClientsTopbar
-              onAdd={() => {
-                setEditing(null);
-                setModalOpen(true);
-              }}
-            />
+            
+            {/* ───────────── 💡 2. ENVOLVEMOS EL TOPBAR Y AGREGAMOS EL BOTÓN ───────────── */}
+            <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px" }}>
+              <button 
+                className="sb-menu-btn" 
+                onClick={() => setSidebarOpen(true)}
+                title="Abrir menú"
+              >
+                <IconMenu />
+                <Menu size={18} strokeWidth={1.8} />
+              </button>
+              
+              <div style={{ flex: 1, width: "100%" }}>
+                <ClientsTopbar
+                  onAdd={() => {
+                    setEditing(null);
+                    setModalOpen(true);
+                  }}
+                />
+              </div>
+            </div>
+
             <ClientsStats clients={customers} />
             <ClientsToolbar
               search={search}

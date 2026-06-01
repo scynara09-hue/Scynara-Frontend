@@ -10,6 +10,16 @@ import SupplierModal from "../../components/suppliers/SupplierModal";
 import Toast from "../../components/inventory/Toast";
 import "./Suppliers.css";
 
+/* ───────────── 💡 1. AGREGAMOS EL ICONO DEL MENÚ ───────────── */
+const IconMenu = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+    strokeLinecap="round" width="18" height="18">
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+);
+
 export default function Suppliers() {
   const {
     proveedores,
@@ -105,7 +115,22 @@ export default function Suppliers() {
       <div className="suppliers-main">
         <div className="suppliers-body">
           <div className="suppliers-left">
-            <SuppliersTopbar onAdd={() => { setEditing(null); setModalOpen(true); }} />
+            
+            {/* ───────────── 💡 2. ENVOLVEMOS EL TOPBAR Y AGREGAMOS EL BOTÓN ───────────── */}
+            <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px" }}>
+              <button 
+                className="sb-menu-btn" 
+                onClick={() => setSidebarOpen(true)}
+                title="Abrir menú"
+              >
+                <IconMenu />
+              </button>
+              
+              <div style={{ flex: 1, width: "100%" }}>
+                <SuppliersTopbar onAdd={() => { setEditing(null); setModalOpen(true); }} />
+              </div>
+            </div>
+
             <SuppliersStats suppliers={proveedores} />
             <SuppliersToolbar
               search={search} onSearch={setSearch}

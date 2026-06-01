@@ -10,3 +10,7 @@ export const getUsersRequest = () => api.get("/auth/users");
 export const createUserRequest = (data) => api.post("/auth/users", data);
 export const updateUserRequest = (id, data) => api.put(`/auth/users/${id}`, data);
 export const deleteUserRequest = (id) => api.delete(`/auth/users/${id}`);
+
+// ─── Evaluaciones / Testimonios ───
+export const createEvaluationRequest = (data) => api.post("/evaluaciones", data);
+export const getPublicEvaluationsRequest = () => api.get("/evaluaciones/publicas");
