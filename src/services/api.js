@@ -1,10 +1,11 @@
   import axios from "axios";
   import { getToken, removeToken } from "../utils/token";
 
-  const baseURL = import.meta.env.VITE_API_URL || "https://scynara-backend-production.up.railway.app";
+const baseURL = import.meta.env.VITE_API_URL;
 
-  const api = axios.create({
-    baseURL,
+if (!baseURL) {
+  throw new Error('VITE_API_URL environment variable is not set');
+}
   });
 
   api.interceptors.request.use(
@@ -27,9 +28,16 @@
         return Promise.reject(error);
       }
       
-      if (error.response?.status === 403 && error.response?.data?.message?.includes('Token')) {
+      if ((error.response?.status === 403 || error.response?.status === 401) && error.response?.data?.message?.includes('Token')) {
         removeToken();
         window.location.href = '/login';
+        return Promise.reject(error);
+      }
+      
+      if (error.response?.status === 401) {
+        removeToken();
+        window.location.href = '/login';
+        return Promise.reject(error);
       }
       
       if (error.response?.status === 429) {

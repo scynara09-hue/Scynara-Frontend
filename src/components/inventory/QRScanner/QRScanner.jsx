@@ -6,13 +6,12 @@ import "./QRScanner.css";
 const QRScanner = () => {
   const scannerRef = useRef(null);
   const isRunningRef = useRef(false);
+  const lastScanRef = useRef("");
   const [resultado, setResultado] = useState("");
 
   useEffect(() => {
     const scanner = new Html5Qrcode("reader");
     scannerRef.current = scanner;
-
-    let lastScan = "";
 
     const startScanner = async () => {
       try {
@@ -20,8 +19,8 @@ const QRScanner = () => {
           { facingMode: "environment" },
           { fps: 10, qrbox: 250 },
           async (decodedText) => {
-            if (decodedText !== lastScan) {
-              lastScan = decodedText;
+            if (decodedText !== lastScanRef.current) {
+              lastScanRef.current = decodedText;
 
               setResultado(decodedText);
 

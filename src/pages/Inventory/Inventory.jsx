@@ -51,7 +51,7 @@ export default function Inventory() {
     loadProducts();
     getProveedores(); 
     getCategorias();
-  }, []); 
+  }, [loadProducts, getProveedores, getCategorias]); 
 
   useEffect(() => {
     if (error) setToast(error);

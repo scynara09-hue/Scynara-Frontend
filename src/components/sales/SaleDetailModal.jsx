@@ -19,17 +19,33 @@ export default function SaleDetailModal({ open, sale, onClose }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+    
     if (open && sale?.id_venta) {
       setLoading(true);
       getVentaByIdRequest(sale.id_venta)
         .then(res => {
-          setDetalles(res.data.detalles || []);
+          if (isMounted) {
+            setDetalles(res.data.detalles || []);
+          }
         })
-        .catch(err =>)
-        .finally(() => setLoading(false));
+        .catch(err => {
+          if (isMounted) {
+            setDetalles([]);
+          }
+        })
+        .finally(() => {
+          if (isMounted) {
+            setLoading(false);
+          }
+        });
     } else {
       setDetalles([]);
     }
+    
+    return () => {
+      isMounted = false;
+    };
   }, [open, sale]);
 
   if (!open || !sale) return null;

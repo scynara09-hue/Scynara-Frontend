@@ -68,7 +68,7 @@ export default function Dashboard() {
     getVentas();
     getCustomers();
     loadProducts();
-  }, []);
+  }, [getVentas, getCustomers, loadProducts]);
 
   return (
     <div className="dash">
