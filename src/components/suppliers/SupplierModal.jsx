@@ -111,7 +111,7 @@ export default function SupplierModal({ open, supplier, categorias = [], onClose
           
         } else if (backendError?.mensaje) {
           alert(`Error: ${backendError.mensaje}`);
-        } else {        }
+        }
       }
     } 
   };

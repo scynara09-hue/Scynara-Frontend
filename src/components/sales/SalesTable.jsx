@@ -1,6 +1,6 @@
 import SaleRow from "./SaleRow";
 
-export default function SalesTable({ sales, onView, onCancel }) {
+export default function SalesTable({ sales, onView, onCancel, readOnly = false }) {
   return (
     <div className="sales-table-wrap">
       <table className="sales-table">
@@ -25,6 +25,7 @@ export default function SalesTable({ sales, onView, onCancel }) {
                 index={i}
                 onView={onView}
                 onCancel={onCancel}
+                readOnly={readOnly}
               />
             ))
           ) : (

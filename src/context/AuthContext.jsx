@@ -138,7 +138,7 @@ export const AuthProvider = ({ children }) => {
   const updateUser = async (id, data) => {
     try {
       setErrors([]);
-      const res = await updateUserRequest(id, data);
+      await updateUserRequest(id, data);
 
       if (user && user.id_usuario === parseInt(id)) {
         setUser((prev) => ({

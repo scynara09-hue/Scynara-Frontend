@@ -8,6 +8,8 @@ import SuppliersGrid from "../../components/suppliers/SuppliersGrid";
 import SupplierDetailPanel from "../../components/suppliers/SupplierDetailPanel";
 import SupplierModal from "../../components/suppliers/SupplierModal";
 import Toast from "../../components/inventory/Toast";
+import { useAuth } from "../../context/AuthContext";
+import { canWrite } from "../../utils/roles";
 import "./Suppliers.css";
 
 
@@ -21,6 +23,8 @@ const IconMenu = () => (
 );
 
 export default function Suppliers() {
+  const { user } = useAuth();
+  const readOnly = !canWrite(user?.rol);
   const {
     proveedores,
     categorias,
@@ -87,11 +91,13 @@ export default function Suppliers() {
   const selectedSupplier = proveedores.find(s => s.id_proveedor === selectedId) || null;
 
   const handleEdit = (id) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     setEditing(proveedores.find(s => s.id_proveedor === id));
     setModalOpen(true);
   };
 
   const handleSave = async (data) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     if (data.id_proveedor) {
       await updateProveedor(data.id_proveedor, data);
       setToast("Proveedor actualizado");
@@ -102,6 +108,7 @@ export default function Suppliers() {
   };
 
   const handleDelete = async (id) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     await deleteProveedor(id);
     if (selectedId === id) setSelectedId(null);
     setToast("Proveedor eliminado");
@@ -127,7 +134,7 @@ export default function Suppliers() {
               </button>
               
               <div style={{ flex: 1, width: "100%" }}>
-                <SuppliersTopbar onAdd={() => { setEditing(null); setModalOpen(true); }} />
+                <SuppliersTopbar onAdd={() => { setEditing(null); setModalOpen(true); }} readOnly={readOnly} />
               </div>
             </div>
 
@@ -144,6 +151,7 @@ export default function Suppliers() {
               selectedId={selectedId}
               onSelect={setSelectedId}
               onEdit={handleEdit}
+              readOnly={readOnly}
             />
           </div>
 
@@ -151,6 +159,7 @@ export default function Suppliers() {
             supplier={selectedSupplier}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            readOnly={readOnly}
           />
         </div>
       </div>

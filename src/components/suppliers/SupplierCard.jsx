@@ -11,9 +11,9 @@ const COLORS = [
 function initials(nombre) {
   return nombre?.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase() || "?";
 }
-export default function SupplierCard({ supplier, selected, onSelect, onEdit }) {
+export default function SupplierCard({ supplier, selected, onSelect, onEdit, readOnly = false }) {
   
-  const safeId = Number(supplier.id_S) || 0;
+  const safeId = Number(supplier.id_proveedor) || 0;
   
   
   const col = COLORS[safeId % COLORS.length] || COLORS[0];
@@ -23,7 +23,7 @@ export default function SupplierCard({ supplier, selected, onSelect, onEdit }) {
   return (
     <div
       className={`supplier-card${selected ? " selected" : ""}`}
-      onClick={() => onSelect(supplier.id_S)}
+      onClick={() => onSelect(supplier.id_proveedor)}
     >
       <div className="sc-top">
         <div className="sc-avatar" style={{ background: col.bg, color: col.color }}>
@@ -60,12 +60,14 @@ export default function SupplierCard({ supplier, selected, onSelect, onEdit }) {
         <div className="sc-productos">
           <span>{supplier.total_productos || 0}</span> productos
         </div>
-        <button
-          className="sc-edit-btn"
-          onClick={e => { e.stopPropagation(); onEdit(supplier.id_S); }}
-        >
-          <Pencil size={12} />
-        </button>
+        {!readOnly && (
+          <button
+            className="sc-edit-btn"
+            onClick={e => { e.stopPropagation(); onEdit(supplier.id_proveedor); }}
+          >
+            <Pencil size={12} />
+          </button>
+        )}
       </div>
     </div>
   );

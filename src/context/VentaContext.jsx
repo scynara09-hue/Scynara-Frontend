@@ -2,7 +2,6 @@ import { createContext, useContext, useState } from "react";
 import { 
   createVentaRequest, 
   getVentasRequest, 
-  getVentaByIdRequest,
   cancelVentaRequest
 } from "../services/ventasService";
 
@@ -90,13 +89,9 @@ export function VentaProvider({ children }) {
   };
 
   const cancelarVenta = async (id) => {
-    try {
-      const res = await cancelVentaRequest(id);
-      await getVentas();
-      return res.data;
-    } catch (error) {
-      throw error;
-    }
+    const res = await cancelVentaRequest(id);
+    await getVentas();
+    return res.data;
   };
 
   return (

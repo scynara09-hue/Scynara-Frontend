@@ -11,7 +11,7 @@ class ErrorBoundary extends React.Component {
     };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
@@ -23,7 +23,7 @@ class ErrorBoundary extends React.Component {
     }));
 
     // Log to console in development only
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.error('Error caught by boundary:', error, errorInfo);
     }
   }
@@ -85,7 +85,7 @@ class ErrorBoundary extends React.Component {
               aplicación. Por favor intenta recargar la página.
             </p>
 
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details
                 style={{
                   marginBottom: '25px',

@@ -6,17 +6,19 @@ const IconPlus = () => (
   </svg>
 );
 
-export default function InventoryTopbar({ onAdd }) {
+export default function InventoryTopbar({ onAdd, readOnly = false }) {
   return (
     <div className="inv-topbar">
       <div className="inv-title">
         <h1>Inventario</h1>
         <p>Gestiona productos, stock y fechas de caducidad</p>
       </div>
-      <button className="inv-add-btn" onClick={onAdd}>
-        <IconPlus />
-        <span>Agregar producto</span>
-      </button>
+      {!readOnly && (
+        <button className="inv-add-btn" onClick={onAdd}>
+          <IconPlus />
+          <span>Agregar producto</span>
+        </button>
+      )}
     </div>
   );
 }

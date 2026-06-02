@@ -59,7 +59,7 @@ const formatMXN = (value) => {
   }).format(Number(value) || 0);
 };
 
-export default function ProductCard({ product, onEdit, onDelete }) {
+export default function ProductCard({ product, onEdit, onDelete, readOnly = false }) {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const { 
@@ -79,7 +79,6 @@ export default function ProductCard({ product, onEdit, onDelete }) {
   
   const stockW = Math.min(100, Math.round((cantidad / 150) * 100));
   const barColor = level === "ok" ? "#34d399" : level === "low" ? "#f59e0b" : "#f87171";
-  const stockClass = `prod-stock ${level === "ok" ? "stock-ok" : level === "low" ? "stock-low" : "stock-critical"}`;
   
   let expClass = "prod-exp";
   let expTxt = "Sin caducidad";
@@ -88,8 +87,6 @@ export default function ProductCard({ product, onEdit, onDelete }) {
     expTxt = days < 0 ? "Caducado" : days === 0 ? "Caduca hoy" : `Cad. en ${days}d`;
   }
 
-  const stockIcon = level === "ok" ? "●" : level === "low" ? "▲" : "▼";
-
   return (
     <div className="prod-card">
       <div className="prod-card-top">
@@ -97,6 +94,7 @@ export default function ProductCard({ product, onEdit, onDelete }) {
           {categoria_nombre || "Sin categoría"}
         </span>
         
+        {!readOnly && (
         <div className="prod-actions" style={{ opacity: showConfirm ? 1 : undefined }}>
           {!showConfirm ? (
             <>
@@ -128,6 +126,7 @@ export default function ProductCard({ product, onEdit, onDelete }) {
             </div>
           )}
         </div>
+        )}
       </div>
 
       <div>

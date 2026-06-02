@@ -57,19 +57,21 @@ export default function Dashboard() {
   const [openSettings, setOpenSettings] = useState(false);
   const [profileData, setProfileData] = useState(null);
 
-  useEffect(() => {
+useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await getProfileRequest();
         setProfileData(res.data);
-      } catch (error) {      }
+      } catch (error) {
+        console.error("Error cargando perfil:", error);
+      }
     };
+    
     fetchProfile();
     getVentas();
     getCustomers();
     loadProducts();
-  }, [getVentas, getCustomers, loadProducts]);
-
+  }, []); // <--- ARREGLO VACÍO: Solo se ejecuta 1 vez al montar el componente
   return (
     <div className="dash">
       {sidebarOpen && <div className="sb-overlay" onClick={() => setSidebarOpen(false)} />}

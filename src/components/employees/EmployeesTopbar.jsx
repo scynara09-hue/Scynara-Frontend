@@ -8,7 +8,7 @@ const IconPlus = () => (
 );
 
 
-export default function EmployeesTopbar({ onAdd }) {
+export default function EmployeesTopbar({ onAdd, readOnly = false }) {
   return (
     <div className="emp-topbar">
 
@@ -17,10 +17,12 @@ export default function EmployeesTopbar({ onAdd }) {
         <p>Gestiona el equipo de tu tienda</p>
       </div>
 
-      <button className="emp-add-btn" onClick={onAdd}>
-        <IconPlus />
-        Agregar empleado
-      </button>
+      {!readOnly && (
+        <button className="emp-add-btn" onClick={onAdd}>
+          <IconPlus />
+          Agregar empleado
+        </button>
+      )}
 
     </div>
   );

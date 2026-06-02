@@ -8,7 +8,7 @@ const IconEmpty = () => (
   </svg>
 );
 
-export default function ClientsGrid({ clients, selectedId, onSelect, onEdit }) {
+export default function ClientsGrid({ clients, selectedId, onSelect, onEdit, readOnly = false }) {
   if (!clients.length) {
     return (
       <div className="clients-empty">
@@ -28,6 +28,7 @@ export default function ClientsGrid({ clients, selectedId, onSelect, onEdit }) {
           selected={client.id_cliente === selectedId} 
           onSelect={onSelect}
           onEdit={onEdit}
+          readOnly={readOnly}
         />
       ))}
     </div>

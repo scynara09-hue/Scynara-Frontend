@@ -7,7 +7,7 @@ export const sanitizeInput = (input) => {
   
   return input
     .trim()
-    .replace(/[<>\"']/g, '')
+    .replace(/[<>"']/g, '')
     .replace(/javascript:/gi, '')
     .replace(/on\w+\s*=/gi, '');
 };
@@ -25,7 +25,7 @@ export const sanitizeEmail = (email) => {
  */
 export const sanitizePhoneNumber = (phone) => {
   if (typeof phone !== 'string') return phone;
-  return phone.replace(/[^\d\-\+\s()]/g, '');
+  return phone.replace(/[^\d+\s()-]/g, '');
 };
 
 /**

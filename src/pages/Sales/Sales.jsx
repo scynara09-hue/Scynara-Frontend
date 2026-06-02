@@ -12,6 +12,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useVentas } from "../../context/VentaContext"; 
 import { useCustomers } from "../../context/CustomersContext"; 
 import { useProducts } from "../../context/ProductContext";     
+import { canWrite } from "../../utils/roles";
 import "./Sales.css";
 
 const PER_PAGE = 5;
@@ -28,10 +29,11 @@ const IconMenu = () => (
 
 export default function Sales() {
   const { user } = useAuth();
+  const readOnly = !canWrite(user?.rol);
   
   
   const { ventas, getVentas, cancelarVenta } = useVentas(); 
-  const { customers, getCustomers } = useCustomers(); 
+  const { getCustomers } = useCustomers(); 
   const { products, loadProducts } = useProducts();   
 
   const [search, setSearch] = useState("");
@@ -80,6 +82,7 @@ export default function Sales() {
   
   
   const handleCancel = async (id) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     try {
       
       await cancelarVenta(id);
@@ -122,7 +125,7 @@ export default function Sales() {
           </button>
           
           <div style={{ flex: 1, width: "100%" }}>
-            <SalesTopbar onNew={() => setNewOpen(true)} />
+            <SalesTopbar onNew={() => setNewOpen(true)} readOnly={readOnly} />
           </div>
         </div>
 
@@ -136,6 +139,7 @@ export default function Sales() {
           sales={paginated}
           onView={sale => setDetailSale(sale)}
           onCancel={handleCancel}
+          readOnly={readOnly}
         />
         <SalesPagination
           total={filtered.length}

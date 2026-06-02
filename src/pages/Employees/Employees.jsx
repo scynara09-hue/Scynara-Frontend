@@ -6,6 +6,7 @@ import EmployeeTable from "../../components/employees/EmployeeTable";
 import EmployeeModal from "../../components/employees/EmployeeModal";
 import Toast from "../../components/inventory/Toast";
 import { useAuth } from "../../context/AuthContext";
+import { canWrite, isAdminRole } from "../../utils/roles";
 import "./Employees.css";
 
 
@@ -20,7 +21,8 @@ const IconMenu = () => (
 
 export default function Employees() {
   const { user, getUsers, updateUser, deleteUser, createUser } = useAuth();
-  const isAdmin = user?.rol?.toLowerCase() === "administrador";
+  const isAdmin = isAdminRole(user?.rol);
+  const readOnly = !canWrite(user?.rol);
 
   const [employees, setEmployees] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -75,12 +77,14 @@ export default function Employees() {
 
   
   const handleEdit = (id) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     const empToEdit = filtered.find((e) => e.id_usuario === id) || null;
     setEditing(empToEdit);
     setModalOpen(true);
   };
 
   const handleToggle = async (id) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     const empToToggle = employees.find((e) => e.id_usuario === id);
     if (!empToToggle) return;
 
@@ -99,6 +103,7 @@ export default function Employees() {
   };
 
   const handleDelete = async (id) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     const success = await deleteUser(id);
     
     if (success) {
@@ -110,6 +115,7 @@ export default function Employees() {
   };
 
   const handleSave = async (data) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     try {
       if (data.id_usuario) {
         await updateUser(data.id_usuario, data);
@@ -121,7 +127,6 @@ export default function Employees() {
       loadEmployees();
       
     } catch (error) {
-      const backendErrors = error.response?.data?.errors || { general: "Error al guardar" };
       setToast(error.response?.data?.message || "Revisa los campos marcados en rojo");
       
       throw error; 
@@ -154,6 +159,7 @@ export default function Employees() {
                 setEditing(null);
                 setModalOpen(true);
               }}
+              readOnly={readOnly}
             />
           </div>
         </div>
@@ -167,6 +173,7 @@ export default function Employees() {
           onEdit={handleEdit}
           onToggle={handleToggle}
           onDelete={handleDelete}
+          readOnly={readOnly}
         />
       </main>
 

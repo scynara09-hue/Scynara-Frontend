@@ -13,7 +13,7 @@ const COLORS = [
   { bg: "rgba(248,113,113,0.12)", color: "#f87171" },
 ];
 
-export default function SupplierDetailPanel({ supplier, onEdit, onDelete }) {
+export default function SupplierDetailPanel({ supplier, onEdit, onDelete, readOnly = false }) {
   const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
@@ -55,6 +55,7 @@ export default function SupplierDetailPanel({ supplier, onEdit, onDelete }) {
           </div>
         </div>
 
+        {!readOnly && (
         <div className="sp-actions">
           {!showConfirm ? (
             <>
@@ -90,6 +91,7 @@ export default function SupplierDetailPanel({ supplier, onEdit, onDelete }) {
             </div>
           )}
         </div>
+        )}
       </div>
 
       <div className="sp-divider" />

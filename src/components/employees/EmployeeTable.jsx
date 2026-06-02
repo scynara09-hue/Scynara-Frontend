@@ -2,7 +2,7 @@ import EmployeeRow from "./EmployeeRow";
 
 export default function EmployeeTable({
   employees, currentUserId, isAdmin,
-  onEdit, onToggle, onDelete,
+  onEdit, onToggle, onDelete, readOnly = false,
 }) {
   return (
     <div className="emp-table-wrap">
@@ -29,6 +29,7 @@ export default function EmployeeTable({
                 onEdit={onEdit}
                 onToggle={onToggle}
                 onDelete={onDelete}
+                readOnly={readOnly}
               />
             ))
           ) : (

@@ -6,17 +6,19 @@ const IconPlus = () => (
   </svg>
 );
 
-export default function ClientsTopbar({ onAdd }) {
+export default function ClientsTopbar({ onAdd, readOnly = false }) {
   return (
     <div className="clients-topbar">
       <div className="clients-title">
         <h1>Clientes</h1>
         <p>Gestiona tu base de clientes y su historial de compras</p>
       </div>
-      <button className="clients-add-btn" onClick={onAdd}>
-        <IconPlus />
-        Agregar cliente
-      </button>
+      {!readOnly && (
+        <button className="clients-add-btn" onClick={onAdd}>
+          <IconPlus />
+          Agregar cliente
+        </button>
+      )}
     </div>
   );
 }

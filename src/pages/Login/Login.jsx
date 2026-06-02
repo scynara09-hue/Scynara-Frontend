@@ -95,7 +95,7 @@ export default function Login() {
   const { login } = useAuth(); 
 
   const [form, setForm] = useState({ email: "", password: "" });
-  const [rol, setRol] = useState("empleado");
+  const rol = "empleado";
   const [formErrors, setFormErrors] = useState({});
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);

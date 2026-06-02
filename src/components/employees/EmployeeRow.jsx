@@ -23,7 +23,7 @@ const IconX = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 
 export default function EmployeeRow({
   employee, index, currentUserId, isAdmin,
-  onEdit, onToggle, onDelete,
+  onEdit, onToggle, onDelete, readOnly = false,
 }) {
   
   const [showConfirm, setShowConfirm] = useState(false);
@@ -39,9 +39,9 @@ export default function EmployeeRow({
   const estadoActual = employee?.estado?.toUpperCase() || "BAJA";
   const badge = STATUS_MAP[estadoActual] || STATUS_MAP.BAJA;
 
-  const canEdit = isAdmin || isMe;
-  const canToggle = isAdmin && !isMe;
-  const canDelete = isAdmin && !isMe;
+  const canEdit = !readOnly && (isAdmin || isMe);
+  const canToggle = !readOnly && isAdmin && !isMe;
+  const canDelete = !readOnly && isAdmin && !isMe;
 
   const horaEntrada = employee?.horario_entrada?.slice(0, 5) || "--:--";
   const horaSalida = employee?.horario_salida?.slice(0, 5) || "--:--";

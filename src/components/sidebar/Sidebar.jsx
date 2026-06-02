@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { normalizeRole } from "../../utils/roles";
 
 
 const IconGrid = () => (
@@ -68,24 +69,24 @@ const NAV_ITEMS = [
   {
     section: "Principal",
     items: [
-      { label: "Dashboard", path: "/dashboard", icon: IconGrid, roles: ["empleado", "administrador"] },
-      { label: "Inventario", path: "/inventory", icon: IconHome, roles: ["empleado", "administrador"], badge: "12" },
-      { label: "Ventas", path: "/sales", icon: IconDollar, roles: ["empleado", "administrador"] },
+      { label: "Dashboard", path: "/dashboard", icon: IconGrid, roles: ["EMPLEADO", "ADMINISTRADOR", "INVITADO"] },
+      { label: "Inventario", path: "/inventory", icon: IconHome, roles: ["EMPLEADO", "ADMINISTRADOR", "INVITADO"], badge: "12" },
+      { label: "Ventas", path: "/sales", icon: IconDollar, roles: ["EMPLEADO", "ADMINISTRADOR", "INVITADO"] },
       
     ],
   },
   {
     section: "Gestión",
     items: [
-      { label: "Clientes", path: "/customers", icon: IconTruck, roles: ["empleado", "administrador"] },
-      { label: "Proveedores", path: "/suppliers", icon: IconTruck, roles: ["empleado", "administrador"] },
+      { label: "Clientes", path: "/customers", icon: IconTruck, roles: ["EMPLEADO", "ADMINISTRADOR", "INVITADO"] },
+      { label: "Proveedores", path: "/suppliers", icon: IconTruck, roles: ["EMPLEADO", "ADMINISTRADOR", "INVITADO"] },
       
     ],
   },
   {
     section: "Administración",
     items: [
-      { label: "Empleados", path: "/employees", icon: IconUser, roles: ["administrador"] },
+      { label: "Empleados", path: "/employees", icon: IconUser, roles: ["ADMINISTRADOR"] },
     ],
   },
 ];
@@ -105,7 +106,12 @@ export default function Sidebar({ open, onClose }) {
     : "U";
 
   
-  const userRole = user?.rol?.toLowerCase() || "";
+  const userRole = normalizeRole(user?.rol);
+  const roleLabel = userRole === "ADMINISTRADOR"
+    ? "Administrador"
+    : userRole === "INVITADO"
+      ? "Invitado"
+      : "Empleado";
 
   return (
     <aside className={`sidebar ${open ? "open" : ""}`}>
@@ -115,8 +121,8 @@ export default function Sidebar({ open, onClose }) {
       <div className="sb-user">
         <div className="sb-avatar">{initials}</div>
         <div className="sb-user-info">
-          <div className={`sb-rol ${userRole}`}>
-            ● {userRole === "administrador" ? "Administrador" : "Empleado"}
+          <div className={`sb-rol ${userRole.toLowerCase()}`}>
+            ● {roleLabel}
           </div>
         </div>
       </div>

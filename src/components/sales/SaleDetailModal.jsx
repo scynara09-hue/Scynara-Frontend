@@ -29,7 +29,7 @@ export default function SaleDetailModal({ open, sale, onClose }) {
             setDetalles(res.data.detalles || []);
           }
         })
-        .catch(err => {
+        .catch(() => {
           if (isMounted) {
             setDetalles([]);
           }

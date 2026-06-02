@@ -1,7 +1,7 @@
 import { Truck } from "lucide-react";
 import SupplierCard from "./SupplierCard";
 
-export default function SuppliersGrid({ suppliers, selectedId, onSelect, onEdit }) {
+export default function SuppliersGrid({ suppliers, selectedId, onSelect, onEdit, readOnly = false }) {
   if (!suppliers.length) {
     return (
       <div className="suppliers-empty">
@@ -20,6 +20,7 @@ export default function SuppliersGrid({ suppliers, selectedId, onSelect, onEdit 
           selected={s.id_proveedor === selectedId}
           onSelect={() => onSelect(s.id_proveedor)}
           onEdit={() => onEdit(s.id_proveedor)}
+          readOnly={readOnly}
         />
       ))}
     </div>

@@ -6,17 +6,19 @@ const IconPlus = () => (
   </svg>
 );
 
-export default function SalesTopbar({ onNew }) {
+export default function SalesTopbar({ onNew, readOnly = false }) {
   return (
     <div className="sales-topbar">
       <div className="sales-title">
         <h1>Ventas</h1>
         <p>Historial completo y registro de nuevas transacciones</p>
       </div>
-      <button className="sales-add-btn" onClick={onNew}>
-        <IconPlus />
-        Nueva venta
-      </button>
+      {!readOnly && (
+        <button className="sales-add-btn" onClick={onNew}>
+          <IconPlus />
+          Nueva venta
+        </button>
+      )}
     </div>
   );
 }

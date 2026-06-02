@@ -28,7 +28,7 @@ const IconEdit = () => (
   </svg>
 );
 
-export default function ClientCard({ client, index, selected, onSelect, onEdit }) {
+export default function ClientCard({ client, index, selected, onSelect, onEdit, readOnly = false }) {
   const av = COLORS[index % COLORS.length];
   
   
@@ -79,12 +79,14 @@ export default function ClientCard({ client, index, selected, onSelect, onEdit }
         <div className="cc-compras">
           <span>{compras.length}</span> compras · ${total.toFixed(2)}
         </div>
-        <button
-          className="cc-edit-btn"
-          onClick={e => { e.stopPropagation(); onEdit(client.id_cliente); }} 
-        >
-          <IconEdit />
-        </button>
+        {!readOnly && (
+          <button
+            className="cc-edit-btn"
+            onClick={e => { e.stopPropagation(); onEdit(client.id_cliente); }} 
+          >
+            <IconEdit />
+          </button>
+        )}
       </div>
     </div>
   );

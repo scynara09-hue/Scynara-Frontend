@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerRequest } from "../../services/authService";
-import { useAuth } from "../../context/AuthContext";
 import { sanitizeInput, sanitizeEmail, sanitizePhoneNumber, sanitizeAddress } from "../../utils/sanitize";
 
 
@@ -231,7 +230,7 @@ function validate(fields) {
     errors.password = "Debe incluir letras mayúsculas";
   } else if (!/\d/.test(password)) {
     errors.password = "Debe incluir números";
-  } else if (!/[!@#$%^&*()\-_=+\[\]{};:'",.<>?/\\|`~]/.test(password)) {
+  } else if (!/[!@#$%^&*()\-_=+[\]{};:'",.<>?/\\|`~]/.test(password)) {
     errors.password = "Debe incluir caracteres especiales (!@#$%^&*)";
   }
   
@@ -257,7 +256,6 @@ function sanitizeFormData(fields) {
 
 export default function Register() {
   const navigate = useNavigate();
-  const { register } = useAuth();
 
   
   const [showMap, setShowMap] = useState(false);

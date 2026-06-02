@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { sanitizeInput, sanitizeAddress, sanitizePhoneNumber, sanitizeCoordinates } from "../../utils/sanitize";
+import { sanitizeAddress, sanitizeCoordinates } from "../../utils/sanitize";
 import { fetchAddressFromCoordinates } from "../../utils/nominatimLimiter";
 
 

@@ -27,7 +27,7 @@ const IconCancel = () => (
   </svg>
 );
 
-export default function SaleRow({ sale, index, onView, onCancel }) {
+export default function SaleRow({ sale, index, onView, onCancel, readOnly = false }) {
   const clienteNombre = sale.cliente_nombre || "Público General";
   const vendedorNombre = sale.vendedor_nombre || "Desconocido";
   const initials = clienteNombre.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
@@ -79,7 +79,7 @@ export default function SaleRow({ sale, index, onView, onCancel }) {
           </button>
           
           {}
-          {estadoNormalizado !== "cancelada" && (
+          {!readOnly && estadoNormalizado !== "cancelada" && (
             <button className="sale-action-btn btn-cancel" onClick={() => onCancel(sale.id_venta)}>
               <IconCancel />
             </button>

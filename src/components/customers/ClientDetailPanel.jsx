@@ -40,7 +40,7 @@ function InfoRow({ bg, color, icon, label, value }) {
   );
 }
 
-export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelete }) {
+export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelete, readOnly = false }) {
   const [showConfirm, setShowConfirm] = useState(false);
 
   
@@ -87,6 +87,7 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
           </div>
         </div>
 
+        {!readOnly && (
         <div className="detail-actions">
           {!showConfirm ? (
             <>
@@ -111,6 +112,7 @@ export default function ClientDetailPanel({ client, clientIndex, onEdit, onDelet
             </div>
           )}
         </div>
+        )}
       </div>
 
       <div className="detail-divider" />

@@ -195,7 +195,7 @@ export default function EmployeeModal({
 
   if (!open) return null;
 
-  const isEmpleado = form.rol === "EMPLEADO";
+  const isEmpleado = form.rol === "EMPLEADO" || form.rol === "INVITADO";
   const canEditLaboral = isAdmin;
 
   
@@ -279,7 +279,7 @@ const handleSave = async (e) => {
       email: form.correo, 
     };
 
-    if (form.rol === "EMPLEADO") {
+    if (form.rol === "EMPLEADO" || form.rol === "INVITADO") {
       delete data.nivel_acceso;
       delete data.permisos;
     } else {
@@ -450,6 +450,12 @@ const handleSave = async (e) => {
                     id: "EMPLEADO",
                     label: "Empleado",
                     sub: "Registro de ventas y consulta",
+                    cls: "emp",
+                  },
+                  {
+                    id: "INVITADO",
+                    label: "Invitado",
+                    sub: "Consulta sin permisos de escritura",
                     cls: "emp",
                   },
                   {

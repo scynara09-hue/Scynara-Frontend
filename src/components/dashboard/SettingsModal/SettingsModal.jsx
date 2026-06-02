@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./SettingsModal.css";
 import { useTheme } from "../../../context/ThemeContext";
 import { useAuth } from "../../../context/AuthContext";
+import { canWrite } from "../../../utils/roles";
 
 
 const NAV_ITEMS = [
@@ -86,7 +87,7 @@ function PanelGeneral({ theme, changeTheme }) {
 }
 
 
-function PanelCuenta({ user, isSubmitting, setIsSubmitting, updateUser }) {
+function PanelCuenta({ user, setIsSubmitting, updateUser, readOnly = false }) {
   const [formData, setFormData] = useState({ nombre: "", correo: "", telefono: "" });
   const [feedback, setFeedback] = useState(null);
 
@@ -114,6 +115,11 @@ function PanelCuenta({ user, isSubmitting, setIsSubmitting, updateUser }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (readOnly) {
+      setFeedback({ type: "error", msg: "Tu cuenta de invitado solo tiene permisos de lectura." });
+      return;
+    }
+
     setIsSubmitting(true);
     setFeedback(null);
 
@@ -153,15 +159,15 @@ function PanelCuenta({ user, isSubmitting, setIsSubmitting, updateUser }) {
       </div>
 
       <SettingRow label="Nombre completo">
-        <input className="sm-input" type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
+        <input className="sm-input" type="text" name="nombre" value={formData.nombre} onChange={handleChange} required disabled={readOnly} />
       </SettingRow>
       
       <SettingRow label="Correo electrónico">
-        <input className="sm-input" type="email" name="correo" value={formData.correo} onChange={handleChange} required />
+        <input className="sm-input" type="email" name="correo" value={formData.correo} onChange={handleChange} required disabled={readOnly} />
       </SettingRow>
 
       <SettingRow label="Teléfono">
-        <input className="sm-input" type="text" name="telefono" value={formData.telefono} onChange={handleChange} />
+        <input className="sm-input" type="text" name="telefono" value={formData.telefono} onChange={handleChange} disabled={readOnly} />
       </SettingRow>
 
       <SettingRow label="Rol en la sucursal" description="Solo modificable por el administrador global">
@@ -172,7 +178,7 @@ function PanelCuenta({ user, isSubmitting, setIsSubmitting, updateUser }) {
 }
 
 
-function PanelFeedback({ isSubmitting, setIsSubmitting, sendEvaluation }) {
+function PanelFeedback({ setIsSubmitting, sendEvaluation, readOnly = false }) {
   const [rating, setRating] = useState(5); 
   const [hoverRating, setHoverRating] = useState(0);
   const [comentario, setComentario] = useState("");
@@ -180,6 +186,11 @@ function PanelFeedback({ isSubmitting, setIsSubmitting, sendEvaluation }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (readOnly) {
+      setFeedback({ type: "error", msg: "Tu cuenta de invitado solo tiene permisos de lectura." });
+      return;
+    }
+
     setIsSubmitting(true);
     setFeedback(null);
 
@@ -220,8 +231,8 @@ function PanelFeedback({ isSubmitting, setIsSubmitting, sendEvaluation }) {
             {[1, 2, 3, 4, 5].map((star) => (
               <svg 
                 key={star}
-                onClick={() => setRating(star)}
-                onMouseEnter={() => setHoverRating(star)}
+                onClick={() => !readOnly && setRating(star)}
+                onMouseEnter={() => !readOnly && setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
                 width="32" height="32" viewBox="0 0 24 24" 
                 fill={star <= (hoverRating || rating) ? "#fbbf24" : "transparent"} 
@@ -248,6 +259,7 @@ function PanelFeedback({ isSubmitting, setIsSubmitting, sendEvaluation }) {
               setFeedback(null);
             }}
             required
+            disabled={readOnly}
             minLength="10"
             maxLength="1000"
             style={{ resize: "vertical", width: "100%" }}
@@ -271,6 +283,7 @@ export default function SettingsModal({ open, onClose }) {
   const { theme, changeTheme } = useTheme();
   
   const { user, sendEvaluation, updateUser } = useAuth(); 
+  const readOnly = !canWrite(user?.rol);
   
   const [activeTab, setActiveTab] = useState("general");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -325,6 +338,7 @@ export default function SettingsModal({ open, onClose }) {
               sendEvaluation={sendEvaluation}
               isSubmitting={isSubmitting}
               setIsSubmitting={setIsSubmitting}
+              readOnly={readOnly}
             />
           </div>
 
@@ -335,14 +349,14 @@ export default function SettingsModal({ open, onClose }) {
 
             {}
             {activeTab === "cuenta" && (
-              <button className="sm-btn-save" type="submit" form="form-cuenta" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.6 : 1 }}>
+              <button className="sm-btn-save" type="submit" form="form-cuenta" disabled={isSubmitting || readOnly} style={{ opacity: isSubmitting || readOnly ? 0.6 : 1 }}>
                 {isSubmitting ? "Guardando..." : "Guardar cambios"}
               </button>
             )}
 
             {}
             {activeTab === "feedback" && (
-              <button className="sm-btn-save" type="submit" form="form-feedback" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.6 : 1, backgroundColor: "var(--color-text-info)" }}>
+              <button className="sm-btn-save" type="submit" form="form-feedback" disabled={isSubmitting || readOnly} style={{ opacity: isSubmitting || readOnly ? 0.6 : 1, backgroundColor: "var(--color-text-info)" }}>
                 {isSubmitting ? "Enviando..." : "Enviar evaluación"}
               </button>
             )}

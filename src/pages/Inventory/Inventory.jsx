@@ -8,6 +8,8 @@ import InventoryToolbar from "../../components/inventory/InventoryToolbar";
 import ProductGrid from "../../components/inventory/ProductGrid";
 import ProductModal from "../../components/inventory/ProductModal";
 import Toast from "../../components/inventory/Toast";
+import { useAuth } from "../../context/AuthContext";
+import { canWrite } from "../../utils/roles";
 import "./Inventory.css";
 
 
@@ -21,6 +23,8 @@ const IconMenu = () => (
 );
 
 export default function Inventory() {
+  const { user } = useAuth();
+  const readOnly = !canWrite(user?.rol);
   const {
     products,
     loading,
@@ -67,11 +71,20 @@ export default function Inventory() {
     });
   }, [products, search, activeCategory]);
 
-  const handleAdd = () => { setEditing(null); setModalOpen(true); };
+  const handleAdd = () => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
+    setEditing(null);
+    setModalOpen(true);
+  };
 
-  const handleEdit = (product) => { setEditing(product); setModalOpen(true); };
+  const handleEdit = (product) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
+    setEditing(product);
+    setModalOpen(true);
+  };
 
   const handleDelete = async (id) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     try {
       await deleteProduct(id);
       setToast("Producto eliminado");
@@ -81,6 +94,7 @@ export default function Inventory() {
   };
 
   const handleSave = async (data) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     try {
       if (data.id_producto) {
         await updateProduct(data.id_producto, data);
@@ -119,7 +133,7 @@ export default function Inventory() {
           
           {}
           <div style={{ flex: 1, width: "100%" }}>
-            <InventoryTopbar onAdd={handleAdd} />
+            <InventoryTopbar onAdd={handleAdd} readOnly={readOnly} />
           </div>
 
         </div>
@@ -138,6 +152,7 @@ export default function Inventory() {
               products={filtered}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              readOnly={readOnly}
             />
           </>
         )}

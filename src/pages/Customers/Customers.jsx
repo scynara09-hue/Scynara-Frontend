@@ -9,6 +9,8 @@ import ClientModal from "../../components/customers/ClientModal";
 import Toast from "../../components/inventory/Toast";
 
 import { useCustomers } from "../../context/CustomersContext"; 
+import { useAuth } from "../../context/AuthContext";
+import { canWrite } from "../../utils/roles";
 
 import "./Customers.css";
 
@@ -30,6 +32,8 @@ function totalCompras(client) {
 }
 
 export default function Customers() {
+  const { user } = useAuth();
+  const readOnly = !canWrite(user?.rol);
   
   const { 
     customers, 
@@ -85,11 +89,16 @@ export default function Customers() {
 
   
   const handleEdit = (id) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     setEditing(customers.find((c) => c.id_cliente === id));
     setModalOpen(true);
   };
 
   const handleSave = async (data) => {
+    if (readOnly) {
+      setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
+      return { success: false };
+    }
     try {
       let res;
       
@@ -127,6 +136,7 @@ export default function Customers() {
   };
 
   const handleDelete = async (id) => {
+    if (readOnly) return setToast("Tu cuenta de invitado solo tiene permisos de lectura.");
     try {
       await deleteCustomer(id);
       if (selectedId === id) setSelectedId(null);
@@ -165,6 +175,7 @@ export default function Customers() {
                     setEditing(null);
                     setModalOpen(true);
                   }}
+                  readOnly={readOnly}
                 />
               </div>
             </div>
@@ -182,6 +193,7 @@ export default function Customers() {
               selectedId={selectedId}
               onSelect={setSelectedId}
               onEdit={handleEdit}
+              readOnly={readOnly}
             />
           </div>
 
@@ -191,6 +203,7 @@ export default function Customers() {
             clientIndex={selectedIndex}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            readOnly={readOnly}
           />
         </div>
       </div>

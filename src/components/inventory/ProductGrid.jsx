@@ -7,7 +7,7 @@ const IconEmpty = () => (
   </svg>
 );
 
-export default function ProductGrid({ products, onEdit, onDelete }) {
+export default function ProductGrid({ products, onEdit, onDelete, readOnly = false }) {
   if (!products.length) {
     return (
       <div className="inv-empty">
@@ -25,6 +25,7 @@ export default function ProductGrid({ products, onEdit, onDelete }) {
           product={p}
           onEdit={onEdit}
           onDelete={onDelete}
+          readOnly={readOnly}
         />
       ))}
     </div>
