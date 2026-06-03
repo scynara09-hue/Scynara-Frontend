@@ -6,7 +6,6 @@ import PolicyModal from "../../components/shared/PolicyModal";
 
 import "./Login.css";
 
-
 const IconMail = () => (
   <svg
     viewBox="0 0 24 24"
@@ -80,7 +79,6 @@ const IconBack = () => (
   </svg>
 );
 
-
 function validate({ email, password }) {
   const formErrors = {};
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
@@ -89,10 +87,9 @@ function validate({ email, password }) {
   return formErrors;
 }
 
-
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth(); 
+  const { login } = useAuth();
 
   const [form, setForm] = useState({ email: "", password: "" });
   const rol = "empleado";
@@ -115,7 +112,14 @@ export default function Login() {
     setAlert({ type: "", message: "" });
 
     try {
-      const success = await login({ ...form, rol });
+      // 💡 SOLUCIÓN: Limpiamos los espacios en blanco del correo antes de enviarlo
+      const cleanData = {
+        email: form.email.trim(),
+        password: form.password,
+      };
+
+      // Enviamos la data limpia
+      const success = await login(cleanData);
 
       if (success) {
         setAlert({
@@ -124,18 +128,23 @@ export default function Login() {
         });
         setTimeout(() => navigate("/dashboard"), 1500);
       } else {
-        setAlert({ type: "error", message: "Correo o contraseña incorrectos." });
+        setAlert({
+          type: "error",
+          message: "Error inesperado al iniciar sesión.",
+        });
       }
     } catch (error) {
       if (error?.response?.status === 429) {
         setAlert({
           type: "error",
-          message: "Demasiados intentos de inicio de sesión. Intenta más tarde.",
+          message: "Demasiados intentos. Intenta más tarde.",
         });
       } else {
+        const backendMessage =
+          error?.response?.data?.message || "Correo o contraseña incorrectos.";
         setAlert({
           type: "error",
-          message: error?.message || "Error al iniciar sesión. Intenta de nuevo.",
+          message: backendMessage,
         });
       }
     } finally {
@@ -229,7 +238,8 @@ export default function Login() {
         <p className="reg-terms">
           Protegido con cifrado de extremo a extremo.{" "}
           <button
-            type="button" className="reg-link"
+            type="button"
+            className="reg-link"
             onClick={() => setIsPolicyOpen(true)}
           >
             Política de privacidad

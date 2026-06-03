@@ -27,6 +27,9 @@ api.interceptors.request.use(
   api.interceptors.response.use(
     (response) => response,
     (error) => {
+      const originalRequest = error.config;
+      const isAuthRequest = originalRequest?.url?.includes('/auth/login') || originalRequest?.url?.includes('/auth/register');
+
       if (error.response?.status === 403 && error.response?.data?.code === 'REGISTRATION_CLOSED') {
         return Promise.reject(error);
       }
@@ -37,7 +40,7 @@ api.interceptors.request.use(
         return Promise.reject(error);
       }
       
-      if (error.response?.status === 401) {
+      if (error.response?.status === 401 && !isAuthRequest) {
         removeToken();
         window.location.href = '/login';
         return Promise.reject(error);

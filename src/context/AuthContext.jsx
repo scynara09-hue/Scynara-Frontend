@@ -69,6 +69,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setErrors([]);
       const res = await loginRequest(data);
+      
       const token = res.data.token;
       setToken(token);
 
