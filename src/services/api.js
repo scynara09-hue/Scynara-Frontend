@@ -1,11 +1,20 @@
 import axios from "axios";
 import { getToken, removeToken } from "../utils/token";
 
-const baseURL = import.meta.env.VITE_API_URL;
+const PRODUCTION_API_URL = "https://web-production-8bf2b.up.railway.app";
+const LEGACY_API_URLS = new Set([
+  "https://scynara-backend-production.up.railway.app",
+]);
 
-if (!baseURL) {
-  throw new Error('VITE_API_URL environment variable is not set');
-}
+const normalizeUrl = (url = "") => url.trim().replace(/\/+$/, "");
+const configuredUrl = normalizeUrl(import.meta.env.VITE_API_URL);
+
+// Evita que una variable antigua de Vercel siga enviando las solicitudes
+// al despliegue anterior de Railway.
+const baseURL =
+  import.meta.env.PROD && (!configuredUrl || LEGACY_API_URLS.has(configuredUrl))
+    ? PRODUCTION_API_URL
+    : configuredUrl || "http://localhost:3000";
 
 const api = axios.create({
   baseURL,
