@@ -10,7 +10,6 @@ import Customers from "../pages/Customers/Customers";
 import Suppliers from "../pages/Suppliers/Suppliers";
 import Reports from "../pages/Reports/Reports";
 import Employees from "../pages/Employees/Employees";
-import LocalCrud from "../pages/LocalCrud/LocalCrud";
 import NotFound from "../pages/NotFound/NotFound";
 
 import ProtectedRoute from "./ProtectedRoute";
@@ -28,7 +27,6 @@ function AppRouter() {
 
         {}
         <Route path="/" element={<Home />} />
-        <Route path="/crud-local" element={<LocalCrud />} />
         <Route path="*" element={<NotFound />} />
 
         {}
